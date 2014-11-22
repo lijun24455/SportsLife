@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<resources>
+	<color name="gray">#66000000</color>
+    <color name="title">#66919191</color>
+    <color name="white">#FFFFFF</color>
+    <color name="black">#000000</color>
+    <color name="stepCount">#111111</color>
+    <color name="distance">#0033cc</color>
+    <color name="staticText">#006080</color>
+    <color name="holo_blue_light">#ff33b5e5</color>
+    <color name="MusicName">#66000000</color>
+    <color name="holo_green_light">#ff99cc00</color>
+    <color name="holo_red_light">#ffff4444</color>
+    <color name="holo_blue_dark">#ff0099cc</color>
+    <color name="holo_green_dark">#ff669900</color>
+    <color name="holo_red_dark">#ffcc0000</color>
+    <color name="holo_purple">#ffaa66cc</color>
+    <color name="holo_orange_light">#ffffbb33</color>
+    <color name="holo_orange_dark">#ffff8800</color>
+    <color name="holo_blue_bright">#ff00ddff</color>
+	<color name="bar_bg">#f0bfbfbf</color>
+</resources>
