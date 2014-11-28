@@ -72,7 +72,6 @@
                     android:orientation="horizontal">
                     <sysu.project.lee.sportslife.HeartBeat.HeartbeatView
                         android:id="@+id/image"
-                        android:layout_centerInParent="true"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content">
                     </sysu.project.lee.sportslife.HeartBeat.HeartbeatView>

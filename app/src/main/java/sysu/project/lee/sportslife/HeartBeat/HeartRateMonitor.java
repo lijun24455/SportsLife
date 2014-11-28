@@ -1,24 +1,28 @@
 package sysu.project.lee.sportslife.HeartBeat;
 
+import java.io.IOException;
 import java.util.concurrent.atomic.AtomicBoolean;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.res.Configuration;
 import android.hardware.Camera;
 import android.hardware.Camera.PreviewCallback;
 import android.os.Bundle;
-import android.os.PowerManager;
-import android.os.PowerManager.WakeLock;
+import android.os.Handler;
+import android.os.Message;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import sysu.project.lee.sportslife.R;
@@ -33,6 +37,7 @@ import sysu.project.lee.sportslife.R;
 public class HeartRateMonitor extends Activity {
 
     private static final String TAG = "HeartRateMonitor";
+    private static final int STOP_MEASURE = 1;
     private static final AtomicBoolean processing = new AtomicBoolean(false);
 
     private static SurfaceView preview = null;
@@ -40,6 +45,7 @@ public class HeartRateMonitor extends Activity {
     private static Camera camera = null;
     private static View image = null;
     private static TextView text = null;
+    private static ImageView btnNaviBack = null;
 
     private Button btnStartMeasure = null;
     private Button btnRestartMeasure = null;
@@ -64,7 +70,62 @@ public class HeartRateMonitor extends Activity {
     private static double beats = 0;
     private static long startTime = 0;
 
-    private static WakeLock wakeLock = null;
+    Runnable mRun = new Runnable() {
+        @Override
+        public void run() {
+            try {
+                Log.i("HeartBeat","---Thread name-->"+Thread.currentThread().getName());
+                Thread.sleep(20*1000);
+                Message msg = new Message();
+                msg.what = STOP_MEASURE;
+                handler.sendMessage(msg);
+
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+    };
+
+//    private Thread mThread = new Thread(new Runnable() {
+//        @Override
+//        public void run() {
+//            while(isRunning){
+//                try {
+//                    Log.i("HeartBeat","---Thread name-->"+Thread.currentThread().getName());
+//                    Thread.sleep(20*1000);
+//                    Message msg = new Message();
+//                    msg.what = STOP_MEASURE;
+//                    handler.sendMessage(msg);
+//                    isRunning = false;
+//
+//                } catch (InterruptedException e) {
+//                    e.printStackTrace();
+//                }
+//            }
+//
+//        }
+//    });
+
+    private String mHeartRate = null;
+
+    private Handler handler = new Handler(new Handler.Callback() {
+        @Override
+        public boolean handleMessage(Message msg) {
+            switch (msg.what){
+                case STOP_MEASURE:
+                    stopMeasure();
+                    mHeartRate = (String) text.getText();
+                    btnStartMeasure.setTextColor(getResources().getColor(R.color.white));
+                    btnStartMeasure.setClickable(true);
+                    btnRestartMeasure.setTextColor(getResources().getColor(R.color.white));
+                    btnRestartMeasure.setClickable(true);
+                    btnNaviBack.setClickable(true);
+                    Log.i("HeartBeat", "------rate--->" + text.getText());
+                    break;
+            }
+            return true;
+        }
+    });
 
 
     /**
@@ -73,30 +134,49 @@ public class HeartRateMonitor extends Activity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Log.i("Heart","-------------->onCreate()");
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         setContentView(R.layout.activity_heartbeat_monitor);
+
+
+        preview = (SurfaceView) findViewById(R.id.preview);
+        previewHolder = preview.getHolder();
+        previewHolder.addCallback(surfaceCallback);
+        previewHolder.setType(SurfaceHolder.SURFACE_TYPE_PUSH_BUFFERS);
 
         image = findViewById(R.id.image);
         text = (TextView) findViewById(R.id.tv_heartbeat_count_show);
         btnStartMeasure = (Button) findViewById(R.id.btn_start_monitor);
         btnRestartMeasure = (Button) findViewById(R.id.btn_restart_monitor);
+        btnNaviBack = (ImageView) findViewById(R.id.navi_back);
 
         camera = Camera.open();
-
-
-        PowerManager pm = (PowerManager) getSystemService(Context.POWER_SERVICE);
-        wakeLock = pm.newWakeLock(PowerManager.FULL_WAKE_LOCK, "DoNotDimScreen");
+        camera.setPreviewCallback(previewCallback);
 
         btnStartMeasure.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                btnStartMeasure.setText("重测");
-                btnRestartMeasure.setVisibility(View.VISIBLE);
-                btnRestartMeasure.setFocusable(true);
 
-                onMeasure();
+                String btnLable = (String) btnStartMeasure.getText();
+                if(btnLable.equals("开始")){
+                    btnStartMeasure.setText("重测");
+                    btnRestartMeasure.setVisibility(View.VISIBLE);
+                    onMeasure();
+
+                }
+                if(btnLable.equals("重测")){
+
+                    text.setText("00");
+
+                    if (camera == null){
+                        camera = Camera.open();
+                        camera.setPreviewCallback(previewCallback);
+                    }
+
+                    onMeasure();
+                }
 
             }
         });
@@ -104,12 +184,30 @@ public class HeartRateMonitor extends Activity {
         btnRestartMeasure.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                HeartRateMonitor.this.finish();
-
+                backToResultShowPage();
             }
         });
-
+        btnNaviBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (mHeartRate != null){
+                    backToResultShowPage();
+                }else{
+                    new AlertDialog.Builder(HeartRateMonitor.this)
+                            .setTitle("提示")
+                            .setMessage("还未测试心率，确定要返回吗？")
+                            .setPositiveButton("直接返回",new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.dismiss();
+                                    HeartRateMonitor.this.finish();
+                                }
+                            })
+                            .setNegativeButton("取消", null)
+                            .show();
+                }
+            }
+        });
 
 
     }
@@ -117,10 +215,8 @@ public class HeartRateMonitor extends Activity {
     @Override
     protected void onStart() {
         super.onStart();
+        Log.i("Heart","-------------->onStart()");
 
-        btnStartMeasure.setVisibility(View.VISIBLE);
-        btnRestartMeasure.setVisibility(View.INVISIBLE);
-        btnRestartMeasure.setFocusable(false);
 
     }
 
@@ -129,14 +225,15 @@ public class HeartRateMonitor extends Activity {
     protected void onRestart() {
 
         super.onRestart();
+        Log.i("Heart", "-------------->onRestart()");
 
         new AlertDialog.Builder(this)
                 .setTitle("重新测试")
-                .setMessage("请用手指指腹遮住摄像头和闪光灯，点击确定")
+                .setMessage("请用指腹遮住摄像头和闪光灯，确定后点击重测")
                 .setPositiveButton("确定",new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        onMeasure();
+                        dialog.dismiss();
                     }
                 })
                 .show();
@@ -157,12 +254,18 @@ public class HeartRateMonitor extends Activity {
     @Override
     public void onResume() {
         super.onResume();
-
-        wakeLock.acquire();
+        Log.i("Heart","-------------->onResume()");
 
     }
 
     private void onMeasure() {
+
+        btnRestartMeasure.setClickable(false);
+        btnRestartMeasure.setTextColor(getResources().getColor(R.color.gray));
+        btnStartMeasure.setClickable(false);
+        btnStartMeasure.setTextColor(getResources().getColor(R.color.gray));
+        btnNaviBack.setClickable(false);
+
 
         beatsArray = new int[beatsArraySize];
         beatsIndex = 0;
@@ -171,48 +274,27 @@ public class HeartRateMonitor extends Activity {
 
 //        camera = Camera.open();
 
-
-        preview = (SurfaceView) findViewById(R.id.preview);
-        previewHolder = preview.getHolder();
-        previewHolder.addCallback(new SurfaceHolder.Callback() {
-            @Override
-            public void surfaceCreated(SurfaceHolder holder) {
-                try {
-                    camera.setPreviewDisplay(previewHolder);
-                    camera.setPreviewCallback(previewCallback);
-                } catch (Throwable t) {
-                    Log.e("PreviewDemo-surfaceCallback", "Exception in setPreviewDisplay()", t);
-                }
-            }
-
-            /**
-             * {@inheritDoc}
-             */
-            @Override
-            public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
-                Camera.Parameters parameters = camera.getParameters();
-                parameters.setFlashMode(Camera.Parameters.FLASH_MODE_TORCH);
-                Camera.Size size = getSmallestPreviewSize(width, height, parameters);
-                if (size != null) {
-                    parameters.setPreviewSize(size.width, size.height);
-                    Log.d(TAG, "Using width=" + size.width + " height=" + size.height);
-                }
-                camera.setParameters(parameters);
-                camera.startPreview();
-            }
-
-            /**
-             * {@inheritDoc}
-             */
-            @Override
-            public void surfaceDestroyed(SurfaceHolder holder) {
-                // Ignore
-            }
-        });
-        previewHolder.setType(SurfaceHolder.SURFACE_TYPE_PUSH_BUFFERS);
-
-
         startTime = System.currentTimeMillis();
+
+        Camera.Parameters parameters = camera.getParameters();
+        parameters.setFlashMode(Camera.Parameters.FLASH_MODE_TORCH);
+        Camera.Size size = getSmallestPreviewSize(9999, 9999, parameters);
+        if (size != null) {
+            parameters.setPreviewSize(size.width, size.height);
+            Log.d(TAG, "Using width=" + size.width + " height=" + size.height);
+        }
+        camera.setParameters(parameters);
+
+        try {
+            camera.setPreviewDisplay(previewHolder);
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+
+        camera.startPreview();
+
+        new Thread(mRun).start();
 
     }
 
@@ -222,7 +304,14 @@ public class HeartRateMonitor extends Activity {
     @Override
     public void onPause() {
         super.onPause();
-        wakeLock.release();
+//        stopMeasure();
+        Log.i("Heart","-------------->onPause()");
+        if(camera!=null){
+            stopMeasure();
+        }
+    }
+
+    private void stopMeasure() {
         camera.setPreviewCallback(null);
         camera.stopPreview();
         camera.release();
@@ -319,6 +408,43 @@ public class HeartRateMonitor extends Activity {
         }
     };
 
+    private static SurfaceHolder.Callback surfaceCallback = new SurfaceHolder.Callback() {
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public void surfaceCreated(SurfaceHolder holder) {
+//            try {
+//                camera.setPreviewDisplay(previewHolder);
+//                camera.setPreviewCallback(previewCallback);
+//            } catch (Throwable t) {
+//                Log.e("PreviewDemo-surfaceCallback", "Exception in setPreviewDisplay()", t);
+//            }
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
+//            Camera.Parameters parameters = camera.getParameters();
+//            parameters.setFlashMode(Camera.Parameters.FLASH_MODE_TORCH);
+//            Camera.Size size = getSmallestPreviewSize(width, height, parameters);
+//            if (size != null) {
+//                parameters.setPreviewSize(size.width, size.height);
+//                Log.d(TAG, "Using width=" + size.width + " height=" + size.height);
+//            }
+//            camera.setParameters(parameters);
+//            camera.startPreview();
+        }
+
+        @Override
+        public void surfaceDestroyed(SurfaceHolder holder) {
+
+        }
+
+    };
 
 
     private static Camera.Size getSmallestPreviewSize(int width, int height, Camera.Parameters parameters) {
@@ -339,5 +465,40 @@ public class HeartRateMonitor extends Activity {
         }
 
         return result;
+    }
+
+    private void backToResultShowPage(){
+        Intent intent = new Intent();
+
+        intent.putExtra("HEART",mHeartRate);
+
+        HeartRateMonitor.this.setResult(RESULT_OK, intent);
+
+        HeartRateMonitor.this.finish();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        Log.i("Heart","-------------->onDestroy()");
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if(keyCode == KeyEvent.KEYCODE_BACK){
+            new AlertDialog.Builder(HeartRateMonitor.this)
+                    .setTitle("提示")
+                    .setMessage("还未测试心率，确定要返回吗？")
+                    .setPositiveButton("直接返回",new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                            HeartRateMonitor.this.finish();
+                        }
+                    })
+                    .setNegativeButton("取消", null)
+                    .show();
+        }
+        return true;
     }
 }

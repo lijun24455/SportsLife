@@ -20,4 +20,6 @@
         android:textColor="@color/white"
         android:text="心率测量"/>
 
+        />
+
 </RelativeLayout>

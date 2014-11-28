@@ -39,6 +39,7 @@ public class RunBikeResultShow extends Activity {
     private String mTotalDistanceRecord = null;
     private String mCurrentTypeRecord = null;
     private String mTotalCal = null;
+    private String mHeartRateRecord = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -141,12 +142,32 @@ public class RunBikeResultShow extends Activity {
         mHeartRateResult.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intentToBeat = new Intent();
-                intentToBeat.setClass(RunBikeResultShow.this, HeartRateMonitor.class);
-                startActivity(intentToBeat);
+//                Intent intentToBeat = new Intent();
+//                intentToBeat.setClass(RunBikeResultShow.this, HeartRateMonitor.class);
+                startActivityForResult(new Intent(RunBikeResultShow.this, HeartRateMonitor.class),1);
             }
         });
 
+
+    }
+
+    /**
+     *
+     * @param requestCode   请求码，即调用startActivityForResult()传递过去的值
+     * @param resultCode    结果码，结果码用于标识返回数据来自哪个新Activity
+     * @param data
+     */
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (data!=null && resultCode == RESULT_OK){
+            mHeartRateRecord = data.getExtras().getString("HEART");
+
+            if (mHeartRateRecord!=null){
+                mHeartRateResult.setText(mHeartRateRecord);
+            }
+        }
 
     }
 
