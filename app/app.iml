@@ -89,6 +89,7 @@
     <orderEntry type="library" exported="" name="Android_Location_V1.3.0" level="project" />
     <orderEntry type="library" exported="" name=" AMap_Services_V2.3.1" level="project" />
     <orderEntry type="library" exported="" name="support-annotations-21.0.0" level="project" />
+    <orderEntry type="module" module-name="circleimageview" exported="" />
   </component>
 </module>
 

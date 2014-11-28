@@ -3,7 +3,8 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="#cecece">
     <include layout="@layout/title"/>
     <include layout="@layout/music_camera_bar"/>
 
@@ -18,7 +19,12 @@
             android:layout_height="0dp"
             android:layout_weight="4"
             android:orientation="horizontal"
-            android:layout_gravity="center">
+            android:layout_gravity="center"
+            android:layout_marginBottom="@dimen/activity_vertical_margin"
+            android:layout_marginLeft="@dimen/activity_horizontal_margin"
+            android:layout_marginRight="@dimen/activity_horizontal_margin"
+            android:layout_marginTop="@dimen/activity_vertical_margin"
+            android:background="@color/white">
 
             <LinearLayout
                 android:layout_width="0dp"
@@ -44,10 +50,11 @@
                 android:gravity="center">
 
                 <TextView
+                    android:id="@+id/tv_skip_count"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="9999"
-                    android:textSize="70sp"
+                    android:text="0"
+                    android:textSize="70dp"
                     android:textStyle="bold"/>
 
 
@@ -79,13 +86,19 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:layout_marginBottom="@dimen/activity_vertical_margin"
+            android:layout_marginLeft="@dimen/activity_horizontal_margin"
+            android:layout_marginRight="@dimen/activity_horizontal_margin"
+            android:layout_marginTop="@dimen/activity_vertical_margin"
+            android:background="@color/white">
             <!--时间-->
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                >
                 <LinearLayout
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
@@ -110,40 +123,18 @@
                         android:layout_height="match_parent"
                         android:layout_weight="1"
                         android:gravity="center">
-                        <TextView
-                            android:id="@+id/tv_time_minute"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_centerVertical="true"
-                            android:textStyle="bold"
-                            android:text="00"
-                            android:textSize="30sp" />
-                        <TextView
-                            android:id="@+id/label_minute"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="''"
-                            android:layout_centerVertical="true"
-                            android:layout_toRightOf="@id/tv_time_minute"
-                            android:textSize="40sp"/>
+
+
                         <TextView
                             android:id="@+id/tv_time_second"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_centerInParent="true"
                             android:textStyle="bold"
-                            android:text="00"
-                            android:textSize="30sp"
-                            android:layout_toRightOf="@id/label_minute"
+                            android:text="00''00''00"
+                            android:textSize="25dp"
                             />
-                        <TextView
-                            android:id="@+id/label_second"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="''"
-                            android:layout_centerVertical="true"
-                            android:layout_toRightOf="@id/tv_time_second"
-                            android:textSize="40sp"/>
+
                     </RelativeLayout>
 
 
@@ -187,7 +178,7 @@
                             android:layout_centerVertical="true"
                             android:textStyle="bold"
                             android:text="00"
-                            android:textSize="30sp" />
+                            android:textSize="25dp" />
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"

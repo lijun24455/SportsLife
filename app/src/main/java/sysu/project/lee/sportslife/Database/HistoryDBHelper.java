@@ -7,7 +7,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 public class HistoryDBHelper extends SQLiteOpenHelper {
 
     private static String name = "SportsLifeHistoryRecord.db"; // 表示数据库的名称
-    private static int version = 1; // 表示数据库的版本号
+    private static int version = 2; // 表示数据库的版本号
 
     public HistoryDBHelper(Context context) {
         super(context, name, null, version);
@@ -20,7 +20,7 @@ public class HistoryDBHelper extends SQLiteOpenHelper {
         // TODO Auto-generated method stub
         // SQLite 数据创建支持的数据类型： 整型数据，字符串类型，日期类型，二进制的数据类型
         // 数据库这边有一个特点，就是SQLite数据库中文本类型没有过多的约束，也就是可以把布尔类型的数据存储到文本类型中，这样也是可以的
-        String sql = "create table HistoryRecord(date string, distance string, time string, screen_shot_path string, address string)";
+        String sql = "create table HistoryRecord(type string, date string, distance string, time string, screen_shot_path string, address string, calorie string, stepcount string)";
         db.execSQL(sql); // 完成数据库的创建
     }
 

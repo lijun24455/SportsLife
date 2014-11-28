@@ -18,8 +18,9 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.PopupMenu;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.amap.api.location.AMapLocalWeatherForecast;
@@ -45,6 +46,8 @@ import sysu.project.lee.sportslife.Database.HistoryDBHelper;
 import sysu.project.lee.sportslife.Database.HistoryRealize;
 import sysu.project.lee.sportslife.Database.HistoryService;
 import sysu.project.lee.sportslife.Excercise.Exercise;
+import sysu.project.lee.sportslife.Excercise.RunBikeCount;
+import sysu.project.lee.sportslife.Excercise.SkipCount;
 import sysu.project.lee.sportslife.Excercise.StepCount;
 import sysu.project.lee.sportslife.Utils.ToastUtils;
 import sysu.project.lee.sportslife.Utils.mHelper;
@@ -58,6 +61,8 @@ public class SportsFragment extends Fragment implements LocationSource, AMapLoca
     private TextView mAirHumidity;
     private TextView mTotalDistanceTody;
     private TextView mTotalTimeTody;
+    private TextView mExerciseType;
+    private ImageView mExerciseTypeImg;
     private int mYear = 0;
     private int mMonth = 0;
     private int mDay = 0;
@@ -68,13 +73,14 @@ public class SportsFragment extends Fragment implements LocationSource, AMapLoca
     private int Total_distance = 0;
     private int Total_time = 0;
     private Button mStartButton;
-    private String eType, eDest, eTime;
+    private String eDest, eTime;
+    private int eType = 0;
 
     private mHelper mSportsLifeHelper = null;
 
-    private ImageButton btnChooseExerciseType = null;
-    private PopupMenu mExerciseTypePopupMenu = null;
-    private String chosenType;
+    private PopupMenu mExerciseTypePopupMenu;
+    private RelativeLayout btnChooseExerciseType;
+
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
@@ -87,8 +93,11 @@ public class SportsFragment extends Fragment implements LocationSource, AMapLoca
         mTotalDistanceTody = (TextView) getView().findViewById(R.id.todayTotalDis);
         mStartButton = (Button) getView().findViewById(R.id.btn_start);
         mSportsLifeHelper = (mHelper) getActivity().getApplicationContext();
-        btnChooseExerciseType = (ImageButton) getView().findViewById(R.id.btn_choose_exercise_type);
+        mExerciseType = (TextView) getView().findViewById(R.id.tv_exercise_type);
+        btnChooseExerciseType = (RelativeLayout) getView().findViewById(R.id.btn_choose_exercise_type);
+        mExerciseTypeImg = (ImageView) getView().findViewById(R.id.iv_exercise_type_img);
 
+        reFreshUI();
 
         if (!isGPSOpen(this.getActivity())) {
 
@@ -145,27 +154,36 @@ public class SportsFragment extends Fragment implements LocationSource, AMapLoca
         mTotalDistanceTody.setText(String.valueOf(Total_distance));
         mTotalTimeTody.setText(String.valueOf(Total_time));
 
-        eType = "Run";
-        eDest = "ZSDX";
+        eDest = "test";
 
         mStartButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 eTime = mdate.toString() + "  " + mtime.toString();
+//                eType = mSportsLifeHelper.getEtype();
 
-                Log.i("btn","eType-->"+eType+"-->eDest"+eDest);
+//                Log.i("btn","eType-->"+eType+"-->eDest"+eDest);
+                Log.i("Type","type--click->"+eType);
 
-                Exercise oneExercise = new Exercise(eType, eTime, eDest);
+                Exercise currentExercise = new Exercise(eType, eTime, eDest);
                 try {
-                    mSportsLifeHelper.setCurrentExercise(oneExercise);
+                    mSportsLifeHelper.setCurrentExercise(currentExercise);
                 } catch (CloneNotSupportedException e) {
                     e.printStackTrace();
                 }
-
-                mSportsLifeHelper.setEtype(0);
-
                 Intent intent = new Intent();
-                intent.setClass(getActivity(), StepCount.class);
+                switch(eType){
+                    case 0:
+                    case 1:
+                        intent.setClass(getActivity(), RunBikeCount.class);
+                        break;
+                    case 2:
+                        intent.setClass(getActivity(), StepCount.class);
+                        break;
+                    case 3:
+                        intent.setClass(getActivity(), SkipCount.class);
+                        break;
+                }
                 startActivity(intent);
             }
         });
@@ -173,21 +191,56 @@ public class SportsFragment extends Fragment implements LocationSource, AMapLoca
         btnChooseExerciseType.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mExerciseTypePopupMenu = new PopupMenu(getActivity(),v);
+                mExerciseTypePopupMenu = new PopupMenu(getActivity(), v);
                 mExerciseTypePopupMenu.getMenuInflater().inflate(R.menu.exercise_type, mExerciseTypePopupMenu.getMenu());
                 mExerciseTypePopupMenu.show();
                 mExerciseTypePopupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                     @Override
                     public boolean onMenuItemClick(MenuItem item) {
-
-                        int tmp = item.getItemId();
-                        Log.i("chose","----->"+tmp);
+                        switch (item.getItemId()) {
+                            case R.id.type_run:
+                                eType = 0;
+                                break;
+                            case R.id.type_bike:
+                                eType = 1;
+                                break;
+                            case R.id.type_step:
+                                eType = 2;
+                                break;
+                            case R.id.type_skip:
+                                eType = 3;
+                                break;
+                        }
+                        mSportsLifeHelper.setEtype(eType);
+                        reFreshUI();
+                        Log.i("Type","type--->"+mSportsLifeHelper.getEtype());
                         return true;
                     }
                 });
+
             }
         });
+
     }
+
+    private void reFreshUI() {
+        switch (eType){
+            case 0:
+                mExerciseType.setText("跑步");
+//                mExerciseTypeImg.setImageResource(R.drawable.);
+                break;
+            case 1:
+                mExerciseType.setText("骑行");
+                break;
+            case 2:
+                mExerciseType.setText("步行");
+                break;
+            case 3:
+                mExerciseType.setText("跳绳");
+                break;
+        }
+    }
+
 
     @Override
     public void onResume() {

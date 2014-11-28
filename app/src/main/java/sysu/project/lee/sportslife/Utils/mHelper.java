@@ -13,9 +13,11 @@ public class mHelper extends mApplication {
     private ExerciseManager exerciseManager;
 //    private FriendManager friendManager;
     // private ExercisePlan currentEP;
-    private Exercise currentE;
+    private Exercise currentExercise;
     private int step;
-    private int Etype;
+
+    private int Etype;  //0->run; 1->bike; 2->step; 3->skip
+
     private int num;
 
     public mHelper() {
@@ -43,12 +45,12 @@ public class mHelper extends mApplication {
     }
 
     public Exercise getCurrExercise() {
-        return currentE;
+        return currentExercise;
     }
 
     public void setCurrentExercise(Exercise exer)
             throws CloneNotSupportedException {
-        currentE = (Exercise) exer.clone();
+        currentExercise = (Exercise) exer.clone();
     }
 
     public void setStep(int s) {

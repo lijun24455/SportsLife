@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.hardware.Sensor;
 import android.hardware.SensorManager;
 import android.os.IBinder;
+import android.util.Log;
 
 import sysu.project.lee.sportslife.Utils.mHelper;
 
@@ -32,6 +33,8 @@ public class StepService extends Service {
 	public void onCreate() {
 		super.onCreate();
 
+        Log.i("StepService","------>onCreate()");
+
 		appHealthHelper = (mHelper) getApplicationContext();
 
 		mStepDetector = new StepDetector();
@@ -50,17 +53,29 @@ public class StepService extends Service {
 	@Override
 	public void onStart(Intent intent, int startId) {
 		super.onStart(intent, startId);
+        appHealthHelper.setNum(0);
+        appHealthHelper.setStep(0);
+        Log.i("StepService","------>onStart()");
 	}
 
 	@Override
 	public int onStartCommand(Intent intent, int flags, int startId) {
-		return super.onStartCommand(intent, flags, startId);
+        Log.i("StepService","------>oStartCommand()");
+        return super.onStartCommand(intent, flags, startId);
 	}
 
-	@Override
+    @Override
+    public boolean onUnbind(Intent intent) {
+        Log.i("StepService", "------>onUnbind()");
+        this.stopSelf();
+        return super.onUnbind(intent);
+    }
+
+    @Override
 	public void onDestroy() {
 		unregisterDetector();
-		super.onDestroy();
+        Log.i("StepService", "------>onDestroy()--->unregisterDetector");
+        super.onDestroy();
 	}
 
 	private void registerDetector() {

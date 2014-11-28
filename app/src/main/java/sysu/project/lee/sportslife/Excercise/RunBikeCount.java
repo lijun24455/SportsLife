@@ -57,6 +57,7 @@ import java.util.TimerTask;
 import sysu.project.lee.sportslife.MainActivity;
 import sysu.project.lee.sportslife.R;
 import sysu.project.lee.sportslife.Utils.ToastUtils;
+import sysu.project.lee.sportslife.Utils.mConvertTool;
 import sysu.project.lee.sportslife.Utils.mHelper;
 
 @SuppressLint("HandlerLeak")
@@ -145,7 +146,7 @@ public class RunBikeCount extends Activity implements LocationSource,
         // manager.listen(new MyPhoneStateListener(),
         // PhoneStateListener.LISTEN_CALL_STATE);
 
-        appHelper.setStep(0);
+        reSetHelper();
 
 //		bindStepService();
 
@@ -157,31 +158,32 @@ public class RunBikeCount extends Activity implements LocationSource,
 			public void onClick(View v) {
 //				unbindService(mConnection);
 				if (appHelper != null) {
-					if (appHelper.getEtype() == 0) {
-						Exercise exercise = appHelper.getCurrExercise();
-						exercise.setCount(step);
-						exercise.setTotalTime(time);
-						exercise.setDistance((int) distance);
-						exercise.setTotalCal(cal);
+					if (appHelper.getEtype() == 0 || appHelper.getEtype() == 1) {
+                        Exercise exercise = appHelper.getCurrExercise();
+                        exercise.setTotalCount(step);
+                        exercise.setTotalTime(time);
+                        exercise.setTotalDistance((int) distance);
+                        exercise.setTotalCal(cal);
                         appHelper.getExerManager().addOneExercise(
-								exercise);
-						exercise.setfinish(true);
-					} else if (appHelper.getEtype() == 1) {
-						List<Exercise> list = appHelper.getExerManager()
-								.getExercisesList();
-						Exercise exercise1 = appHelper.getCurrExercise();
-						exercise1.setCount(step);
-						exercise1.setTotalTime(time);
-						exercise1.setDistance((int) distance);
-						exercise1.setTotalCal(cal);
-
-						Exercise exercise2 = list.get(appHelper.getNum());
-						exercise2.setCount(step);
-						exercise2.setTotalTime(time);
-						exercise2.setDistance((int) distance);
-						exercise2.setTotalCal(cal);
-						exercise2.setfinish(true);
+                                exercise);
+                        exercise.setFinish(true);
 					}
+//                    else if (appHelper.getEtype() == 1) {
+//						List<Exercise> list = appHelper.getExerManager()
+//								.getExercisesList();
+//						Exercise exercise1 = appHelper.getCurrExercise();
+//						exercise1.setCount(step);
+//						exercise1.setTotalTime(time);
+//						exercise1.setDistance((int) distance);
+//						exercise1.setTotalCal(cal);
+//
+//						Exercise exercise2 = list.get(appHelper.getNum());
+//						exercise2.setCount(step);
+//						exercise2.setTotalTime(time);
+//						exercise2.setDistance((int) distance);
+//						exercise2.setTotalCal(cal);
+//						exercise2.setfinish(true);
+//					}
 				}
 
 				getMapScreenShot(mapView);
@@ -189,7 +191,7 @@ public class RunBikeCount extends Activity implements LocationSource,
 				TimerTask task = new TimerTask() {
 					public void run() {
 						Intent intent = new Intent();
-						//intent.setClass(StepCount.this, ShowExercise.class);
+						intent.setClass(RunBikeCount.this, RunBikeResultShow.class);
 						intent.putExtra("screen_shot_name",
 								screen_shot_image_path);
 						intent.putExtra("Province", province);
@@ -206,7 +208,12 @@ public class RunBikeCount extends Activity implements LocationSource,
 		});
 	}
 
-	private void changeCamera(CameraUpdate update, CancelableCallback callback) {
+    private void reSetHelper() {
+        appHelper.setStep(0);
+        appHelper.setNum(0);
+    }
+
+    private void changeCamera(CameraUpdate update, CancelableCallback callback) {
 		aMap.animateCamera(update, 1000, callback);
 	}
 
@@ -513,12 +520,14 @@ public class RunBikeCount extends Activity implements LocationSource,
 
 
     Handler handler = new Handler();
-	Runnable runnable = new Runnable() {
+    private String timeShowView;
+    Runnable runnable = new Runnable() {
 		@SuppressLint("HandlerLeak")
 		@Override
 		public void run() {
 			time++;
-			timeView.setText("" + time + " s");
+            timeShowView = mConvertTool.parseSecondToTimeFormat(time+"");
+            timeView.setText(timeShowView);
 			handler.postDelayed(this, 1000);
 		}
 	};
@@ -726,7 +735,7 @@ public class RunBikeCount extends Activity implements LocationSource,
 		if (rCode == 0) {
 			if (result != null && result.getRegeocodeAddress() != null
 					&& result.getRegeocodeAddress().getFormatAddress() != null) {
-				addressName = result.getRegeocodeAddress().getFormatAddress();
+				addressName = result.getRegeocodeAddress().getCity();
 				province = addressName;
 			} else {
 			}

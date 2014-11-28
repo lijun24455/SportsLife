@@ -30,6 +30,7 @@
                 android:id="@+id/tv_sport"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:textSize="18sp"
                 android:text="运动"
                 android:layout_gravity="center"/>
 
@@ -47,6 +48,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="资讯"
+                android:textSize="18sp"
                 android:layout_gravity="center"/>
 
         </LinearLayout>
@@ -63,6 +65,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="发现"
+                android:textSize="18sp"
                 android:layout_gravity="center"/>
 
         </LinearLayout>
@@ -79,6 +82,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="个人中心"
+                android:textSize="18sp"
                 android:layout_gravity="center"/>
 
         </LinearLayout>

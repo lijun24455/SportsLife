@@ -28,6 +28,7 @@ import android.widget.TextView;
 import com.amap.api.location.AMapLocation;
 import com.amap.api.location.AMapLocationListener;
 import com.amap.api.location.LocationManagerProxy;
+import com.amap.api.location.LocationProviderProxy;
 import com.amap.api.maps.AMap;
 import com.amap.api.maps.AMap.CancelableCallback;
 import com.amap.api.maps.AMap.OnMapScreenShotListener;
@@ -61,10 +62,11 @@ import java.util.TimerTask;
 import sysu.project.lee.sportslife.MainActivity;
 import sysu.project.lee.sportslife.R;
 import sysu.project.lee.sportslife.Utils.ToastUtils;
+import sysu.project.lee.sportslife.Utils.mConvertTool;
 import sysu.project.lee.sportslife.Utils.mHelper;
 
 @SuppressLint("HandlerLeak")
-public class SkipCount extends Activity{
+public class SkipCount extends Activity implements  AMapLocationListener{
 
 	private TextView timeView, calView;
 	private mHelper appHelper;
@@ -72,6 +74,11 @@ public class SkipCount extends Activity{
 	private Button button_stop;
 	private int time;
 	private int cal;
+    private TextView countView;
+
+    private String mLocationCity = "未知地点";
+
+    private LocationManagerProxy mlocationManagerProxy;
 
 
 	// public static final int LOCATION_TYPE_MAP_FOLLOW = 2;
@@ -93,14 +100,20 @@ public class SkipCount extends Activity{
         requestWindowFeature(Window.FEATURE_NO_TITLE);
 		getWindow().setFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON,
 				WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
-		setContentView(R.layout.activity_step_count);
+		setContentView(R.layout.activity_skip_count);
 
+        mlocationManagerProxy = LocationManagerProxy.getInstance(this);
+        mlocationManagerProxy.requestLocationData(LocationProviderProxy.AMapNetwork,60*1000, -1, this);
+        mlocationManagerProxy.setGpsEnable(true);
 
         appHelper = (mHelper) getApplicationContext();
-		timeView = (TextView) findViewById(R.id.tv_time_second);
-		calView = (TextView) findViewById(R.id.tv_cal_count);
-		button_stop = (Button) findViewById(R.id.stopRunButton);
-		time = cal = 0;
+        reSetHelper();
+        timeView = (TextView) findViewById(R.id.tv_time_second);
+        calView = (TextView) findViewById(R.id.tv_cal_count);
+        button_stop = (Button) findViewById(R.id.stopRunButton);
+        countView = (TextView) findViewById(R.id.tv_skip_count);
+        time = cal = 0;
+
 
         // nameTextView = (TextView) findViewById(R.id.name);
         // seekBar = (SeekBar) findViewById(R.id.seekBar);
@@ -127,7 +140,6 @@ public class SkipCount extends Activity{
         // manager.listen(new MyPhoneStateListener(),
         // PhoneStateListener.LISTEN_CALL_STATE);
 
-        appHelper.setStep(0);
 
 		bindStepService();
 
@@ -139,40 +151,23 @@ public class SkipCount extends Activity{
 			public void onClick(View v) {
 				unbindService(mConnection);
 				if (appHelper != null) {
-                    /*
-
-					if (appHelper.getEtype() == 0) {
+					if (appHelper.getEtype() == 3) {
 						Exercise exercise = appHelper.getCurrExercise();
-						exercise.setCount(step);
+						exercise.setTotalCount(step);
 						exercise.setTotalTime(time);
-						exercise.setDistance((int) distance);
+//						exercise.setDistance((int) distance);
 						exercise.setTotalCal(cal);
                         appHelper.getExerManager().addOneExercise(
 								exercise);
-						exercise.setfinish(true);
-					} else if (appHelper.getEtype() == 1) {
-						List<Exercise> list = appHelper.getExerManager()
-								.getExercisesList();
-						Exercise exercise1 = appHelper.getCurrExercise();
-						exercise1.setCount(step);
-						exercise1.setTotalTime(time);
-						exercise1.setDistance((int) distance);
-						exercise1.setTotalCal(cal);
-
-						Exercise exercise2 = list.get(appHelper.getNum());
-						exercise2.setCount(step);
-						exercise2.setTotalTime(time);
-						exercise2.setDistance((int) distance);
-						exercise2.setTotalCal(cal);
-						exercise2.setfinish(true);
+						exercise.setFinish(true);
 					}
-					*/
 				}
 
 				TimerTask task = new TimerTask() {
 					public void run() {
 						Intent intent = new Intent();
-//						intent.setClass(SkipCount.this, ShowExercise.class);
+                        intent.putExtra("Location", mLocationCity);
+						intent.setClass(SkipCount.this, SkipResultShow.class);
 						startActivity(intent);
 						SkipCount.this.finish();
 					}
@@ -184,8 +179,6 @@ public class SkipCount extends Activity{
 			}
 		});
 	}
-
-
 
 
 	@Override
@@ -207,9 +200,9 @@ public class SkipCount extends Activity{
 
 	@Override
 	protected void onDestroy() {
-		// getApplicationContext().unregisterReceiver(phonelistener);
+//		getApplicationContext().unregisterReceiver(phonelistener);
         super.onDestroy();
-		// unbindService(mConnection);
+//		unbindService(mConnection);
 	}
 
 	@Override
@@ -254,8 +247,14 @@ public class SkipCount extends Activity{
 		}
 	};
 
+    private void reSetHelper() {
+        appHelper.setStep(0);
+        appHelper.setNum(0);
+    }
+
 	private void refreshUI() {
 		step = appHelper.getStep();
+        countView.setText(step+"");
 		cal = step / 10;
 		calView.setText("" + cal);
 	}
@@ -297,12 +296,14 @@ public class SkipCount extends Activity{
 
 
     Handler handler = new Handler();
-	Runnable runnable = new Runnable() {
+    private String timeShowView;
+    Runnable runnable = new Runnable() {
 		@SuppressLint("HandlerLeak")
 		@Override
 		public void run() {
 			time++;
-			timeView.setText("" + time);
+            timeShowView = mConvertTool.parseSecondToTimeFormat(time + "");
+			timeView.setText(timeShowView);
 			handler.postDelayed(this, 1000);
 		}
 	};
@@ -498,4 +499,34 @@ public class SkipCount extends Activity{
 		// System.out.println("ThirdActivity"+tag+"--->onNewIntent");
 	}
 
+
+    @Override
+    public void onLocationChanged(AMapLocation aMapLocation) {
+
+        if(aMapLocation!=null){
+            mLocationCity = aMapLocation.getCity();
+        }else{
+            appHelper.DisplayToast("定位失败");
+        }
+    }
+
+    @Override
+    public void onLocationChanged(Location location) {
+
+    }
+
+    @Override
+    public void onStatusChanged(String provider, int status, Bundle extras) {
+
+    }
+
+    @Override
+    public void onProviderEnabled(String provider) {
+
+    }
+
+    @Override
+    public void onProviderDisabled(String provider) {
+
+    }
 }

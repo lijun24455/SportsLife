@@ -59,6 +59,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import sysu.project.lee.sportslife.Utils.ToastUtils;
+import sysu.project.lee.sportslife.Utils.mConvertTool;
 import sysu.project.lee.sportslife.Utils.mHelper;
 import sysu.project.lee.sportslife.MainActivity;
 import sysu.project.lee.sportslife.R;
@@ -112,18 +113,20 @@ public class StepCount extends Activity implements LocationSource,
 				WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 		setContentView(R.layout.activity_step_count);
 
-		mapView = (MapView) findViewById(R.id.map);
-		mapView.onCreate(savedInstanceState);
-		initMap();
+
+        mapView = (MapView) findViewById(R.id.map);
+        mapView.onCreate(savedInstanceState);
+        initMap();
+
 
         appHelper = (mHelper) getApplicationContext();
-		m_TextView = (TextView) findViewById(R.id.stepTextView);
-		timeView = (TextView) findViewById(R.id.timeTextView);
-		calView = (TextView) findViewById(R.id.calTextView);
-		button_stop = (Button) findViewById(R.id.stopRunButton);
-		distance_count = (TextView) findViewById(R.id.distanceCountView);
-		speed_count = (TextView) findViewById(R.id.speedViewText);
-		time = cal = 0;
+        m_TextView = (TextView) findViewById(R.id.stepTextView);
+        timeView = (TextView) findViewById(R.id.timeTextView);
+        calView = (TextView) findViewById(R.id.calTextView);
+        button_stop = (Button) findViewById(R.id.stopRunButton);
+        distance_count = (TextView) findViewById(R.id.distanceCountView);
+        speed_count = (TextView) findViewById(R.id.speedViewText);
+        time = cal = 0;
 
         // nameTextView = (TextView) findViewById(R.id.name);
         // seekBar = (SeekBar) findViewById(R.id.seekBar);
@@ -150,7 +153,6 @@ public class StepCount extends Activity implements LocationSource,
         // manager.listen(new MyPhoneStateListener(),
         // PhoneStateListener.LISTEN_CALL_STATE);
 
-        appHelper.setStep(0);
 
 		bindStepService();
 
@@ -162,30 +164,15 @@ public class StepCount extends Activity implements LocationSource,
 			public void onClick(View v) {
 				unbindService(mConnection);
 				if (appHelper != null) {
-					if (appHelper.getEtype() == 0) {
+					if (appHelper.getEtype() == 2) {
 						Exercise exercise = appHelper.getCurrExercise();
-						exercise.setCount(step);
+						exercise.setTotalCount(appHelper.getStep());
 						exercise.setTotalTime(time);
-						exercise.setDistance((int) distance);
+						exercise.setTotalDistance((int) distance);
 						exercise.setTotalCal(cal);
                         appHelper.getExerManager().addOneExercise(
 								exercise);
-						exercise.setfinish(true);
-					} else if (appHelper.getEtype() == 1) {
-						List<Exercise> list = appHelper.getExerManager()
-								.getExercisesList();
-						Exercise exercise1 = appHelper.getCurrExercise();
-						exercise1.setCount(step);
-						exercise1.setTotalTime(time);
-						exercise1.setDistance((int) distance);
-						exercise1.setTotalCal(cal);
-
-						Exercise exercise2 = list.get(appHelper.getNum());
-						exercise2.setCount(step);
-						exercise2.setTotalTime(time);
-						exercise2.setDistance((int) distance);
-						exercise2.setTotalCal(cal);
-						exercise2.setfinish(true);
+						exercise.setFinish(true);
 					}
 				}
 
@@ -194,7 +181,7 @@ public class StepCount extends Activity implements LocationSource,
 				TimerTask task = new TimerTask() {
 					public void run() {
 						Intent intent = new Intent();
-						//intent.setClass(StepCount.this, ShowExercise.class);
+						intent.setClass(StepCount.this, StepResultShow.class);
 						intent.putExtra("screen_shot_name",
 								screen_shot_image_path);
 						intent.putExtra("Province", province);
@@ -500,7 +487,6 @@ public class StepCount extends Activity implements LocationSource,
                 .setPositiveButton("确定", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.dismiss();
-
                         // pause();
                         deactivate();
                         unbindService(mConnection);
@@ -517,14 +503,16 @@ public class StepCount extends Activity implements LocationSource,
                 }).show();
     }
 
+    private String timeShowView;
 
     Handler handler = new Handler();
 	Runnable runnable = new Runnable() {
-		@SuppressLint("HandlerLeak")
+        @SuppressLint("HandlerLeak")
 		@Override
 		public void run() {
 			time++;
-			timeView.setText("" + time + " s");
+            timeShowView = mConvertTool.parseSecondToTimeFormat(time + "");
+            timeView.setText(timeShowView);
 			handler.postDelayed(this, 1000);
 		}
 	};
@@ -732,7 +720,7 @@ public class StepCount extends Activity implements LocationSource,
 		if (rCode == 0) {
 			if (result != null && result.getRegeocodeAddress() != null
 					&& result.getRegeocodeAddress().getFormatAddress() != null) {
-				addressName = result.getRegeocodeAddress().getFormatAddress();
+				addressName = result.getRegeocodeAddress().getCity();
 				province = addressName;
 			} else {
 			}

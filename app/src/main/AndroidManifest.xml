@@ -2,6 +2,10 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="sysu.project.lee.sportslife" >
 
+    <uses-feature android:name="android.hardware.camera"/>
+    <uses-feature android:name="android.hardware.camera.flash"/>
+    <uses-permission android:name="android.permission.CAMERA"/>
+    <uses-permission android:name="android.permission.WAKE_LOCK"/>
     <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.INTERNET" />
@@ -43,10 +47,40 @@
             android:name=".MyActivity"
             android:label="@string/title_activity_my" >
         </activity>
+
         <service android:name=".Excercise.StepService"/>
+
         <activity
             android:name=".Excercise.StepCount"
             android:label="StepCount">
+        </activity>
+        <activity
+            android:name=".Excercise.RunBikeCount"
+            android:label="RunBikeCount">
+        </activity>
+        <activity android:name=".Excercise.SkipCount"
+            android:label="SkipCount">
+
+        </activity>
+        <activity android:name=".Excercise.RunBikeResultShow"
+            android:label="RunBikeResultShow">
+
+        </activity>
+        <activity android:name=".Excercise.StepResultShow"
+            android:label="StepResultShow">
+
+        </activity>
+        <activity android:name=".Excercise.SkipResultShow"
+            android:label="SkipResultShow">
+
+        </activity>
+        <activity android:name=".Excercise.ExerciseHistoryActivity"
+            android:label="History">
+
+        </activity>
+        <activity android:name=".HeartBeat.HeartRateMonitor"
+            android:label="HeartBeatMonitor">
+
         </activity>
     </application>
 

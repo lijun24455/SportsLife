@@ -7,55 +7,70 @@ import java.util.List;
 import sysu.project.lee.sportslife.Friend.Friend;
 
 public class Exercise implements Cloneable {
-    private String ExerType; // 运动类型
+    private int ExerType; // 运动类型 0->跑步，1->骑行，2->步行，3->跳绳
     private String ExerTime; // 开始时间
     private int ExerCal; // 预定卡路里量
+    private String Destination; // 预定地点
+
     private int TotalTime; // 总运动时间
     private int TotalCal; // 总卡路里量
-    private String Destination; // 预定地点
-    private int Count; // 步数
-	private List<Friend> friends;
-	private boolean finish;
-	private int Distance;
+    private int TotalCount; // 步数
+    private int TotalDistance;//总路程
+    private List<Friend> friends;
+    private boolean isFinish;
 
 
-	public Exercise(String EType, String ETime, String Dest) {
+    /**
+     * 跳绳运动只需要记录类型和开始时间
+     * @param EType     运动类型
+     * @param Etime     运动开始时间
+     */
+    public Exercise(int EType, String Etime){
+        ExerType = EType;
+        ExerTime = Etime;
+        ExerCal = TotalCount = TotalCal = TotalTime = 0;
+        Destination = null;
+        isFinish = false;
+    }
+
+
+	public Exercise(int EType, String ETime, String Dest) {
 		ExerType = EType;
 		ExerTime = ETime;
 		Destination = Dest;
-		ExerCal = Count = TotalCal = TotalTime = 0;
-		finish = false;
+		ExerCal = TotalCount = TotalCal = TotalTime = 0;
+        isFinish = false;
 		friends = new ArrayList<Friend>();
 	}
 
-	public Exercise(String EType, String ETime, String Dest, int ECal) {
+	public Exercise(int EType, String ETime, String Dest, int ECal) {
 		// TODO Auto-generated constructor stub
 		ExerType = EType;
 		ExerTime = ETime;
 		Destination = Dest;
 		ExerCal = ECal;
-		Count = TotalCal = TotalTime = 0;
+        TotalCount = TotalCal = TotalTime = 0;
 		friends = new ArrayList<Friend>();
-		finish = false;
+        isFinish = false;
 	}
 
-	public Exercise(String EType, String ETime, String Dest, int ECal,
+	public Exercise(int EType, String ETime, String Dest, int ECal,
 			List<Friend> fs) {
 		ExerType = EType;
 		ExerTime = ETime;
 		Destination = Dest;
 		ExerCal = ECal;
-		Count = TotalCal = TotalTime = 0;
+        TotalCount = TotalCal = TotalTime = 0;
 		friends = new ArrayList<Friend>();
-		finish = false;
+        isFinish = false;
 	}
 
-	public int getDistance() {
-		return Distance;
+	public int getTotalDistance() {
+		return TotalDistance;
 	}
 
-	public void setDistance(int t) {
-		Distance = t;
+	public void setTotalDistance(int t) {
+        TotalDistance = t;
 	}
 
 	public int getTotalTime() {
@@ -78,7 +93,7 @@ public class Exercise implements Cloneable {
 		return ExerTime;
 	}
 
-	public String getType() {
+	public int getType() {
 		return ExerType;
 	}
 
@@ -86,20 +101,20 @@ public class Exercise implements Cloneable {
 		return Destination;
 	}
 
-	public int getCount() {
-		return Count;
+	public int getTotalCount() {
+		return TotalCount;
 	}
 
-	public void setCount(int c) {
-		Count = c;
+	public void setTotalCount(int c) {
+        TotalCount = c;
 	}
 
-	public void setfinish(boolean b) {
-		finish = b;
+	public void setFinish(boolean b) {
+        isFinish = b;
 	}
 
-	public boolean getfinish() {
-		return finish;
+	public boolean getFinish() {
+		return isFinish;
 	}
 
 	public Object clone() throws CloneNotSupportedException {

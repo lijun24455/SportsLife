@@ -1,0 +1,245 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="#cecece">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
+        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+        android:layout_marginRight="@dimen/activity_horizontal_margin"
+        android:background="@drawable/bordershape"
+        android:baselineAligned="false"
+        android:orientation="horizontal"
+        android:showDividers="middle" >
+        <!--时光轴-->
+        <LinearLayout
+            android:layout_width="70dp"
+            android:layout_height="match_parent"
+            android:background="#cecece">
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+                <View
+                    android:id="@+id/time_line"
+                    android:layout_width="5dp"
+                    android:layout_height="40dp"
+                    android:background="@color/holo_blue_dark"
+                    android:layout_centerHorizontal="true"/>
+                <TextView
+                    android:id="@+id/tv_year_record"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginRight="2dp"
+                    android:textSize="13dp"
+                    android:textStyle="bold"
+                    android:textColor="@color/holo_blue_dark"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="2014"
+                    android:layout_toLeftOf="@+id/time_line"/>
+
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:id="@+id/civ_record_type_label"
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    app:border_width="2dp"
+                    app:border_color="@color/holo_blue_light"
+                    android:src="@drawable/ic_launcher"
+                    android:layout_centerInParent="true"/>
+                <LinearLayout
+                    android:id="@+id/lo_time_label"
+                    android:paddingTop="5dp"
+                    android:paddingBottom="2dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:layout_below="@+id/civ_record_type_label"
+                    >
+                    <TextView
+                        android:id="@+id/tv_month_record"
+                        android:layout_marginRight="1dp"
+                        android:textSize="15dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="11月"
+                        android:textColor="@color/holo_blue_dark"
+                        android:textStyle="bold"/>
+                    <TextView
+                        android:id="@+id/tv_day_record"
+                        android:layout_marginRight="1dp"
+                        android:textSize="15dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="11日"
+                        android:textColor="@color/holo_blue_dark"
+                        android:textStyle="bold"/>
+
+                </LinearLayout>
+                <View
+                    android:layout_width="5dp"
+                    android:layout_height="40dp"
+                    android:background="@color/holo_blue_dark"
+                    android:layout_centerHorizontal="true"
+                    android:layout_below="@id/lo_time_label"/>
+
+            </RelativeLayout>
+        </LinearLayout>
+        <!--记录板-->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:paddingTop="10dp"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:paddingBottom="10dp"
+            android:orientation="vertical">
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="20dp">
+                <TextView
+                    android:id="@+id/tv_clock_record"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="13:20"
+                    android:layout_centerVertical="true"/>
+                <TextView
+                    android:id="@+id/tv_location_record"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:singleLine="true"
+                    android:text="未知地点"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"/>
+                <ImageView
+                    android:layout_width="18dp"
+                    android:layout_height="18dp"
+                    android:src="@drawable/location"
+                    android:layout_toLeftOf="@+id/tv_location_record"
+                    android:layout_centerVertical="true"/>
+            </RelativeLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                android:layout_marginTop="10dp">
+                <!--里程-->
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"
+                        android:gravity="center">
+                        <ImageView
+                            android:layout_width="50dp"
+                            android:layout_height="50dp"
+                            android:src="@drawable/ic_step_grey600_48dp"/>
+
+
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"
+                        android:gravity="center">
+                        <TextView
+                            android:id="@+id/tv_step_count_record"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="00步"
+                            android:textColor="@color/holo_blue_dark"
+                            android:textStyle="bold"/>
+
+                    </LinearLayout>
+
+
+                </LinearLayout>
+                <!--热量-->
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"
+                        android:gravity="center">
+                        <ImageView
+                            android:layout_width="50dp"
+                            android:layout_height="50dp"
+                            android:src="@drawable/ic_cal_record_grey600_48dp"/>
+
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"
+                        android:gravity="center">
+
+                        <TextView
+                            android:id="@+id/tv_cal_record"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="00大卡"
+                            android:textColor="@color/holo_blue_dark"
+                            android:textStyle="bold"/>
+
+                    </LinearLayout>
+
+                </LinearLayout>
+                <!--用时-->
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"
+                        android:gravity="center">
+                        <ImageView
+                            android:layout_width="50dp"
+                            android:layout_height="50dp"
+                            android:src="@drawable/ic_time_record_grey600_48dp"/>
+
+
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"
+                        android:gravity="center">
+
+                        <TextView
+                            android:id="@+id/tv_time_count_record"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="00''00''"
+                            android:textColor="@color/holo_blue_dark"
+                            android:textStyle="bold"/>
+
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+
+
+            </LinearLayout>
+
+
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</LinearLayout>

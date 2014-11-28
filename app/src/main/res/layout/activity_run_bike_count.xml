@@ -3,13 +3,18 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="#cecece">
     <include layout="@layout/title"/>
 
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1">
+        android:layout_weight="1"
+        android:layout_marginBottom="@dimen/activity_vertical_margin"
+        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+        android:layout_marginRight="@dimen/activity_horizontal_margin"
+        android:layout_marginTop="@dimen/activity_vertical_margin">
 
         <com.amap.api.maps.MapView
             xmlns:android="http://schemas.android.com/apk/res/android"
@@ -31,7 +36,12 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:layout_marginBottom="@dimen/activity_vertical_margin"
+            android:layout_marginLeft="@dimen/activity_horizontal_margin"
+            android:layout_marginRight="@dimen/activity_horizontal_margin"
+            android:layout_marginTop="@dimen/activity_vertical_margin"
+            android:background="@color/white">
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
@@ -57,7 +67,7 @@
                         android:id="@+id/distanceCountView"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="99.99"
+                        android:text="0"
                         android:textSize="40sp"
                         android:textStyle="bold"
                         android:layout_centerVertical="true"
@@ -82,7 +92,12 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:layout_marginBottom="@dimen/activity_vertical_margin"
+            android:layout_marginLeft="@dimen/activity_horizontal_margin"
+            android:layout_marginRight="@dimen/activity_horizontal_margin"
+            android:layout_marginTop="@dimen/activity_vertical_margin"
+            android:background="@color/white">
             <!--<LinearLayout-->
                 <!--android:layout_width="0dp"-->
                 <!--android:layout_height="match_parent"-->
@@ -160,17 +175,17 @@
                             android:id="@+id/speedViewText"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="5"
+                            android:text="0"
                             android:layout_centerHorizontal="true"
                             android:textSize="25sp"
                             android:layout_marginTop="5dp"/>
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="km/h"
-                            android:layout_below="@id/speedViewText"
-                            android:layout_centerHorizontal="true"
-                            android:textSize="15sp"/>
+                        <!--<TextView-->
+                            <!--android:layout_width="wrap_content"-->
+                            <!--android:layout_height="wrap_content"-->
+                            <!--android:text="km/h"-->
+                            <!--android:layout_below="@id/speedViewText"-->
+                            <!--android:layout_centerHorizontal="true"-->
+                            <!--android:textSize="15sp"/>-->
                     </RelativeLayout>
                 </LinearLayout>
             </LinearLayout>
@@ -208,17 +223,17 @@
                             android:id="@+id/calTextView"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="5"
+                            android:text="0"
                             android:layout_centerHorizontal="true"
                             android:textSize="25sp"
                             android:layout_marginTop="5dp"/>
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="大卡"
-                            android:layout_below="@id/calTextView"
-                            android:layout_centerHorizontal="true"
-                            android:textSize="15sp"/>
+                        <!--<TextView-->
+                            <!--android:layout_width="wrap_content"-->
+                            <!--android:layout_height="wrap_content"-->
+                            <!--android:text="大卡"-->
+                            <!--android:layout_below="@id/calTextView"-->
+                            <!--android:layout_centerHorizontal="true"-->
+                            <!--android:textSize="15sp"/>-->
                     </RelativeLayout>
                 </LinearLayout>
 
@@ -258,17 +273,16 @@
                             android:id="@+id/timeTextView"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="5"
+                            android:text="00''00''00"
                             android:layout_centerHorizontal="true"
                             android:textSize="25sp"
                             android:layout_marginTop="5dp"/>
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="小时"
-                            android:layout_below="@id/timeTextView"
-                            android:layout_centerHorizontal="true"
-                            android:textSize="15sp"/>
+                        <!--<TextView-->
+                            <!--android:layout_width="wrap_content"-->
+                            <!--android:layout_height="wrap_content"-->
+                            <!--android:layout_below="@id/timeTextView"-->
+                            <!--android:layout_centerHorizontal="true"-->
+                            <!--android:textSize="15sp"/>-->
                     </RelativeLayout>
                 </LinearLayout>
 
