@@ -242,7 +242,7 @@ public class HistorySimpleAdapter extends BaseAdapter {
                 runRecordViewHolder.tvDistanceRecord.setText(mArrayList.get(position).get("distance"+""));
                 runRecordViewHolder.tvCalRecord.setText(mArrayList.get(position).get("calorie"+"")+"");
                 runRecordViewHolder.tvTimeCountRecord.setText(mArrayList.get(position).get("time")+"");
-                runRecordViewHolder.tvHeartRateRecord.setText(mArrayList.get(position).get("heart_put")+"bpm");
+                runRecordViewHolder.tvHeartRateRecord.setText(mArrayList.get(position).get("heart_rate")+"bpm");
                 break;
             case TYPE_BIKE:
                 bikeRecordViewHolder.dataYear.setText(mArrayList.get(position).get("data_year")+"");
@@ -253,7 +253,7 @@ public class HistorySimpleAdapter extends BaseAdapter {
                 bikeRecordViewHolder.tvDistanceRecord.setText(mArrayList.get(position).get("distance"+""));
                 bikeRecordViewHolder.tvCalRecord.setText(mArrayList.get(position).get("calorie"+"")+"");
                 bikeRecordViewHolder.tvTimeCountRecord.setText(mArrayList.get(position).get("time")+"");
-                bikeRecordViewHolder.tvHeartRateRecord.setText(mArrayList.get(position).get("heart_put")+"bpm");
+                bikeRecordViewHolder.tvHeartRateRecord.setText(mArrayList.get(position).get("heart_rate")+"bpm");
                 break;
             case TYPE_STEP:
                 stepRecordViewHolder.dataYear.setText(mArrayList.get(position).get("data_year")+"");
@@ -264,7 +264,7 @@ public class HistorySimpleAdapter extends BaseAdapter {
                 stepRecordViewHolder.tvStepCountRecord.setText(mArrayList.get(position).get("step_count" + ""));
                 stepRecordViewHolder.tvCalRecord.setText(mArrayList.get(position).get("calorie"+"")+"");
                 stepRecordViewHolder.tvTimeCountRecord.setText(mArrayList.get(position).get("time")+"");
-                stepRecordViewHolder.tvHeartRateRecord.setText(mArrayList.get(position).get("heart_put")+"bpm");
+                stepRecordViewHolder.tvHeartRateRecord.setText(mArrayList.get(position).get("heart_rate")+"bpm");
                 break;
             case TYPE_SKIP:
                 skipRecordViewHolder.dataYear.setText(mArrayList.get(position).get("data_year")+"");
@@ -275,7 +275,7 @@ public class HistorySimpleAdapter extends BaseAdapter {
                 skipRecordViewHolder.tvSkipCountRecord.setText(mArrayList.get(position).get("step_count" + ""));
                 skipRecordViewHolder.tvCalRecord.setText(mArrayList.get(position).get("calorie"+"")+"");
                 skipRecordViewHolder.tvTimeCountRecord.setText(mArrayList.get(position).get("time")+"");
-                skipRecordViewHolder.tvHeartRateRecord.setText(mArrayList.get(position).get("heart_put")+"bpm");
+                skipRecordViewHolder.tvHeartRateRecord.setText(mArrayList.get(position).get("heart_rate")+"bpm");
                 break;
         }
 

@@ -63,22 +63,24 @@ public class SkipResultShow extends Activity {
         mTotalStepCount = appSportsLifeHelper.getCurrExercise().getTotalCount();
 
 
-        final Object[] recordItem = {
-                mCurrentTypeRecord,
-                mTimeRecord,
-                mTotalDistanceRecord,
-                mTotalTimeRecord,
-                mImageRecord,
-                mPlaceRecord,
-                mTotalCal,
-                mTotalStepCount,
-                mHeartRateRecord};
+
 
         final HistoryService dbService = new HistoryRealize(this);
 
         btnSaveRecord.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                final Object[] recordItem = {
+                        mCurrentTypeRecord,
+                        mTimeRecord,
+                        mTotalDistanceRecord,
+                        mTotalTimeRecord,
+                        mImageRecord,
+                        mPlaceRecord,
+                        mTotalCal,
+                        mTotalStepCount,
+                        mHeartRateRecord};
                 dbInsertItem(dbService, recordItem);
             }
         });

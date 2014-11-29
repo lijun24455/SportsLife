@@ -69,22 +69,27 @@ public class RunBikeResultShow extends Activity {
         Log.i("DBItem","time--->"+mTotalTimeRecord);
 
 
-        final Object[] recordItem = {
-                mCurrentTypeRecord,
-                mTimeRecord,
-                mTotalDistanceRecord,
-                mTotalTimeRecord,
-                mImageRecord,
-                mPlaceRecord,
-                mTotalCal,
-                null,
-                mHeartRateRecord};
+
 
         final HistoryService dbService = new HistoryRealize(this);
 
         btnSaveRecord.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                final Object[] recordItem = {
+                        mCurrentTypeRecord,
+                        mTimeRecord,
+                        mTotalDistanceRecord,
+                        mTotalTimeRecord,
+                        mImageRecord,
+                        mPlaceRecord,
+                        mTotalCal,
+                        null,
+                        mHeartRateRecord};
+
+                Log.i("dbitem","-------Heart--->"+mHeartRateRecord);
+
                 dbInsertItem(dbService, recordItem);
             }
         });
