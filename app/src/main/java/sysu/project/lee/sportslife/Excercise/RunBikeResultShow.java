@@ -77,7 +77,8 @@ public class RunBikeResultShow extends Activity {
                 mImageRecord,
                 mPlaceRecord,
                 mTotalCal,
-                null};
+                null,
+                mHeartRateRecord};
 
         final HistoryService dbService = new HistoryRealize(this);
 

@@ -37,7 +37,16 @@ public class HistoryRealize implements HistoryService {
         SQLiteDatabase database = null;
         try {
             // 这里面问号表示占位符，所以要需要传入所有的占位符的值,传入值由这个方法中的参数传递
-            String sql = "insert into HistoryRecord(type, date, distance, time, screen_shot_path, address, calorie, stepcount) values(?, ?, ?, ?, ?, ?, ?, ?)";
+            String sql = "insert into HistoryRecord(" +
+                    "type, " +
+                    "date, " +
+                    "distance, " +
+                    "time, " +
+                    "screen_shot_path, " +
+                    "address, " +
+                    "calorie, " +
+                    "stepcount, " +
+                    "heart_rate) values(?, ?, ?, ?, ?, ?, ?, ?, ?)";
             database = helper.getWritableDatabase(); // 实现对数据库写的操作
             database.execSQL(sql, params);
             flag = true;

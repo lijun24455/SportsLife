@@ -39,6 +39,7 @@ public class HistorySimpleAdapter extends BaseAdapter {
         TextView tvDistanceRecord;
         TextView tvCalRecord;
         TextView tvTimeCountRecord;
+        TextView tvHeartRateRecord;
     }
     private class BikeRecordViewHolder{
         TextView dataYear;
@@ -49,6 +50,7 @@ public class HistorySimpleAdapter extends BaseAdapter {
         TextView tvDistanceRecord;
         TextView tvCalRecord;
         TextView tvTimeCountRecord;
+        TextView tvHeartRateRecord;
     }
     private class StepRecordViewHolder{
         TextView dataYear;
@@ -59,6 +61,7 @@ public class HistorySimpleAdapter extends BaseAdapter {
         TextView tvStepCountRecord;
         TextView tvCalRecord;
         TextView tvTimeCountRecord;
+        TextView tvHeartRateRecord;
     }
     private class SkipRecordViewHolder{
         TextView dataYear;
@@ -69,6 +72,7 @@ public class HistorySimpleAdapter extends BaseAdapter {
         TextView tvSkipCountRecord;
         TextView tvCalRecord;
         TextView tvTimeCountRecord;
+        TextView tvHeartRateRecord;
     }
 
     /**
@@ -134,6 +138,7 @@ public class HistorySimpleAdapter extends BaseAdapter {
                     runRecordViewHolder.tvDistanceRecord = (TextView) convertView.findViewById(R.id.tv_distance_record);
                     runRecordViewHolder.tvCalRecord = (TextView) convertView.findViewById(R.id.tv_cal_record);
                     runRecordViewHolder.tvTimeCountRecord = (TextView) convertView.findViewById(R.id.tv_time_count_record);
+                    runRecordViewHolder.tvHeartRateRecord = (TextView) convertView.findViewById(R.id.tv_heart_rate_record);
 
                     convertView.setTag(runRecordViewHolder);
                     break;
@@ -150,6 +155,7 @@ public class HistorySimpleAdapter extends BaseAdapter {
                     bikeRecordViewHolder.tvDistanceRecord = (TextView) convertView.findViewById(R.id.tv_distance_record);
                     bikeRecordViewHolder.tvCalRecord = (TextView) convertView.findViewById(R.id.tv_cal_record);
                     bikeRecordViewHolder.tvTimeCountRecord = (TextView) convertView.findViewById(R.id.tv_time_count_record);
+                    bikeRecordViewHolder.tvHeartRateRecord = (TextView) convertView.findViewById(R.id.tv_heart_rate_record);
 
                     convertView.setTag(bikeRecordViewHolder);
 
@@ -168,6 +174,7 @@ public class HistorySimpleAdapter extends BaseAdapter {
                     stepRecordViewHolder.tvStepCountRecord = (TextView) convertView.findViewById(R.id.tv_step_count_record);
                     stepRecordViewHolder.tvCalRecord = (TextView) convertView.findViewById(R.id.tv_cal_record);
                     stepRecordViewHolder.tvTimeCountRecord = (TextView) convertView.findViewById(R.id.tv_time_count_record);
+                    stepRecordViewHolder.tvHeartRateRecord = (TextView) convertView.findViewById(R.id.tv_heart_rate_record);
 
                     convertView.setTag(stepRecordViewHolder);
 
@@ -186,6 +193,7 @@ public class HistorySimpleAdapter extends BaseAdapter {
                     skipRecordViewHolder.tvSkipCountRecord = (TextView) convertView.findViewById(R.id.tv_skip_count_record);
                     skipRecordViewHolder.tvCalRecord = (TextView) convertView.findViewById(R.id.tv_cal_record);
                     skipRecordViewHolder.tvTimeCountRecord = (TextView) convertView.findViewById(R.id.tv_time_count_record);
+                    skipRecordViewHolder.tvHeartRateRecord = (TextView) convertView.findViewById(R.id.tv_heart_rate_record);
 
                     convertView.setTag(skipRecordViewHolder);
 
@@ -234,6 +242,7 @@ public class HistorySimpleAdapter extends BaseAdapter {
                 runRecordViewHolder.tvDistanceRecord.setText(mArrayList.get(position).get("distance"+""));
                 runRecordViewHolder.tvCalRecord.setText(mArrayList.get(position).get("calorie"+"")+"");
                 runRecordViewHolder.tvTimeCountRecord.setText(mArrayList.get(position).get("time")+"");
+                runRecordViewHolder.tvHeartRateRecord.setText(mArrayList.get(position).get("heart_put")+"bpm");
                 break;
             case TYPE_BIKE:
                 bikeRecordViewHolder.dataYear.setText(mArrayList.get(position).get("data_year")+"");
@@ -244,6 +253,7 @@ public class HistorySimpleAdapter extends BaseAdapter {
                 bikeRecordViewHolder.tvDistanceRecord.setText(mArrayList.get(position).get("distance"+""));
                 bikeRecordViewHolder.tvCalRecord.setText(mArrayList.get(position).get("calorie"+"")+"");
                 bikeRecordViewHolder.tvTimeCountRecord.setText(mArrayList.get(position).get("time")+"");
+                bikeRecordViewHolder.tvHeartRateRecord.setText(mArrayList.get(position).get("heart_put")+"bpm");
                 break;
             case TYPE_STEP:
                 stepRecordViewHolder.dataYear.setText(mArrayList.get(position).get("data_year")+"");
@@ -254,6 +264,7 @@ public class HistorySimpleAdapter extends BaseAdapter {
                 stepRecordViewHolder.tvStepCountRecord.setText(mArrayList.get(position).get("step_count" + ""));
                 stepRecordViewHolder.tvCalRecord.setText(mArrayList.get(position).get("calorie"+"")+"");
                 stepRecordViewHolder.tvTimeCountRecord.setText(mArrayList.get(position).get("time")+"");
+                stepRecordViewHolder.tvHeartRateRecord.setText(mArrayList.get(position).get("heart_put")+"bpm");
                 break;
             case TYPE_SKIP:
                 skipRecordViewHolder.dataYear.setText(mArrayList.get(position).get("data_year")+"");
@@ -264,6 +275,7 @@ public class HistorySimpleAdapter extends BaseAdapter {
                 skipRecordViewHolder.tvSkipCountRecord.setText(mArrayList.get(position).get("step_count" + ""));
                 skipRecordViewHolder.tvCalRecord.setText(mArrayList.get(position).get("calorie"+"")+"");
                 skipRecordViewHolder.tvTimeCountRecord.setText(mArrayList.get(position).get("time")+"");
+                skipRecordViewHolder.tvHeartRateRecord.setText(mArrayList.get(position).get("heart_put")+"bpm");
                 break;
         }
 

@@ -15,6 +15,7 @@ import android.widget.TextView;
 import sysu.project.lee.sportslife.Database.HistoryDBHelper;
 import sysu.project.lee.sportslife.Database.HistoryRealize;
 import sysu.project.lee.sportslife.Database.HistoryService;
+import sysu.project.lee.sportslife.HeartBeat.HeartRateMonitor;
 import sysu.project.lee.sportslife.MainActivity;
 import sysu.project.lee.sportslife.R;
 import sysu.project.lee.sportslife.Utils.mConvertTool;
@@ -38,6 +39,7 @@ public class SkipResultShow extends Activity {
     private int mCurrentTypeRecord = 3;
     private int mTotalStepCount = 0;
     private int mTotalCal = 0;
+    private String mHeartRateRecord = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,7 +71,8 @@ public class SkipResultShow extends Activity {
                 mImageRecord,
                 mPlaceRecord,
                 mTotalCal,
-                mTotalStepCount};
+                mTotalStepCount,
+                mHeartRateRecord};
 
         final HistoryService dbService = new HistoryRealize(this);
 
@@ -130,7 +133,36 @@ public class SkipResultShow extends Activity {
             }
         });
 
+        mHeartRateResult.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+//                Intent intentToBeat = new Intent();
+//                intentToBeat.setClass(RunBikeResultShow.this, HeartRateMonitor.class);
+                startActivityForResult(new Intent(SkipResultShow.this, HeartRateMonitor.class),1);
+            }
+        });
 
+
+
+    }
+
+    /**
+     *
+     * @param requestCode   请求码，即调用startActivityForResult()传递过去的值
+     * @param resultCode    结果码，结果码用于标识返回数据来自哪个新Activity
+     * @param data
+     */
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (data!=null && resultCode == RESULT_OK){
+            mHeartRateRecord = data.getExtras().getString("HEART");
+
+            if (mHeartRateRecord!=null){
+                mHeartRateResult.setText(mHeartRateRecord);
+            }
+        }
 
     }
 

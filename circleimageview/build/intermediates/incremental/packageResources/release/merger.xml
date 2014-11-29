@@ -2,9 +2,9 @@
 <merger version="2" >
 
     <dataSet config="main" >
-        <source path="/home/lee/AndroidStudioProjects/SportsLife/circleimageview/src/main/res" >
+        <source path="D:\Git\SportsLife\circleimageview\src\main\res" >
             <file
-                path="/home/lee/AndroidStudioProjects/SportsLife/circleimageview/src/main/res/values/attrs.xml"
+                path="D:\Git\SportsLife\circleimageview\src\main\res\values\attrs.xml"
                 qualifiers="" >
                 <declare-styleable name="CircleImageView" >
                     <attr
@@ -16,11 +16,11 @@
                 </declare-styleable>
             </file>
         </source>
-        <source path="/home/lee/AndroidStudioProjects/SportsLife/circleimageview/build/generated/res/rs/release" />
-        <source path="/home/lee/AndroidStudioProjects/SportsLife/circleimageview/build/generated/res/generated/release" />
+        <source path="D:\Git\SportsLife\circleimageview\build\generated\res\rs\release" />
+        <source path="D:\Git\SportsLife\circleimageview\build\generated\res\generated\release" />
     </dataSet>
     <dataSet config="release" >
-        <source path="/home/lee/AndroidStudioProjects/SportsLife/circleimageview/src/release/res" />
+        <source path="D:\Git\SportsLife\circleimageview\src\release\res" />
     </dataSet>
 
 </merger>

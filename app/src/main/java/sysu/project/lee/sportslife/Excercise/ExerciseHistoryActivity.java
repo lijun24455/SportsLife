@@ -57,14 +57,15 @@ public class ExerciseHistoryActivity extends Activity{
 
                 String formatedTime = mConvertTool.parseSecondToTimeFormat(list.get(i).get("time"));
               /*
-               type int,
+               type string,
                date string,
                distance string,
                time string,
                screen_shot_path string,
                address string
-               calorie int
-               stepcount int
+               calorie string
+               stepcount string
+               heart_rate string
                 */
 
 
@@ -78,6 +79,7 @@ public class ExerciseHistoryActivity extends Activity{
                 map.put("calorie", list.get(i).get("calorie")+"");
                 map.put("time", formatedTime);
                 map.put("step_count", list.get(i).get("stepcount")+"");
+                map.put("heart_rate", list.get(i).get("heart_rate")+"");
                 listItems.add(map);
             }
         }
