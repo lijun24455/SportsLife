@@ -4,20 +4,10 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context="sysu.project.lee.sportslife.NewsFragment">
-
-    <!-- TODO: Update blank fragment layout -->
-    <LinearLayout
+    <Button
+        android:id="@+id/btn_neo"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Fragmen_News"
-            android:textSize="30dp"
-            android:layout_gravity="center"
-            android:textStyle="bold"/>
-
-    </LinearLayout>
-
+        android:layout_height="wrap_content"
+        android:text="NEO-MAN"/>
 
 </LinearLayout>
