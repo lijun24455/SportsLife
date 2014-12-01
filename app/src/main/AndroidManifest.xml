@@ -82,6 +82,10 @@
             android:label="HeartBeatMonitor">
 
         </activity>
+        <activity android:name=".News.NewsList"
+            android:label="NewsList">
+
+        </activity>
     </application>
 
 </manifest>
