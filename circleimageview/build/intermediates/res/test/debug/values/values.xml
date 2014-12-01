@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <!-- From: file:/D:/Git/SportsLife/circleimageview/src/main/res/values/attrs.xml -->
+    <!-- From: file:/D:/Git/SportsLife/circleimageview/build/intermediates/bundles/debug/res/values/values.xml -->
     <eat-comment />
 
     <declare-styleable name="CircleImageView">
