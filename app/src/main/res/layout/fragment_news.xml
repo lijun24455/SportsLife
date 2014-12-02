@@ -4,10 +4,20 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context="sysu.project.lee.sportslife.NewsFragment">
+<<<<<<< HEAD
+
+    <!-- TODO: Update blank fragment layout -->
+   <android.support.v7.widget.Recycler
+       android:layout_width="match_parent"
+       android:layout_height="wrap_content" />
+
+
+=======
     <Button
         android:id="@+id/btn_neo"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="NEO-MAN"/>
+>>>>>>> origin/master
 
 </LinearLayout>
