@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="@dimen/activity_vertical_margin"
+    android:layout_marginLeft="@dimen/activity_horizontal_margin"
+    android:layout_marginRight="@dimen/activity_horizontal_margin"
+    android:layout_marginTop="@dimen/activity_vertical_margin"
+    android:layout_weight="1"
+    android:background="@drawable/bordershape"
+    android:baselineAligned="false"
+    android:orientation="vertical"
+    android:paddingLeft="25dp"
+    android:paddingRight="25dp"
+    android:paddingTop="15dp"
+    android:paddingBottom="15dp">
+
+    <!--Title-->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="2dp">
+        <TextView
+            android:id="@+id/news_item_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="SportsLife News"
+            android:textStyle="bold"
+            android:textSize="25dp"/>
+
+    </LinearLayout>
+
+
+    <!--Time-->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="2dp">
+        <TextView
+            android:id="@+id/news_item_time"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="SportsLife News"
+            android:textStyle="bold"
+            android:textSize="15dp"/>
+
+    </LinearLayout>
+
+    <!--FrontImage-->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <ImageView
+            android:id="@+id/news_item_img"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_launcher"/>
+
+    </LinearLayout>
+
+</LinearLayout>
