@@ -32,6 +32,7 @@ import sysu.project.lee.sportslife.Utils.XMLUtility;
  * Created by lee on 14年12月1日.
  */
 public class NewsList extends Activity {
+
     private ListView mListView;
     private ArrayList<NewsItem> dataList = new ArrayList<NewsItem>();
     private mNewsListAdapter mAdapter = null;
