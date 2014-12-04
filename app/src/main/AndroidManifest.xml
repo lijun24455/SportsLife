@@ -82,7 +82,7 @@
             android:label="HeartBeatMonitor">
 
         </activity>
-        <activity android:name=".News.NewsList"
+        <activity android:name=".News.NewsListActivity"
             android:label="NewsList">
 
         </activity>

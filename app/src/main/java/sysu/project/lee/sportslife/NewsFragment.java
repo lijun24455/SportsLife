@@ -9,9 +9,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.ListView;
 
-import sysu.project.lee.sportslife.News.NewsList;
+import sysu.project.lee.sportslife.News.NewsListActivity;
 
 
 public class NewsFragment extends Fragment {
@@ -28,7 +27,7 @@ public class NewsFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent();
-                intent.setClass(getActivity(), NewsList.class);
+                intent.setClass(getActivity(), NewsListActivity.class);
                 startActivity(intent);
             }
         });
