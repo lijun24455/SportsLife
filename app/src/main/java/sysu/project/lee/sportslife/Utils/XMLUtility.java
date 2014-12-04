@@ -2,7 +2,6 @@ package sysu.project.lee.sportslife.Utils;
 
 import android.content.Context;
 
-import com.amap.api.maps.offlinemap.City;
 
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;

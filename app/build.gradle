@@ -27,6 +27,5 @@ dependencies {
     compile files('libs/AMap_Services_V2.3.1.jar')
     compile files('libs/AMap_3DMap_V2.3.1.jar')
     compile files('libs/Android_Location_V1.3.0.jar')
-    compile 'com.android.support:cardview-v7:21.0.+'
-    compile 'com.android.support.recyclerview-v7:21.0.+'
+    compile files('libs/antlr-2.7.4.jar')
 }
