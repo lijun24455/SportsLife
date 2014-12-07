@@ -31,7 +31,7 @@ import sysu.project.lee.sportslife.Utils.XMLUtility;
 /**
  * Created by lee on 14年12月1日.
  */
-public class NewsList extends Activity {
+public class NewsListActivity extends Activity {
 
     private ListView mListView;
     private ArrayList<NewsItem> dataList = new ArrayList<NewsItem>();
@@ -44,7 +44,7 @@ public class NewsList extends Activity {
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.news_list_layout);
         mListView = (ListView) findViewById(R.id.news_list);
-        mAdapter = new mNewsListAdapter(NewsList.this, dataList);
+        mAdapter = new mNewsListAdapter(NewsListActivity.this, dataList);
         mListView.setAdapter(mAdapter);
         mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -67,7 +67,7 @@ public class NewsList extends Activity {
                 Log.i("neo","----->size---"+response.length());
                 Log.i("neo", "----->xml:---->"+ response);
 
-                dataList = XMLUtility.getNewsList(NewsList.this, response);
+                dataList = XMLUtility.getNewsList(NewsListActivity.this, response);
                 if(dataList.size()>0){
                     runOnUiThread(new Runnable() {
                         @Override
@@ -87,7 +87,7 @@ public class NewsList extends Activity {
                     @Override
                     public void run() {
                         closeProgressDialog();
-                        ToastUtils.show(NewsList.this, "加载失败");
+                        ToastUtils.show(NewsListActivity.this, "加载失败");
                     }
                 });
 

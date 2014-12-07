@@ -5,7 +5,8 @@ package sysu.project.lee.sportslife.News;
 
 import java.io.File;
 
-import com.dreamteam.app.utils.FileUtils;
+
+import sysu.project.lee.sportslife.News.Utils.FileUtils;
 
 /**
  * @author:	zcloud
