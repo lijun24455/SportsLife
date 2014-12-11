@@ -12,21 +12,18 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.RelativeLayout;
-import android.widget.Toast;
 
 import java.io.File;
-import java.nio.channels.AsynchronousCloseException;
 
-import sysu.project.lee.sportslife.News.AppContext;
-import sysu.project.lee.sportslife.News.ItemListEntity;
-import sysu.project.lee.sportslife.News.NewsListActivity;
-import sysu.project.lee.sportslife.News.SectionHelper;
-import sysu.project.lee.sportslife.News.Utils.ItemListEntityParser;
+import sysu.project.lee.sportslife.News.UI.ItemListEntity;
+import sysu.project.lee.sportslife.News.UI.NewsListActivity;
+import sysu.project.lee.sportslife.News.UI.ItemListEntityParser;
+import sysu.project.lee.sportslife.News.Utils.AppContext;
+import sysu.project.lee.sportslife.News.Utils.SectionHelper;
 import sysu.project.lee.sportslife.News.Utils.SeriaHelper;
 import sysu.project.lee.sportslife.Utils.ToastUtils;
 import sysu.project.lee.sportslife.Utils.URLs;
 import sysu.project.lee.sportslife.Utils.mApplication;
-
 
 public class NewsFragment extends Fragment {
 

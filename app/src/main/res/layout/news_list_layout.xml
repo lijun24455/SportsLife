@@ -3,15 +3,24 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
-
-    <include layout="@layout/title"/>
+    android:layout_height="match_parent"
+    android:background="#cecece">
+    <include layout="@layout/news_neoman_title"/>
     <!-- TODO: Update blank fragment layout -->
-    <ListView
+    <!--<ListView-->
+        <!--android:id="@+id/news_list"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="match_parent">-->
+
+    <!--</ListView>-->
+    <com.handmark.pulltorefresh.library.PullToRefreshListView
         android:id="@+id/news_list"
+        android:divider="#cecece"
+        android:paddingLeft="6dp"
+        android:paddingRight="6dp"
+        android:dividerHeight="6dp"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-
-    </ListView>
+    </com.handmark.pulltorefresh.library.PullToRefreshListView>
 
 </LinearLayout>

@@ -11,7 +11,7 @@ import java.io.IOException;
 import java.io.StringReader;
 import java.util.ArrayList;
 
-import sysu.project.lee.sportslife.News.NewsItem;
+import sysu.project.lee.sportslife.News.UI.NewsItem;
 
 /**
  * Created by lee on 14年12月1日.

@@ -27,7 +27,7 @@
             android:layout_height="wrap_content"
             android:text="SportsLife News"
             android:textStyle="bold"
-            android:textSize="25dp"/>
+            android:textSize="20dp"/>
 
     </LinearLayout>
 
@@ -43,7 +43,7 @@
             android:layout_height="wrap_content"
             android:text="SportsLife News"
             android:textStyle="bold"
-            android:textSize="15dp"/>
+            android:textSize="10dp"/>
 
     </LinearLayout>
 
@@ -54,8 +54,9 @@
         <ImageView
             android:id="@+id/news_item_img"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:src="@drawable/ic_launcher"/>
+            android:layout_height="400px"
+            android:scaleType="centerCrop"
+            />
 
     </LinearLayout>
 

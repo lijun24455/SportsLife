@@ -10,7 +10,7 @@ import java.io.OptionalDataException;
 import java.io.Serializable;
 import java.io.StreamCorruptedException;
 
-import sysu.project.lee.sportslife.News.ItemListEntity;
+import sysu.project.lee.sportslife.News.UI.ItemListEntity;
 
 
 /**

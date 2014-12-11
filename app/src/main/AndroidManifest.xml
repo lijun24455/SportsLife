@@ -2,10 +2,11 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="sysu.project.lee.sportslife" >
 
-    <uses-feature android:name="android.hardware.camera"/>
-    <uses-feature android:name="android.hardware.camera.flash"/>
-    <uses-permission android:name="android.permission.CAMERA"/>
-    <uses-permission android:name="android.permission.WAKE_LOCK"/>
+    <uses-feature android:name="android.hardware.camera" />
+    <uses-feature android:name="android.hardware.camera.flash" />
+
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.INTERNET" />
@@ -22,7 +23,6 @@
     <uses-permission android:name="android.permission.SEND_SMS" />
     <uses-permission android:name="android.permission.READ_SMS" />
     <uses-permission android:name="android.permission.WRITE_SMS" />
-
 
     <application
         android:name=".Utils.mHelper"
@@ -48,43 +48,55 @@
             android:label="@string/title_activity_my" >
         </activity>
 
-        <service android:name=".Excercise.StepService"/>
+        <service android:name=".Excercise.StepService" />
 
         <activity
             android:name=".Excercise.StepCount"
-            android:label="StepCount">
+            android:label="StepCount" >
         </activity>
         <activity
             android:name=".Excercise.RunBikeCount"
-            android:label="RunBikeCount">
+            android:label="RunBikeCount" >
         </activity>
-        <activity android:name=".Excercise.SkipCount"
-            android:label="SkipCount">
-
+        <activity
+            android:name=".Excercise.SkipCount"
+            android:label="SkipCount" >
         </activity>
-        <activity android:name=".Excercise.RunBikeResultShow"
-            android:label="RunBikeResultShow">
-
+        <activity
+            android:name=".Excercise.RunBikeResultShow"
+            android:label="RunBikeResultShow" >
         </activity>
-        <activity android:name=".Excercise.StepResultShow"
-            android:label="StepResultShow">
-
+        <activity
+            android:name=".Excercise.StepResultShow"
+            android:label="StepResultShow" >
         </activity>
-        <activity android:name=".Excercise.SkipResultShow"
-            android:label="SkipResultShow">
-
+        <activity
+            android:name=".Excercise.SkipResultShow"
+            android:label="SkipResultShow" >
         </activity>
-        <activity android:name=".Excercise.ExerciseHistoryActivity"
-            android:label="History">
-
+        <activity
+            android:name=".Excercise.ExerciseHistoryActivity"
+            android:label="History" >
         </activity>
-        <activity android:name=".HeartBeat.HeartRateMonitor"
-            android:label="HeartBeatMonitor">
-
+        <activity
+            android:name=".HeartBeat.HeartRateMonitor"
+            android:label="HeartBeatMonitor" >
         </activity>
-        <activity android:name=".News.NewsListActivity"
-            android:label="NewsList">
-
+        <activity
+            android:name=".News.UI.NewsListActivity"
+            android:label="NewsList" >
+        </activity>
+        <activity
+            android:name=".News.UI.ItemDetail"
+            android:label="NewsDetailActivity" >
+        </activity>
+        <activity
+            android:name=".News.UI.ImageDialog"
+            android:label="ImageViewActivity" >
+        </activity>
+        <activity
+            android:name=".News.UI.NewsCollectionActivity"
+            android:label="@string/title_activity_news_collection" >
         </activity>
     </application>
 

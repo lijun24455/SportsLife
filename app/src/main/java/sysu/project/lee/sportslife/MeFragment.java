@@ -10,11 +10,13 @@ import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 
 import sysu.project.lee.sportslife.Excercise.ExerciseHistoryActivity;
+import sysu.project.lee.sportslife.News.UI.NewsCollectionActivity;
 
 
 public class MeFragment extends Fragment {
 
     private RelativeLayout itemShowHistory = null;
+    private RelativeLayout newsCollection = null;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -40,7 +42,16 @@ public class MeFragment extends Fragment {
                 Intent intent = new Intent();
                 intent.setClass(getActivity(), ExerciseHistoryActivity.class);
                 startActivity(intent);
-                onPause();
+            }
+        });
+        newsCollection = (RelativeLayout) getView().findViewById(R.id.lo_show_favorite);
+
+        newsCollection.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent();
+                intent.setClass(getActivity(), NewsCollectionActivity.class);
+                startActivity(intent);
             }
         });
     }
