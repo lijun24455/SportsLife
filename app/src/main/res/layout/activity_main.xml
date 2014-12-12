@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="sysu.project.lee.sportslife.MainActivity">
+    tools:context="sysu.project.lee.sportslife.UI.MainActivity">
 
     <include layout="@layout/exercise_title"/>
 

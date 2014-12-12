@@ -8,9 +8,6 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.preference.PreferenceManager;
 
-import sysu.project.lee.sportslife.News.Utils.AppConfig;
-import sysu.project.lee.sportslife.News.Utils.FileUtils;
-import sysu.project.lee.sportslife.News.Utils.MD5;
 
 
 /**

@@ -7,9 +7,6 @@ import android.database.sqlite.SQLiteDatabase;
 
 
 import sysu.project.lee.sportslife.News.Database.DbConstant;
-import sysu.project.lee.sportslife.News.Utils.AppConfig;
-import sysu.project.lee.sportslife.News.Utils.FileUtils;
-import sysu.project.lee.sportslife.News.Utils.MD5;
 
 public class SectionHelper
 {

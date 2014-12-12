@@ -50,11 +50,10 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import sysu.project.lee.sportslife.MainActivity;
+import sysu.project.lee.sportslife.UI.MainActivity;
 import sysu.project.lee.sportslife.R;
 import sysu.project.lee.sportslife.Utils.ToastUtils;
 import sysu.project.lee.sportslife.Utils.mConvertTool;

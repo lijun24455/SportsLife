@@ -17,7 +17,6 @@ import sysu.project.lee.sportslife.Database.HistoryDBHelper;
 import sysu.project.lee.sportslife.Database.HistoryRealize;
 import sysu.project.lee.sportslife.Database.HistoryService;
 import sysu.project.lee.sportslife.HeartBeat.HeartRateMonitor;
-import sysu.project.lee.sportslife.MainActivity;
 import sysu.project.lee.sportslife.R;
 import sysu.project.lee.sportslife.Utils.mConvertTool;
 import sysu.project.lee.sportslife.Utils.mHelper;
