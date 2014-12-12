@@ -1,11 +1,2 @@
 <?xml version="1.0" encoding="utf-8"?>
-<merger version="2" >
-
-    <dataSet config="main" >
-        <source path="D:\Git\SportsLife\circleimageview\src\main\assets" />
-    </dataSet>
-    <dataSet config="release" >
-        <source path="D:\Git\SportsLife\circleimageview\src\release\assets" />
-    </dataSet>
-
-</merger>
+<merger version="3"><dataSet config="main"><source path="/home/lee/AndroidStudioProjects/SportsLife/circleimageview/src/main/assets"/></dataSet><dataSet config="release"><source path="/home/lee/AndroidStudioProjects/SportsLife/circleimageview/src/release/assets"/></dataSet></merger>

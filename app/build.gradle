@@ -2,7 +2,7 @@ apply plugin: 'com.android.application'
 
 android {
     compileSdkVersion 21
-    buildToolsVersion '21.0.2'
+    buildToolsVersion '21.1.1'
 
     defaultConfig {
         applicationId "sysu.project.lee.sportslife"
@@ -13,7 +13,7 @@ android {
     }
     buildTypes {
         release {
-            runProguard false
+            minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
@@ -23,10 +23,12 @@ dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
     compile project(':library')
     compile project(':circleimageview')
-    compile 'com.android.support:support-v4:21.0.0'
-    compile 'com.android.support:support-v13:21.0.0'
     compile files('libs/AMap_Services_V2.3.1.jar')
     compile files('libs/AMap_3DMap_V2.3.1.jar')
     compile files('libs/Android_Location_V1.3.0.jar')
     compile files('libs/antlr-2.7.4.jar')
+    compile 'com.android.support:support-v4:21.0.2'
+    compile 'com.android.support:support-v13:21.0.2'
+    compile 'com.google.android.gms:play-services:6.1.71'
+    compile 'com.android.support:appcompat-v7:21.0.2'
 }
