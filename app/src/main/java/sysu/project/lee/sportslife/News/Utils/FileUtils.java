@@ -144,7 +144,7 @@ public class FileUtils
 	/**
 	 * 删除目录(包括：目录里的所有文件)
 	 * 
-	 * @param fileName
+	 * @param dirName
 	 * @return
 	 */
 	public static boolean deleteDirectory(String dirName)

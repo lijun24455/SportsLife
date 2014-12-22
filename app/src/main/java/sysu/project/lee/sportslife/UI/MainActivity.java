@@ -1,5 +1,7 @@
 package sysu.project.lee.sportslife.UI;
 
+import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -7,6 +9,7 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.Display;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,10 +19,13 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 
+import org.litepal.tablemanager.Connector;
+
 import java.util.ArrayList;
 import java.util.List;
 
 import sysu.project.lee.sportslife.R;
+import sysu.project.lee.sportslife.User.UserEntity;
 
 
 public class MainActivity extends FragmentActivity {
@@ -47,6 +53,10 @@ public class MainActivity extends FragmentActivity {
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_main);
 
+
+        Intent intent = getIntent();
+        UserEntity currentUser = (UserEntity) intent.getSerializableExtra("USER_INFO");
+        Log.i("user","Main:"+currentUser.toString());
         initView();
 
     }

@@ -3,10 +3,12 @@ package sysu.project.lee.sportslife.Utils;
 import android.app.Application;
 import android.content.Context;
 
+import org.litepal.LitePalApplication;
+
 /**
  * Created by lee on 14年11月20日.
  */
-public class mApplication extends Application{
+public class mApplication extends LitePalApplication {
     private static Context context;
 
     @Override

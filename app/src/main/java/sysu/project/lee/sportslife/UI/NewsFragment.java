@@ -22,6 +22,7 @@ import sysu.project.lee.sportslife.News.Utils.AppContext;
 import sysu.project.lee.sportslife.News.Utils.SectionHelper;
 import sysu.project.lee.sportslife.News.Utils.SeriaHelper;
 import sysu.project.lee.sportslife.R;
+import sysu.project.lee.sportslife.User.UserEntity;
 import sysu.project.lee.sportslife.Utils.ToastUtils;
 import sysu.project.lee.sportslife.Utils.URLs;
 import sysu.project.lee.sportslife.Utils.mApplication;
@@ -34,11 +35,14 @@ public class NewsFragment extends Fragment {
     private Button mButton;
     private Intent intent = null;
     private RelativeLayout mNewsLoadingLayout = null;
+    private UserEntity mUser = null;
 
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+
+        mUser = (UserEntity) getActivity().getIntent().getSerializableExtra("USER_INFO");
 
         mContext = mApplication.getContextObject();
 
@@ -51,6 +55,7 @@ public class NewsFragment extends Fragment {
                 url = URLs.NEO_URL;
                 intent = new Intent();
                 intent.putExtra("url", URLs.NEO_URL);
+                intent.putExtra("CURRENT_USER", mUser);
 
                 intent.setClass(getActivity(), NewsListActivity.class);
 
