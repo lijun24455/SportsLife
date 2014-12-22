@@ -5,7 +5,6 @@ import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.LoaderManager.LoaderCallbacks;
-import android.content.ContentResolver;
 import android.content.CursorLoader;
 import android.content.Intent;
 import android.content.Loader;
@@ -16,12 +15,10 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.ContactsContract;
-import android.support.v7.internal.widget.ViewUtils;
 import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.ViewAnimationUtils;
 import android.view.Window;
 import android.view.inputmethod.EditorInfo;
 import android.widget.ArrayAdapter;
@@ -33,7 +30,6 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.List;
 
-import sysu.project.lee.sportslife.R;
 
 /**
  * A login screen that offers login via email/password.
@@ -104,7 +100,6 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
         }
         });
     }
-
     private void populateAutoComplete() {
         getLoaderManager().initLoader(0, null, this);
     }
