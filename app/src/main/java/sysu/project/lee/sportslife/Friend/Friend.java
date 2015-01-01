@@ -1,5 +1,8 @@
 package sysu.project.lee.sportslife.Friend;
 
+/**
+ * 朋友实体类（暂未实现）
+ */
 public class Friend {
 	private String Name;
 	private int Age;

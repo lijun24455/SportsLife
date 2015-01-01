@@ -2,6 +2,9 @@ package sysu.project.lee.sportslife.Excercise;
 
 import java.util.ArrayList;
 
+/**
+ * 计步器实现类
+ */
 public class StepDisplayer implements StepListener {
 	private int mCount = 0;
 
@@ -26,8 +29,6 @@ public class StepDisplayer implements StepListener {
 	public void passValue() {
 	}
 
-	// -----------------------------------------------------
-	// Listener
 
 	public interface Listener {
 		public void stepsChanged(int value);

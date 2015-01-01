@@ -31,7 +31,7 @@
     <application
         android:name=".Utils.mHelper"
         android:allowBackup="true"
-        android:icon="@drawable/ic_launcher"
+        android:icon="@drawable/ic_new_launcher"
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
         <meta-data
@@ -46,10 +46,6 @@
 
                 <!--<category android:name="android.intent.category.LAUNCHER" />-->
             <!--</intent-filter>-->
-        </activity>
-        <activity
-            android:name=".MyActivity"
-            android:label="@string/title_activity_my" >
         </activity>
 
         <service android:name=".Excercise.StepService" />
@@ -104,8 +100,7 @@
         </activity>
         <activity
             android:name=".UI.LoginActivity"
-            android:label="@string/title_activity_login"
-            android:windowSoftInputMode="adjustResize|stateVisible" >
+            android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -113,6 +108,12 @@
             </intent-filter>
         </activity>
         <activity android:name=".UI.RegisterActivity">
+
+        </activity>
+        <activity android:name=".UI.FeedCenter">
+
+        </activity>
+        <activity android:name=".UI.EditCustomerActivity">
 
         </activity>
     </application>

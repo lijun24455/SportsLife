@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
     <litepal>
 
-        <dbname value="demo"></dbname>
-        <version value="5"></version>
+        <dbname value="DEMO1"></dbname>
+        <version value="11"></version>
 
         <list>
             <mapping class="sysu.project.lee.sportslife.User.UserEntity"></mapping>
             <mapping class="sysu.project.lee.sportslife.News.UI.FeedItem"></mapping>
+            <mapping class="sysu.project.lee.sportslife.News.UI.Section"></mapping>
         </list>
     </litepal>

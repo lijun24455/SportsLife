@@ -27,10 +27,12 @@ public class HistoryRealize implements HistoryService {
         helper = new HistoryDBHelper(context);
     }
 
-    /**
-     * 下面四个方法实现对数据库的增删改查功能
-     */
 
+    /**
+     * 运动记录数数据库插入操作
+     * @param params 插入条目的值
+     * @return
+     */
     @Override
     public boolean Insert(Object[] params) {
         boolean flag = false;
@@ -38,6 +40,7 @@ public class HistoryRealize implements HistoryService {
         try {
             // 这里面问号表示占位符，所以要需要传入所有的占位符的值,传入值由这个方法中的参数传递
             String sql = "insert into HistoryRecord(" +
+                    "userentity_id, " +
                     "type, " +
                     "date, " +
                     "distance, " +
@@ -46,7 +49,7 @@ public class HistoryRealize implements HistoryService {
                     "address, " +
                     "calorie, " +
                     "stepcount, " +
-                    "heart_rate) values(?, ?, ?, ?, ?, ?, ?, ?, ?)";
+                    "heart_rate) values(?,?, ?, ?, ?, ?, ?, ?, ?, ?)";
             database = helper.getWritableDatabase(); // 实现对数据库写的操作
             database.execSQL(sql, params);
             flag = true;
@@ -60,12 +63,17 @@ public class HistoryRealize implements HistoryService {
         return flag;
     }
 
+    /**
+     * 从运动记录数据库中删除条目
+     * @param params 参数又该条目的userID，type，date，screen_shot_path组成
+     * @return 返回操作结果
+     */
     @Override
     public boolean Delete(Object[] params) {
         boolean flag = false;
         SQLiteDatabase database = null;
         try {
-            String sql = "delete from HistoryRecord where screen_shot_path = ? ";
+            String sql = "delete from HistoryRecord where userentity_id = ? AND type = ? AND date = ? AND screen_shot_path = ?";
             database = helper.getWritableDatabase();
             database.execSQL(sql, params);
             flag = true;
@@ -80,6 +88,12 @@ public class HistoryRealize implements HistoryService {
     }
 
     // 根据screen_shot_path来查询，查询的每一行数据返回用 Map 集合来存储
+
+    /**
+     * 根据screen_shot_path查询运动记录数据库
+     * @param selectionArgs 参数由所查询条目的screen_shot_path组成
+     * @return 返回查询结果
+     */
     @Override
     public Map<String, String> viewHistory(String[] selectionArgs) {
         Map<String, String> map = new HashMap<String, String>();
@@ -115,6 +129,12 @@ public class HistoryRealize implements HistoryService {
 
     // 多条记录 用 List<Map<String, String>> 来封装,每一行产生一个 Map集合来装载这一行的数据
     // 这样就有多个Map值，然后放入List中.
+
+    /**
+     * 返回运动记录数据库中的所有条目
+     * @param selectionArgs
+     * @return
+     */
     @Override
     public List<Map<String, String>> listHistoryMaps(String[] selectionArgs) {
         List<Map<String, String>> list = new ArrayList<Map<String, String>>();
@@ -123,6 +143,43 @@ public class HistoryRealize implements HistoryService {
             String sql = "select * from HistoryRecord"; // 这个是查询表中所有的内容，所以就不需要传入的这个参数值了
             database = helper.getReadableDatabase();
             Cursor cursor = database.rawQuery(sql, selectionArgs);
+            int colums = cursor.getColumnCount();
+            while (cursor.moveToNext()) {
+                Map<String, String> map = new HashMap<String, String>();
+                for (int i = 0; i < colums; i++) {
+                    String cols_name = cursor.getColumnName(i);
+                    String cols_value = cursor.getString(cursor
+                            .getColumnIndex(cols_name));
+                    if (cols_name == null) {
+                        cols_value = "";
+                    }
+                    map.put(cols_name, cols_value);
+                }
+                list.add(map);
+            }
+        } catch (Exception e) {
+            // TODO: handle exception
+        } finally {
+            if (database != null) {
+                database.close();
+            }
+        }
+        return list;
+    }
+
+    /**
+     * 返回指定用户的运动记录
+     * @param userId 参数由用户id组成
+     * @return
+     */
+    @Override
+    public List<Map<String, String>> listHistoryByUserID(String[] userId) {
+        List<Map<String, String>> list = new ArrayList<Map<String, String>>();
+        SQLiteDatabase database = null;
+        try {
+            String sql = "select * from HistoryRecord where userentity_id = ?"; // 这个是查询表中所有的内容，所以就不需要传入的这个参数值了
+            database = helper.getReadableDatabase();
+            Cursor cursor = database.rawQuery(sql, userId);
             int colums = cursor.getColumnCount();
             while (cursor.moveToNext()) {
                 Map<String, String> map = new HashMap<String, String>();

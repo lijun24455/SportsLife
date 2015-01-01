@@ -9,6 +9,9 @@ import android.util.Log;
 
 import sysu.project.lee.sportslife.Utils.mHelper;
 
+/**
+ * 计步器计步服务类
+ */
 public class StepService extends Service {
 	private SensorManager mSensorManager;
 	private Sensor mSensor;
@@ -78,6 +81,9 @@ public class StepService extends Service {
         super.onDestroy();
 	}
 
+    /**
+     * 注册计步器服务
+     */
 	private void registerDetector() {
 		mSensor = mSensorManager
 				.getDefaultSensor(Sensor.TYPE_ACCELEROMETER /*
@@ -90,10 +96,16 @@ public class StepService extends Service {
 				SensorManager.SENSOR_DELAY_FASTEST);
 	}
 
+    /**
+     * 解绑计步器服务
+     */
 	private void unregisterDetector() {
 		mSensorManager.unregisterListener(mStepDetector);
 	}
 
+    /**
+     * 计步回调接口
+     */
 	public interface ICallback {
 		public void stepsChanged(int value);
 

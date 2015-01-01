@@ -19,9 +19,8 @@ import android.widget.ImageView;
 
 
 /**
- * @description 
- * @author zcloud
- * @date 2013/11/13
+ * @description 加载图片工具类
+ * @author lee
  */
 public class ImageLoader
 {
@@ -37,7 +36,13 @@ public class ImageLoader
 		pool = Executors.newFixedThreadPool(5);
 		imageViews = Collections.synchronizedMap(new WeakHashMap<ImageView, String>());
 	}
-	
+
+    /**
+     * 从缓存中获得图片
+     *
+     * @param url   String类型，图片地址的url
+     * @return  Bitmap类型，缓存的图片
+     */
 	public Bitmap getCacheImage(String url)
 	{
 		Bitmap bmp = null;
@@ -49,6 +54,13 @@ public class ImageLoader
 		return bmp;
 	}
 
+    /**
+     * @deprecated 当缓存中没有需要的图片时候，加载图片方法
+     * @param url   String类型，图片地址URL
+     * @param imageView ImageView类型，图片显示控件
+     * @param width int类型，图片宽度
+     * @param height    int类型，图片高度
+     */
 	public void loadImage(String url, ImageView imageView, int width, int height)
 	{
 		imageViews.put(imageView, url);

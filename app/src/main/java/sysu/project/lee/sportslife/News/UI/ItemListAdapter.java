@@ -24,11 +24,7 @@ import sysu.project.lee.sportslife.R;
 
 
 /**
- * @author:	zcloud
- *
- * @description: TODO
- *
- * @date: 2013/10/14
+ *  资讯列表ListView适配器类
  *
  */
 public class ItemListAdapter extends BaseAdapter
@@ -40,7 +36,14 @@ public class ItemListAdapter extends BaseAdapter
 	private ImageLoader loader = new ImageLoader();
 	private static int[] colors;//是否已阅读显示的颜色
 	private boolean loadImg = false;
-	
+
+    /**
+     * 适配器构造方法
+     *
+     * @param context   上下文
+     * @param items     ArrayList类型，数据源
+     * @param isNight   boolean类型，是否为夜间模式标志位
+     */
 	public ItemListAdapter(Context context, ArrayList<FeedItem> items, boolean isNight)
 	{
 		this.items = items;
@@ -107,7 +110,7 @@ public class ItemListAdapter extends BaseAdapter
 		String title = item.getTitle();
 		if(title.length() > 30)
 			title = title.substring(0, 30);
-		if(item.isReaded())
+		if(item.getReaded())
 			colorState = 1;
 //		else
 //			colorState = 0;
@@ -126,6 +129,9 @@ public class ItemListAdapter extends BaseAdapter
 		return convertView;
 	}
 
+    /**
+     * 资讯列表item视图控件封装类
+     */
 	private static final class ViewHolder
 	{
 		ImageView itemIv;
@@ -133,6 +139,10 @@ public class ItemListAdapter extends BaseAdapter
 		TextView pubdateTv;
 	}
 
+    /**
+     * 向数据源头部添加新的数据
+     * @param newItems  ArrayList类型， 新的数据源
+     */
 	public void addItemsToHead(ArrayList<FeedItem> newItems)
 	{
 		items.addAll(0, newItems);

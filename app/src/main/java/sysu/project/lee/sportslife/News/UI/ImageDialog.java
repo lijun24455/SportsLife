@@ -22,7 +22,10 @@ import sysu.project.lee.sportslife.News.Utils.ImageUtils;
 import sysu.project.lee.sportslife.R;
 import sysu.project.lee.sportslife.Utils.ToastUtils;
 
-
+/**
+ *  资讯内容页面中查看图片的界面类
+ *
+ */
 public class ImageDialog extends Activity
 {
 	private ProgressBar progressBar;

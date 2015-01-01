@@ -22,8 +22,6 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
         </com.amap.api.maps.MapView>
-        <include layout="@layout/music_camera_bar"/>
-
 
     </FrameLayout>
 
@@ -73,9 +71,10 @@
                         android:layout_centerVertical="true"
                         android:layout_marginRight="5dp"/>
                     <TextView
+                        android:id="@+id/tv_distanceLabelView"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="公里"
+                        android:text="米"
                         android:layout_toRightOf="@id/distanceCountView"
                         android:layout_centerVertical="true"
                         android:textSize="28sp"
@@ -97,55 +96,14 @@
             android:layout_marginLeft="@dimen/activity_horizontal_margin"
             android:layout_marginRight="@dimen/activity_horizontal_margin"
             android:layout_marginTop="@dimen/activity_vertical_margin"
-            android:background="@color/white">
-            <!--<LinearLayout-->
-                <!--android:layout_width="0dp"-->
-                <!--android:layout_height="match_parent"-->
-                <!--android:layout_weight="1"-->
-                <!--android:orientation="vertical">-->
-                <!--<LinearLayout-->
-                    <!--android:layout_width="match_parent"-->
-                    <!--android:layout_height="0dp"-->
-                    <!--android:layout_weight="1"-->
-                    <!--android:gravity="bottom">-->
-                    <!--<TextView-->
-                        <!--android:layout_width="match_parent"-->
-                        <!--android:layout_height="wrap_content"-->
-                        <!--android:text="步数"-->
-                        <!--android:gravity="center"-->
-                        <!--android:textSize="20sp"-->
-                        <!--android:layout_marginBottom="5dp"/>-->
+            android:background="#cecece">
 
-                <!--</LinearLayout>-->
-
-                <!--<RelativeLayout-->
-                    <!--android:layout_width="match_parent"-->
-                    <!--android:layout_height="0dp"-->
-                    <!--android:layout_weight="1"-->
-                    <!--android:gravity="top">-->
-                    <!--<TextView-->
-                        <!--android:id="@+id/stepTextView"-->
-                        <!--android:layout_width="wrap_content"-->
-                        <!--android:layout_height="wrap_content"-->
-                        <!--android:text="5"-->
-                        <!--android:layout_centerHorizontal="true"-->
-                        <!--android:textSize="25sp"-->
-                        <!--android:layout_marginTop="5dp"/>-->
-                    <!--<TextView-->
-                        <!--android:layout_width="wrap_content"-->
-                        <!--android:layout_height="wrap_content"-->
-                        <!--android:text="步"-->
-                        <!--android:layout_below="@id/stepTextView"-->
-                        <!--android:layout_centerHorizontal="true"-->
-                        <!--android:textSize="15sp"/>-->
-                <!--</RelativeLayout>-->
-
-            <!--</LinearLayout>-->
-            <!--速度-->
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight="1">
+                android:layout_weight="1"
+                android:background="@color/white"
+                android:layout_marginRight="0.5dp">
                 <LinearLayout
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
@@ -154,15 +112,21 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="0dp"
+                        android:orientation="horizontal"
+                        android:gravity="center"
                         android:layout_weight="1"
-                        android:gravity="bottom">
+                        >
                         <TextView
-                            android:layout_width="match_parent"
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="速度"
                             android:gravity="center"
                             android:textSize="20sp"
                             android:layout_marginBottom="5dp"/>
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="(km/h)"/>
 
                     </LinearLayout>
 
@@ -179,13 +143,7 @@
                             android:layout_centerHorizontal="true"
                             android:textSize="25sp"
                             android:layout_marginTop="5dp"/>
-                        <!--<TextView-->
-                            <!--android:layout_width="wrap_content"-->
-                            <!--android:layout_height="wrap_content"-->
-                            <!--android:text="km/h"-->
-                            <!--android:layout_below="@id/speedViewText"-->
-                            <!--android:layout_centerHorizontal="true"-->
-                            <!--android:textSize="15sp"/>-->
+
                     </RelativeLayout>
                 </LinearLayout>
             </LinearLayout>
@@ -193,7 +151,10 @@
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight="1">
+                android:layout_weight="1"
+                android:background="@color/white"
+                android:layout_marginRight="0.5dp"
+                android:layout_marginLeft="0.5dp">
                 <LinearLayout
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
@@ -203,14 +164,19 @@
                         android:layout_width="match_parent"
                         android:layout_height="0dp"
                         android:layout_weight="1"
-                        android:gravity="bottom">
+                        android:gravity="center">
                         <TextView
-                            android:layout_width="match_parent"
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="热量"
+
                             android:gravity="center"
                             android:textSize="20sp"
                             android:layout_marginBottom="5dp"/>
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="(大卡)"/>
 
                     </LinearLayout>
 
@@ -243,7 +209,9 @@
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight="1">
+                android:layout_weight="1"
+                android:background="@color/white"
+                android:layout_marginLeft="0.5dp">
                 <LinearLayout
                     android:layout_width="0dp"
                     android:layout_height="match_parent"

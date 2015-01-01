@@ -6,6 +6,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
@@ -34,6 +35,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 import sysu.project.lee.sportslife.R;
 import sysu.project.lee.sportslife.User.UserEntity;
 import sysu.project.lee.sportslife.User.Utils;
+import sysu.project.lee.sportslife.Utils.RegexUtils;
 import sysu.project.lee.sportslife.Utils.ToastUtils;
 
 /**
@@ -50,7 +52,7 @@ public class RegisterActivity extends Activity{
     private String[] items = {"选择本地图片","拍照获取"};
 
     /* 图片文件命名 */
-    private static final String IMAGE_REAR = ".jpg";
+    private static final String IMAGE_REAR = ".png";
     private String IMAGE_FILE_NAME = "IMG";
     private String IMAGE_RADOM_CODE = "" + (int)(Math.random()*1000);
 
@@ -165,6 +167,11 @@ public class RegisterActivity extends Activity{
     private void loginByNewUser(UserEntity newUser) {
         try {
             Thread.sleep(1000 * 2);
+            File file = new File(Utils.IMAGE_PATH_BASE_DIR + IMAGE_FILE_NAME + IMAGE_RADOM_CODE + IMAGE_REAR);
+            if(!file.exists()){
+                Bitmap defaultBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.ic_default_user_img);
+                saveBitmapToSDCard(defaultBitmap);
+            }
             Intent intent = new Intent();
             Bundle bundle = new Bundle();
             bundle.putSerializable("USER_INFO", newUser);
@@ -193,7 +200,7 @@ public class RegisterActivity extends Activity{
             String strEmail = mEmailView.getText().toString();
             if(!TextUtils.isEmpty(strEmail)){
                 if(!isEmailValid(strEmail)){
-                    mEmailView.setError("此邮箱已经被注册");
+                    mEmailView.setError("邮箱格式错误");
                 }else{
                     mEmailView.setError(null);
                 }
@@ -211,7 +218,7 @@ public class RegisterActivity extends Activity{
             String strPassword1 = mPassWord1.getText().toString();
             if(!TextUtils.isEmpty(strPassword1)){
                 if(!isPassword1Valid(strPassword1)){
-                    ToastUtils.show(RegisterActivity.this, "密码只能包含数字，字母和下划线，至少为8位");
+                    ToastUtils.show(RegisterActivity.this, "密码只能包含数字，字母和下划线， 长度为6位～16位");
                     mPassWord1.setError("密码格式错误");
                 }else{
                     mPassWord1.setError(null);
@@ -246,14 +253,13 @@ public class RegisterActivity extends Activity{
     }
 
     private boolean isPassword1Valid(String strPassword1) {
-        if (strPassword1.length()>=8){
-            return true;
-        }
-        return false;
+
+        return strPassword1.matches(RegexUtils.PASSWORD_REGEX);
+
     }
 
     private boolean isEmailValid(String strEmail) {
-        return strEmail.contains("@");
+        return strEmail.matches(RegexUtils.EMAIL_REGEX);
     }
 
     private boolean isExistedInDB(UserEntity user){
@@ -379,15 +385,18 @@ public class RegisterActivity extends Activity{
     }
 
     private boolean saveBitmapToSDCard(Bitmap bitmap){
-        File file = new File(Utils.IMAGE_PATH_BASE_DIR , IMAGE_FILE_NAME + IMAGE_RADOM_CODE + IMAGE_REAR);
-        if (file.exists()){
-            file.delete();
+//       IMAGE_FILE_NAME + IMAGE_RADOM_CODE + IMAGE_REAR
+
+        File file = new File(Utils.IMAGE_PATH_BASE_DIR );
+        if (!file.exists()){
+            file.mkdirs();
         }
+        String IMGPath = Utils.IMAGE_PATH_BASE_DIR + IMAGE_FILE_NAME + IMAGE_RADOM_CODE + IMAGE_REAR;
         try {
-            FileOutputStream out = new FileOutputStream(file);
-            bitmap.compress(Bitmap.CompressFormat.PNG, 90, out);
-            out.flush();
-            out.close();
+            FileOutputStream fos = new FileOutputStream(IMGPath);
+            bitmap.compress(Bitmap.CompressFormat.PNG, 100, fos);
+            fos.flush();
+            fos.close();
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {
@@ -398,7 +407,7 @@ public class RegisterActivity extends Activity{
 
     private void insertNewUserIntoDB(UserEntity user){
         if(user.save()){
-            ToastUtils.show(RegisterActivity.this, "注册成功，正在进入……userID:"+user.getId());
+            ToastUtils.show(RegisterActivity.this, "注册成功，正在进入……");
         }else{
             ToastUtils.show(RegisterActivity.this, "注册失败，请检查网络问题。");
         }

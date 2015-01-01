@@ -6,13 +6,10 @@ import android.database.sqlite.SQLiteDatabase.CursorFactory;
 import android.database.sqlite.SQLiteOpenHelper;
 
 /**
- * @description	reader.db
- * @author zcloud
- * @date 2014年2月1日
+ * 新闻资讯收藏夹数据操作类
  */
 public class DbManager extends SQLiteOpenHelper
 {
-	public static final String DB_NAME = "newscollection.db";
 	public static final String FAVORITE_ITEM_TABLE_NAME = "favorite_item";
 	
 	private static final String CREATE_SECTION_TABLE =

@@ -11,11 +11,9 @@ import android.preference.PreferenceManager;
 
 
 /**
- * @description TODO
- * @author zcloud
- * @date Dec 8, 2013
+ * 网络环境检测，缓存调整工具类
+ *
  */
-@SuppressWarnings("deprecation")
 public class AppContext
 {
 	
@@ -55,25 +53,7 @@ public class AppContext
 		FileUtils.deleteDirectory(AppConfig.APP_IMAGE_CACHE_DIR);
 	}
 	
-	//清除webview缓存
-//	public static void clearWebViewCache(Context context)
-//	{
-//		File file = CacheManager.getCacheFileBaseDir();
-//
-//		if (file != null && file.exists() && file.isDirectory()) {
-//		    for (File item : file.listFiles()) {
-//		    	item.delete();
-//		    }
-//		    file.delete();
-//		}
-//		context.deleteDatabase("webview.db");
-//		context.deleteDatabase("webview.db-shm");
-//		context.deleteDatabase("webview.db-wal");
-//		context.deleteDatabase("webviewCache.db");
-//		context.deleteDatabase("webviewCache.db-shm");
-//		context.deleteDatabase("webviewCache.db-wal");
-//	}
-	
+
 	public static File getSdImgCache(String url)
 	{
 		return new File(AppConfig.APP_IMAGE_CACHE_DIR

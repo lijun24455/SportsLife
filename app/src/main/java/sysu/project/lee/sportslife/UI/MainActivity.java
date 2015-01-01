@@ -1,7 +1,6 @@
 package sysu.project.lee.sportslife.UI;
 
 import android.content.Intent;
-import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -19,13 +18,13 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 
-import org.litepal.tablemanager.Connector;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import sysu.project.lee.sportslife.R;
 import sysu.project.lee.sportslife.User.UserEntity;
+import sysu.project.lee.sportslife.Utils.mHelper;
 
 
 public class MainActivity extends FragmentActivity {

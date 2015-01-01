@@ -57,17 +57,23 @@ import java.util.Date;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import sysu.project.lee.sportslife.User.Utils;
 import sysu.project.lee.sportslife.Utils.ToastUtils;
 import sysu.project.lee.sportslife.Utils.mConvertTool;
 import sysu.project.lee.sportslife.Utils.mHelper;
 import sysu.project.lee.sportslife.UI.MainActivity;
 import sysu.project.lee.sportslife.R;
 
+/**
+ * 步行运动记录界面类
+ *
+ */
 @SuppressLint("HandlerLeak")
 public class StepCount extends Activity implements LocationSource,
         AMapLocationListener, OnMapScreenShotListener, OnGeocodeSearchListener {
 	private TextView m_TextView, timeView, calView;
 	private TextView distance_count, speed_count;
+    private TextView tvDistanceLabel = null;
 	private mHelper appHelper;
 	private int step;
 	private Button button_stop;
@@ -90,19 +96,7 @@ public class StepCount extends Activity implements LocationSource,
 	private String province = "未知";
 	private String addressName = "";
 	private GeocodeSearch geocoderSearch;
-
-	// public static final int LOCATION_TYPE_MAP_FOLLOW = 2;
-	// private TextView nameTextView;
-	// private SeekBar seekBar;
-	// private ListView listView;
-	// private List<Map<String, String>> data;
-	// private int current;
-	// private MediaPlayer player;
-	// private Handler handlerM = new Handler();
-	// private Button ppButton;
-	// private boolean isPause = false;
-	// private boolean isStartTrackingTouch;
-	// private PhoneListener phonelistener;
+    private int mDistance = 0;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -125,33 +119,8 @@ public class StepCount extends Activity implements LocationSource,
         button_stop = (Button) findViewById(R.id.stopRunButton);
         distance_count = (TextView) findViewById(R.id.distanceCountView);
         speed_count = (TextView) findViewById(R.id.speedViewText);
+        tvDistanceLabel = (TextView) findViewById(R.id.tv_distanceLabel);
         time = cal = 0;
-
-        // nameTextView = (TextView) findViewById(R.id.name);
-        // seekBar = (SeekBar) findViewById(R.id.seekBar);
-        // listView = (ListView) findViewById(R.id.list);
-        // ppButton = (Button) findViewById(R.id.pp);
-        // //创建一个音乐播放器
-        // player = new MediaPlayer();
-        // //显示音乐播放列表
-        // generateListView();
-        // //进度条监听器
-        // seekBar.setOnSeekBarChangeListener(new MySeekBarListener());
-        // //播放器监听器
-        // player.setOnCompletionListener(new MyPlayerListener());
-        // //意图过滤器
-        // IntentFilter filter = new IntentFilter();
-        // //播出电话暂停音乐播放
-        // filter.addAction("android.intent.action.NEW_OUTGOING_CALL");
-        // phonelistener = new PhoneListener();
-        // //创建一个电话服务
-        // getApplicationContext().registerReceiver(phonelistener, filter);
-        // TelephonyManager manager = (TelephonyManager)
-        // getSystemService(TELEPHONY_SERVICE);
-        // //监听电话状态，接电话时停止播放
-        // manager.listen(new MyPhoneStateListener(),
-        // PhoneStateListener.LISTEN_CALL_STATE);
-
 
 		bindStepService();
 
@@ -201,6 +170,10 @@ public class StepCount extends Activity implements LocationSource,
 		aMap.animateCamera(update, 1000, callback);
 	}
 
+
+    /**
+     * 初始化地图空间
+     */
 	private void initMap() {
 		if (aMap == null) {
 			aMap = mapView.getMap();
@@ -208,6 +181,9 @@ public class StepCount extends Activity implements LocationSource,
 		}
 	}
 
+    /**
+     * 配置地图空间
+     */
 	private void setUpMap() {
 		MyLocationStyle myLocationStyle = new MyLocationStyle();
 		myLocationStyle.myLocationIcon(BitmapDescriptorFactory
@@ -222,7 +198,7 @@ public class StepCount extends Activity implements LocationSource,
 				AMapOptions.LOGO_POSITION_BOTTOM_LEFT);
 		aMap.setMyLocationEnabled(true);
 		aMap.getUiSettings().setScaleControlsEnabled(true);
-		// aMap.setMyLocationType(AMap.LOCATION_TYPE_MAP_ROTATE);
+		aMap.setMyLocationType(AMap.LOCATION_TYPE_MAP_ROTATE);
 		aMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(23.0515,
                 113.3928), 14));
 		// changeCamera(CameraUpdateFactory.zoomTo(17),null);
@@ -258,7 +234,7 @@ public class StepCount extends Activity implements LocationSource,
         super.onDestroy();
         mapView.onDestroy();
 
-		// unbindService(mConnection);
+		unbindService(mConnection);
 	}
 
     /**
@@ -266,23 +242,25 @@ public class StepCount extends Activity implements LocationSource,
      */
 	public void getMapScreenShot(View v) {
 		aMap.getMapScreenShot(this);
-		// aMap.invalidate();// ˢ�µ�ͼ
 	}
 
+    /**
+     * 保存地图截图
+     * @param bitmap    Bitmap类型，截图数据
+     */
 	@SuppressLint("SimpleDateFormat")
 	public void onMapScreenShot(Bitmap bitmap) {
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss");
 		try {
-			File sdcardDir = Environment.getExternalStorageDirectory();
-			path = sdcardDir.getPath() + "/screenShot";
-			File path_temp = new File(path);
-			if (!path_temp.exists()) {
-				path_temp.mkdirs();
-			}
-			FileOutputStream fos = new FileOutputStream(path_temp
-					+ "/IRunning_" + sdf.format(new Date()) + ".png");
-			screen_shot_image_path = path_temp + "/IRunning_"
-					+ sdf.format(new Date()) + ".png";
+            path = Utils.SCREENSHOOT_PATH_BASE_DIR;
+            File path_temp = new File(path);
+            if (!path_temp.exists()) {
+                path_temp.mkdirs();
+            }
+            FileOutputStream fos = new FileOutputStream(path_temp
+                    + File.separator + "SCREENSHOOT_" + sdf.format(new Date()) + ".png");
+            screen_shot_image_path = path_temp + File.separator + "SCREENSHOOT_"
+                    + sdf.format(new Date()) + ".png";
 			boolean b = bitmap.compress(CompressFormat.PNG, 100, fos);
 			try {
 				fos.flush();
@@ -317,6 +295,11 @@ public class StepCount extends Activity implements LocationSource,
 	public void onStatusChanged(String provider, int status, Bundle extras) {
 	}
 
+    /**
+     * 定位变动回调方法，在此绘制轨迹
+     *
+     * @param aLocation AMapLocation类型 地位信息
+     */
 	public void onLocationChanged(AMapLocation aLocation) {
 		if (mListener != null && aLocation != null) {
 			mListener.onLocationChanged(aLocation);
@@ -380,8 +363,15 @@ public class StepCount extends Activity implements LocationSource,
 					aMap.addPolyline((new PolylineOptions())
 							.add(oldpoint, newpoint).width(4).color(Color.RED));
 					distance += distance_for_two_second;
-					distance_count.setText(""
-							+ (float) (Math.round(distance * 10)) / 10);
+                    mDistance = Math.round(distance);
+
+                    if(mDistance < 1000){
+                        tvDistanceLabel.setText("米");
+                        distance_count.setText(mDistance+"");
+                    }else{
+                        tvDistanceLabel.setText("公里");
+                        distance_count.setText(mConvertTool.parseMeterToFormat(mDistance));
+                    }
 					speed_count.setText(""
 							+ (float) (Math
 									.round(distance_for_two_second * 10 * 1.8))
@@ -392,9 +382,13 @@ public class StepCount extends Activity implements LocationSource,
 				}
 			}
 		}
-//		aMap.invalidate();
 	}
 
+    /**
+     * 获得AMapManager实例
+     *
+     * @param listener 定位变化接口
+     */
 	@Override
 	public void activate(OnLocationChangedListener listener) {
 		mListener = listener;
@@ -407,6 +401,9 @@ public class StepCount extends Activity implements LocationSource,
 		}
 	}
 
+    /**
+     * 销毁定位管理
+     */
 	@Override
 	public void deactivate() {
 		mListener = null;
@@ -438,6 +435,9 @@ public class StepCount extends Activity implements LocationSource,
 				Context.BIND_AUTO_CREATE + Context.BIND_DEBUG_UNBIND);
 	}
 
+    /**
+     * 发送更新界面请求线程
+     */
 	private Runnable mRunnable = new Runnable() {
 		public void run() {
 			while (true) {
@@ -451,6 +451,9 @@ public class StepCount extends Activity implements LocationSource,
 		}
 	};
 
+    /**
+     * 处理更新界面线程发来的信息
+     */
 	private Handler mHandler = new Handler() {
 		@Override
 		public void handleMessage(Message msg) {
@@ -459,11 +462,14 @@ public class StepCount extends Activity implements LocationSource,
 		}
 	};
 
+    /**
+     * 更新界面，主要更新计步数和卡路里数据
+     */
 	private void refreshUI() {
-		step = appHelper.getStep();
-		m_TextView.setText("" + step);
-		cal = step / 10;
-		calView.setText("" + cal);
+        step = appHelper.getStep();
+        cal = time / 60 * 3;
+        calView.setText( cal + "" );
+        m_TextView.setText(String.valueOf(step));
 	}
 
 	@Override
@@ -477,6 +483,9 @@ public class StepCount extends Activity implements LocationSource,
 		}
 	}
 
+    /**
+     * 停止运动时弹出的提示框
+     */
     protected void dialog() {
 
         AlertDialog.Builder alertDialog = new AlertDialog.Builder(
@@ -505,6 +514,9 @@ public class StepCount extends Activity implements LocationSource,
     private String timeShowView;
 
     Handler handler = new Handler();
+    /**
+     * 计时线程
+     */
 	Runnable runnable = new Runnable() {
         @SuppressLint("HandlerLeak")
 		@Override
@@ -516,189 +528,7 @@ public class StepCount extends Activity implements LocationSource,
 		}
 	};
 
-	/*
-	 * 监听电话状态
-	 */
-    // private final class MyPhoneStateListener extends PhoneStateListener {
-    // public void onCallStateChanged(int state, String incomingNumber) {
-    // pause();
-    // }
-    // }
-	/*
-	 * 播放器监听器
-	 */
-    // private final class MyPlayerListener implements OnCompletionListener {
-    // public void onCompletion(MediaPlayer mp) {
-    // next();
-    // }
-    // }
 
-    // 下一首按钮
-    // public void next(View view) {
-    // next();
-    // }
-
-    // 上一首按钮
-    // public void previous(View view) {
-    // previous();
-    // }
-
-    // 播放上一首
-    // private void previous() {
-    // current = current - 1 < 0 ? data.size() - 1 : current - 1;
-    // play();
-    // }
-
-    // 播放下一首
-    // private void next() {
-    // current = (current + 1) % data.size();
-    // play();
-    // }
-
-	/*
-	 * 进度条监听器
-	 */
-    // private final class MySeekBarListener implements OnSeekBarChangeListener
-    // {
-    // //移动触发
-    // public void onProgressChanged(SeekBar seekBar, int progress,
-    // boolean fromUser) {
-    // }
-    // //起始触发
-    // public void onStartTrackingTouch(SeekBar seekBar) {
-    // isStartTrackingTouch = true;
-    // }
-    // //结束触发
-    // public void onStopTrackingTouch(SeekBar seekBar) {
-    // player.seekTo(seekBar.getProgress());
-    // isStartTrackingTouch = false;
-    // }
-    // }
-
-	/*
-	 * 显示音乐播放列表
-	 */
-    // private void generateListView() {
-    // List<File> list = new ArrayList<File>();
-    // //获取sdcard中的所有歌曲
-    // findAll(Environment.getExternalStorageDirectory(), list);
-    // //播放列表进行排序，字符顺序
-    // Collections.sort(list);
-    // data = new ArrayList<Map<String, String>>();
-    // for (File file : list) {
-    // Map<String, String> map = new HashMap<String, String>();
-    // map.put("name", file.getName());
-    // map.put("path", file.getAbsolutePath());
-    // data.add(map);
-    // }
-    // SimpleAdapter adapter = new SimpleAdapter(this, data, R.layout.item,
-    // new String[] { "name" }, new int[] { R.id.mName });
-    // listView.setAdapter(adapter);
-    // listView.setOnItemClickListener(new MyItemListener());
-    // }
-    //
-    //
-    // private final class MyItemListener implements OnItemClickListener {
-    // public void onItemClick(AdapterView<?> parent, View view, int position,
-    // long id) {
-    // current = position;
-    // play();
-    // }
-    // }
-    //
-    // //播放
-    // private void play() {
-    // try {
-    // //重播
-    // player.reset();
-    // //获取歌曲路径
-    // player.setDataSource(data.get(current).get("path"));
-    // //缓冲
-    // player.prepare();
-    // //开始播放
-    // player.start();
-    // //显示歌名
-    // nameTextView.setText(data.get(current).get("name"));
-    // //设置进度条长度
-    // seekBar.setMax(player.getDuration());
-    // ppButton.setBackgroundResource(R.drawable.stopmusic);
-    // //发送一个Runnable, handler收到之后就会执行run()方法
-    // handlerM.post(new Runnable() {
-    // public void run() {
-    // // 更新进度条状态
-    // if (!isStartTrackingTouch)
-    // seekBar.setProgress(player.getCurrentPosition());
-    // // 1秒之后再次发送
-    // handlerM.postDelayed(this, 1000);
-    // }
-    // });
-    // } catch (Exception e) {
-    // e.printStackTrace();
-    // }
-    // }
-    //
-    // /**
-    // * 查找文件路径中所有mp3文件
-    // * @param file 要找的目录
-    // * @param list 用来装文件的List
-    // */
-    // private void findAll(File file, List<File> list) {
-    // File[] subFiles = file.listFiles();
-    // if (subFiles != null)
-    // for (File subFile : subFiles) {
-    // if (subFile.isFile() && subFile.getName().endsWith(".mp3"))
-    // list.add(subFile);
-    // else if (subFile.isDirectory())
-    // findAll(subFile, list);
-    // }
-    // }
-    //
-    // /*
-    // * 暂停/播放按钮
-    // */
-    // public void pp(View view) {
-    // //默认从第一首歌曲开始播放
-    // if (!player.isPlaying() && !isPause) {
-    // play();
-    // return;
-    // }
-    // Button button = (Button) view;
-    // //暂停/播放按钮
-    // if (!isPause) {
-    // pause();
-    // button.setBackgroundResource(R.drawable.playmusic);
-    // } else {
-    // resume();
-    // button.setBackgroundResource(R.drawable.stopmusic);
-    // }
-    // }
-    //
-    // /*
-    // * 开始操作
-    // */
-    // private void resume() {
-    //
-    // if (isPause) {
-    // player.start();
-    // isPause = false;
-    // }
-    // }
-    //
-    // //暂停
-    // private void pause() {
-    // if (player != null && player.isPlaying()) {
-    // player.pause();
-    // isPause = true;
-    // }
-    // }
-    // /*
-    // * 收到广播时暂停
-    // */
-    // private final class PhoneListener extends BroadcastReceiver {
-    // public void onReceive(Context context, Intent intent) {
-    // pause();
-    // }
-    // }
 
 	@Override
 	protected void onNewIntent(Intent intent) {

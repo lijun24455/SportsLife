@@ -26,4 +26,15 @@ public class mConvertTool {
         return strHours+"''"+strMinutes+"''"+strSecond;
     }
 
+    public static String parseMeterToFormat(int meter){
+
+        int data = meter;
+
+        String strMeter = (data % 1000) / 100  + "";
+        String strKilometer = data / 1000 + "";
+
+        return strKilometer + "." + strMeter;
+
+    }
+
 }

@@ -7,6 +7,12 @@ import android.util.Log;
 
 import sysu.project.lee.sportslife.R;
 
+/**
+ *
+ * @deprecated 界面显示风格控制工具类
+ * @author lee
+ *
+ */
 public class UIHelper
 {
 	public static final String tag = "UIHelper";
@@ -44,7 +50,7 @@ public class UIHelper
 	
 	/**
 	 * @description 初始化activity的主题
-	 * @param context
+	 * @param context   上下文
 	 */
 	public static void initTheme(Context context)
 	{

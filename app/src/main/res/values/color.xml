@@ -19,4 +19,10 @@
     <color name="holo_orange_dark">#ffff8800</color>
     <color name="holo_blue_bright">#ff00ddff</color>
 	<color name="bar_bg">#f0bfbfbf</color>
+    <color name="material_pink">#e91e63</color>
+    <color name="material_dpuple">#673ab7</color>
+    <color name="material_cyan">#00bcd4</color>
+    <color name="material_lime">#cddc36</color>
+    <color name="material_green">#259b24</color>
+    <color name="material_orange">#ff9800</color>
 </resources>

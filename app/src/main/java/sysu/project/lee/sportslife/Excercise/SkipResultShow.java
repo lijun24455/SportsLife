@@ -12,15 +12,23 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import sysu.project.lee.sportslife.Database.HistoryDBHelper;
 import sysu.project.lee.sportslife.Database.HistoryRealize;
 import sysu.project.lee.sportslife.Database.HistoryService;
 import sysu.project.lee.sportslife.HeartBeat.HeartRateMonitor;
 import sysu.project.lee.sportslife.R;
+import sysu.project.lee.sportslife.User.UserEntity;
+import sysu.project.lee.sportslife.User.Utils;
 import sysu.project.lee.sportslife.Utils.mConvertTool;
 import sysu.project.lee.sportslife.Utils.mHelper;
 
 /**
+ * 跳绳运动结果数据展示类
  * Created by lee on 14年11月23日.
  */
 public class SkipResultShow extends Activity {
@@ -39,6 +47,8 @@ public class SkipResultShow extends Activity {
     private int mTotalStepCount = 0;
     private int mTotalCal = 0;
     private String mHeartRateRecord = null;
+    private UserEntity mCurrentUser = null;
+    private int mCurrentUserId = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,17 +61,20 @@ public class SkipResultShow extends Activity {
         HistoryDBHelper dbHelper = new HistoryDBHelper(this);
         dbHelper.getWritableDatabase();
 
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss");
+
         Intent intent = getIntent();
         mPlaceRecord = intent.getStringExtra("Location");
         mTimeRecord = appSportsLifeHelper.getCurrExercise().getTime();
         mTotalTimeRecord = appSportsLifeHelper.getCurrExercise().getTotalTime() + "";
         mTotalDistanceRecord = appSportsLifeHelper.getCurrExercise().getTotalDistance() + "";
         mCurrentTypeRecord = appSportsLifeHelper.getEtype();
-        mImageRecord = intent.getStringExtra("screen_shot_name");
+//        mImageRecord = intent.getStringExtra("screen_shot_name");
+        mImageRecord = "SCREENSHOOT_" + sdf.format(new Date()) + ".png";
         mTotalCal = appSportsLifeHelper.getCurrExercise().getTotalCal();
         mTotalStepCount = appSportsLifeHelper.getCurrExercise().getTotalCount();
-
-
+        mCurrentUser = appSportsLifeHelper.getCurrentUser();
+        mCurrentUserId = mCurrentUser.getId();
 
 
         final HistoryService dbService = new HistoryRealize(this);
@@ -71,6 +84,7 @@ public class SkipResultShow extends Activity {
             public void onClick(View v) {
 
                 final Object[] recordItem = {
+                        mCurrentUserId,
                         mCurrentTypeRecord,
                         mTimeRecord,
                         mTotalDistanceRecord,
@@ -148,10 +162,11 @@ public class SkipResultShow extends Activity {
     }
 
     /**
+     *获得心跳检测界面返回的心跳数据
      *
      * @param requestCode   请求码，即调用startActivityForResult()传递过去的值
      * @param resultCode    结果码，结果码用于标识返回数据来自哪个新Activity
-     * @param data
+     * @param data      跳转意图，心跳检测界面跳转回来的意图
      */
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -167,6 +182,12 @@ public class SkipResultShow extends Activity {
 
     }
 
+    /**
+     * 向运动记录数据库中添加新的条目
+     *
+     * @param dbService     数据库实例
+     * @param recordItem    字符串数组，运动记录参数
+     */
     private void dbInsertItem(HistoryService dbService, Object[] recordItem) {
         if(dbService.Insert(recordItem)){
             appSportsLifeHelper.DisplayToast("记录保存成功!");
@@ -180,6 +201,9 @@ public class SkipResultShow extends Activity {
         SkipResultShow.this.finish();
     }
 
+    /**
+     * 初始化界面控件
+     */
     private void initView() {
         appSportsLifeHelper = (mHelper) getApplicationContext();
         btnNaviBack = (ImageView) findViewById(R.id.navi_back);
@@ -191,7 +215,7 @@ public class SkipResultShow extends Activity {
         btnSaveRecord = (Button) findViewById(R.id.btn_save_record);
         String formatedTimeShow = mConvertTool.parseSecondToTimeFormat(appSportsLifeHelper.getCurrExercise().getTotalTime()+"");
         mSkipCountResult.setText(appSportsLifeHelper.getCurrExercise().getTotalCount()+"");
-        mCalResult.setText(appSportsLifeHelper.getCurrExercise().getTotalCal()+"");
+        mCalResult.setText(appSportsLifeHelper.getCurrExercise().getTotalCal()+"大卡");
         mTimeResult.setText(formatedTimeShow);
     }
 
