@@ -6,11 +6,37 @@
     android:background="#cecece">
 
     <include layout="@layout/history_title"/>
+    <RelativeLayout
+        android:id="@+id/rl_no_history"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone"
+        android:background="@color/material_blue_grey_800"
+        >
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:textSize="20dp"
+            android:textStyle="bold"
+            android:textColor="@color/white"
+            android:text="--------------------------------\n~ 空空如也，快去运动吧 ~\n--------------------------------"/>
+
+
+    </RelativeLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
+        android:background="@color/holo_blue_dark"
+        android:layout_marginBottom="2dp">
+
+    </LinearLayout>
 
     <ListView
         android:id="@+id/lv_exercixe_history_record"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+
         >
     </ListView>
 

@@ -9,11 +9,9 @@ import org.apache.http.HttpStatus;
 import android.util.Log;
 
 /**
- * @author:	zcloud
+ * @author:	lee
  *
- * @description: TODO
- *
- * @date: 2013/10/10
+ * @description: Http链接工具类
  *
  */
 public class HttpUtils
@@ -23,8 +21,9 @@ public class HttpUtils
 	private static final int TIMEOUT = 1000*10;
 	
 	/**
-	 * @param url
-	 * @return InputStream
+     * @deprecated 根据URL获得输入流对象
+	 * @param url   String类型，网络地址URL
+	 * @return InputStream类型，输入流对象
 	 * @throws Exception 
 	 */
 	public static InputStream getInputStream(String url) throws Exception

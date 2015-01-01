@@ -50,7 +50,9 @@ import sysu.project.lee.sportslife.Excercise.RunBikeCount;
 import sysu.project.lee.sportslife.Excercise.SkipCount;
 import sysu.project.lee.sportslife.Excercise.StepCount;
 import sysu.project.lee.sportslife.R;
+import sysu.project.lee.sportslife.User.UserEntity;
 import sysu.project.lee.sportslife.Utils.ToastUtils;
+import sysu.project.lee.sportslife.Utils.mConvertTool;
 import sysu.project.lee.sportslife.Utils.mHelper;
 
 public class SportsFragment extends Fragment implements LocationSource, AMapLocalWeatherListener, AMapLocationListener{
@@ -60,8 +62,8 @@ public class SportsFragment extends Fragment implements LocationSource, AMapLoca
     private OnLocationChangedListener mListener;
     private TextView mWeather;
     private TextView mAirHumidity;
-    private TextView mTotalDistanceTody;
-    private TextView mTotalTimeTody;
+    private TextView mTotalUseTimesTody;
+    private TextView mTotalTimeSpendTody;
     private TextView mExerciseType;
     private ImageView mExerciseTypeImg;
     private int mYear = 0;
@@ -71,32 +73,38 @@ public class SportsFragment extends Fragment implements LocationSource, AMapLoca
     private int mMinute = 0;
     private StringBuilder mdate = null;
     private StringBuilder mtime = null;
-    private int Total_distance = 0;
-    private int Total_time = 0;
+    private int totalUseCount = 0;
+    private int totalTimesSpendCount = 0;
     private Button mStartButton;
     private String eDest, eTime;
     private int eType = 0;
 
     private mHelper mSportsLifeHelper = null;
+    private UserEntity mCurrentUser = null;
 
     private PopupMenu mExerciseTypePopupMenu;
     private RelativeLayout btnChooseExerciseType;
+    private int mCurrentUserId = 0;
 
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         Log.i("fragmentLife", "onActivityCreated()");
+        mCurrentUser = (UserEntity) getActivity().getIntent().getSerializableExtra("USER_INFO");
+        mCurrentUserId = mCurrentUser.getId();
         mWeather = (TextView) getView().findViewById(R.id.weatherViewText);
         mAirHumidity = (TextView) getView().findViewById(R.id.airHumidityViewText);
         mapView = (MapView) getView().findViewById(R.id.mapAtStart);
-        mTotalTimeTody = (TextView) getView().findViewById(R.id.todayTotalTime);
-        mTotalDistanceTody = (TextView) getView().findViewById(R.id.todayTotalDis);
+        mTotalTimeSpendTody = (TextView) getView().findViewById(R.id.todayTotalTime);
+        mTotalUseTimesTody = (TextView) getView().findViewById(R.id.todayTotalDis);
         mStartButton = (Button) getView().findViewById(R.id.btn_start);
         mSportsLifeHelper = (mHelper) getActivity().getApplicationContext();
+        mSportsLifeHelper.setCurrentUser(mCurrentUser);
         mExerciseType = (TextView) getView().findViewById(R.id.tv_exercise_type);
         btnChooseExerciseType = (RelativeLayout) getView().findViewById(R.id.btn_choose_exercise_type);
         mExerciseTypeImg = (ImageView) getView().findViewById(R.id.iv_exercise_type_img);
+
 
         reFreshUI();
 
@@ -138,22 +146,7 @@ public class SportsFragment extends Fragment implements LocationSource, AMapLoca
         HistoryDBHelper helper = new HistoryDBHelper(getActivity()); // 建立数据库
         helper.getWritableDatabase();
 
-        HistoryService service = new HistoryRealize(getActivity());
-        List<Map<String, String>> list = service.listHistoryMaps(null);
-
-        if (!list.isEmpty()) {
-            for (int i = 0; i < list.size(); ++i) {
-                String[] datePartOne;
-                datePartOne = list.get(i).get("date").split(" ");
-                if (mdate.toString().equals(datePartOne[0])) {
-                    Total_distance += Integer.parseInt(list.get(i).get(
-                            "distance"));
-                    Total_time += Integer.parseInt(list.get(i).get("time"));
-                }
-            }
-        }
-        mTotalDistanceTody.setText(String.valueOf(Total_distance));
-        mTotalTimeTody.setText(String.valueOf(Total_time));
+        reFreshTimeCountCard();
 
         eDest = "test";
 
@@ -224,20 +217,44 @@ public class SportsFragment extends Fragment implements LocationSource, AMapLoca
 
     }
 
+    private void reFreshTimeCountCard() {
+        HistoryService service = new HistoryRealize(getActivity());
+        String mArgs[] = {mCurrentUserId+""};
+        List<Map<String, String>> list = service.listHistoryByUserID(mArgs);
+
+        totalTimesSpendCount = 0;
+        totalUseCount = 0;
+        if (!list.isEmpty()) {
+            for (int i = 0; i < list.size(); ++i) {
+                String[] datePartOne;
+                datePartOne = list.get(i).get("date").split(" ");
+                if (mdate.toString().equals(datePartOne[0])) {
+                    totalUseCount ++;
+                    totalTimesSpendCount += Integer.parseInt(list.get(i).get("time"));
+                }
+            }
+        }
+        mTotalUseTimesTody.setText(String.valueOf(totalUseCount));
+        mTotalTimeSpendTody.setText(mConvertTool.parseSecondToTimeFormat(String.valueOf(totalTimesSpendCount)));
+    }
+
     private void reFreshUI() {
         switch (eType){
             case 0:
                 mExerciseType.setText("跑步");
-//                mExerciseTypeImg.setImageResource(R.drawable.);
+                mExerciseTypeImg.setImageResource(R.drawable.ic_run_label);
                 break;
             case 1:
                 mExerciseType.setText("骑行");
+                mExerciseTypeImg.setImageResource(R.drawable.ic_bike_label);
                 break;
             case 2:
                 mExerciseType.setText("步行");
+                mExerciseTypeImg.setImageResource(R.drawable.ic_step_label);
                 break;
             case 3:
                 mExerciseType.setText("跳绳");
+                mExerciseTypeImg.setImageResource(R.drawable.ic_skip_label);
                 break;
         }
     }
@@ -248,6 +265,7 @@ public class SportsFragment extends Fragment implements LocationSource, AMapLoca
         super.onResume();
         Log.i("fragmentLife","onResume()");
         mapView.onResume();
+        reFreshTimeCountCard();
     }
 
     @Override

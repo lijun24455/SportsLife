@@ -10,8 +10,6 @@ import java.util.regex.Pattern;
 
 /**
  * @description 过滤html
- * @author zcloud
- * @date 2013/11/14
  */
 public class HtmlFilter
 {
@@ -28,8 +26,8 @@ public class HtmlFilter
 	
 	
 	/**
-	 * @description
-	 * @param input
+	 * @description 处理html文件内容
+	 * @param input String类型，文件内容
 	 * @return String
 	 */
 	public static String filterHtml(String input)
@@ -57,7 +55,12 @@ public class HtmlFilter
 		}
 		return imgTags;
 	}
-	
+
+    /**
+     * @deprecated 获得html页面中的图片集合
+     * @param input String类型，html页面数据
+     * @return  ArrayList类型，返回html页面中的图片集合
+     */
 	public static ArrayList<String> getImageSrcs(String input)
 	{
 		ArrayList<String> srcs = new ArrayList<String>();

@@ -6,6 +6,9 @@ import java.util.List;
 
 import sysu.project.lee.sportslife.Friend.Friend;
 
+/**
+ * 运动实体类
+ */
 public class Exercise implements Cloneable {
     private int ExerType; // 运动类型 0->跑步，1->骑行，2->步行，3->跳绳
     private String ExerTime; // 开始时间
@@ -34,6 +37,12 @@ public class Exercise implements Cloneable {
     }
 
 
+    /**
+     * 跑步，骑行，步行运动需要记录类型时间和距离
+     * @param EType 运动类型
+     * @param ETime 运动时间
+     * @param Dest  运动距离
+     */
 	public Exercise(int EType, String ETime, String Dest) {
 		ExerType = EType;
 		ExerTime = ETime;
@@ -54,16 +63,6 @@ public class Exercise implements Cloneable {
         isFinish = false;
 	}
 
-	public Exercise(int EType, String ETime, String Dest, int ECal,
-			List<Friend> fs) {
-		ExerType = EType;
-		ExerTime = ETime;
-		Destination = Dest;
-		ExerCal = ECal;
-        TotalCount = TotalCal = TotalTime = 0;
-		friends = new ArrayList<Friend>();
-        isFinish = false;
-	}
 
 	public int getTotalDistance() {
 		return TotalDistance;

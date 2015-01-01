@@ -12,14 +12,21 @@ import android.graphics.Matrix;
 
 
 /**
- * @author zcloud
- * @date 2013/11/13
+ * 图片工具集合类
+ * @author lee
  */
 public class ImageUtils
 {
 	public static final CompressFormat mCompressForamat = CompressFormat.JPEG;
 	public static final int mQuality = 70;
-	
+
+    /**
+     * @deprecated 获得制定尺寸的缩放图片
+     * @param bitmap    Bitmap类型，需要被处理的图片
+     * @param w     int类型，需要缩放到的宽度
+     * @param h     int类型，需要缩放到的高度
+     * @return      Bitmap类型，返回缩放后的图片
+     */
 	public static Bitmap zoomBitmap(Bitmap bitmap, int w, int h)
 	{
 		Bitmap newBitmap = null;
@@ -42,7 +49,12 @@ public class ImageUtils
 	{
 		FileUtils.saveToFile(is, path, fileName);
 	}
-	
+
+    /**
+     * @deprecated 将图片保存到SD卡
+     * @param bmp   Bitmap类型，要保存的图片
+     * @param url   String类型，图片URL地址
+     */
 	public static void saveImageToSD(Bitmap bmp, String url)
 	{
 		try

@@ -35,6 +35,7 @@ import sysu.project.lee.sportslife.News.Utils.UIHelper;
 import sysu.project.lee.sportslife.R;
 import sysu.project.lee.sportslife.User.UserEntity;
 import sysu.project.lee.sportslife.Utils.ToastUtils;
+import sysu.project.lee.sportslife.Utils.mHelper;
 
 @SuppressLint("JavascriptInterface")
 @SuppressWarnings("deprecation")
@@ -70,8 +71,10 @@ public class ItemDetail extends FragmentActivity
 		super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         mCurrentItem = (FeedItem) getIntent().getSerializableExtra("CLICKED_ITEM");
+
         mCurrentUser = mCurrentItem.getUser();
-        Log.i("NewsDB", "-----user----->"+mCurrentUser.toString());
+        Log.i("CurrentItem","currentItem:"+mCurrentItem.toString());
+
 		initView();
 		loadData();
 //		initComments();
@@ -128,7 +131,8 @@ public class ItemDetail extends FragmentActivity
 //		}
 
 //        isFavorite = getIntent().getBooleanExtra("is_favorite", false);
-        isFavorite = mCurrentItem.isFavorite();
+        isFavorite = mCurrentItem.getFavorite();
+        link = mCurrentItem.getLink();
         naviBackBtn = (ImageView) findViewById(R.id.navi_back);
         naviBackBtn.setOnClickListener(new OnClickListener() {
             @Override
@@ -170,7 +174,7 @@ public class ItemDetail extends FragmentActivity
 				{
 					collectBtn.setImageResource(favoIcons[0]);
 //					FavoItemDbHelper.removeRecord(db, link);
-                    DataSupport.delete(FeedItem.class, mCurrentItem.getId());
+                    DataSupport.deleteAll(FeedItem.class, "link=?",mCurrentItem.getLink());
                     Toast.makeText(ItemDetail.this, "取消了收藏", Toast.LENGTH_SHORT).show();
                     isFavorite = false;
 				}
@@ -182,19 +186,12 @@ public class ItemDetail extends FragmentActivity
 //					FavoItemDbHelper
 //							.insert(db, title, pubdate, itemDetail,
 //									link, firstImgUrl, sectionTitle, sectionUrl);
-                    mCurrentItem.setUser(mCurrentUser);
+
+                    mCurrentItem.setFavorite(isFavorite);
+                    mCurrentItem.setUserentity_id(mCurrentUser.getId());
                     if(mCurrentItem.save()){
                         Toast.makeText(ItemDetail.this, "收藏成功!", Toast.LENGTH_SHORT)
                                 .show();
-
-                        UserEntity userEntity = new UserEntity();
-                        List<FeedItem> list = mCurrentUser.getFeeditemList();
-                        Log.i("UserDB","-----currentuserFeeditems:"+list.size());
-                        list.add(mCurrentItem);
-                        userEntity.setFeeditemList(list);
-                        userEntity.update(mCurrentUser.getId());
-
-                        ToastUtils.show(ItemDetail.this, "文章已经存入帐号");
                     }
                 }
 				Intent intent = new Intent();
@@ -202,7 +199,7 @@ public class ItemDetail extends FragmentActivity
 				intent.putExtra("is_favorite", isFavorite);
 				intent.setAction(ActionLabelUtils.FAVORITE_ACTION);
 				sendBroadcast(intent);
-				
+				/*
 				new Thread()
 				{
 					@Override
@@ -222,6 +219,7 @@ public class ItemDetail extends FragmentActivity
 						helper.saveObject(entity, cache);
 					}
 				}.start();
+				*/
 			}
 		});
 //		countTv = (TextView) findViewById(R.id.fid_tv_comment_count);

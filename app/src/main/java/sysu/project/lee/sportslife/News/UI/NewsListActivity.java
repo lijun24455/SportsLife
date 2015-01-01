@@ -26,6 +26,8 @@ import sysu.project.lee.sportslife.User.UserEntity;
 import sysu.project.lee.sportslife.Utils.ToastUtils;
 
 /**
+ * 新闻资讯列表界面
+ *
  * Created by lee on 14年12月1日.
  */
 public class NewsListActivity extends Activity {
@@ -47,16 +49,22 @@ public class NewsListActivity extends Activity {
 
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.news_list_layout);
+
         Intent intent = getIntent();
         sectionUrl = intent.getStringExtra("url");
-        sectionTitle = "NEONAN";
+        sectionTitle = intent.getStringExtra("section_title");
         mCurrentUser = (UserEntity) intent.getSerializableExtra("CURRENT_USER");
+
         initView();
         initData();
         initBroadeCast();
 
     }
 
+    /**
+     * 初始化界面控件
+     *
+     */
     private void initView() {
         btn_navi_back = (ImageView) findViewById(R.id.navi_back);
         mListView = (PullToRefreshListView) findViewById(R.id.news_list);
@@ -69,7 +77,7 @@ public class NewsListActivity extends Activity {
 
                 final String link = item.getLink();
                 // 改变阅读状态
-                if (!item.isReaded())
+                if (!item.getReaded())
                 {
                     item.setReaded(true);
                     mAdapter.notifyDataSetChanged();
@@ -135,6 +143,10 @@ public class NewsListActivity extends Activity {
 
     }
 
+    /**
+     * 初始化数据与控件绑定
+     *
+     */
     private void initData() {
 //        mAdapter = new ItemListAdapter(NewsListActivity.this, dataList);
 //        mListView.setAdapter(mAdapter);
@@ -155,30 +167,10 @@ public class NewsListActivity extends Activity {
     }
 
 
-//    /**
-//     * 显示进度框
-//     */
-//    private void showProgressDialog() {
-//        if (progressDialog == null){
-//            progressDialog = new ProgressDialog(this);
-//            progressDialog.setMessage("正在加载……");
-//            progressDialog.setCancelable(false);
-//        }
-//        progressDialog.show();
-//
-//    }
-//
-//    /**
-//     * 关闭进度框
-//     */
-//
-//    private void closeProgressDialog() {
-//        if (progressDialog != null){
-//            progressDialog.dismiss();
-//        }
-//    }
-
-
+    /**
+     * 下拉刷新异步任务
+     *
+     */
     private class RefreshTask extends AsyncTask<String, Integer, ItemListEntity>
     {
         @Override
@@ -229,6 +221,9 @@ public class NewsListActivity extends Activity {
         }
     }
 
+    /**
+     * 初始化广播，接收被收藏的资讯item
+     */
     private void initBroadeCast()
     {
         mReceiver = new BroadcastReceiver()

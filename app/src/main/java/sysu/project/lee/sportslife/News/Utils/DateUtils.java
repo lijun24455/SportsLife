@@ -2,18 +2,17 @@ package sysu.project.lee.sportslife.News.Utils;
 
 
 /**
- * @description 
- * @author zcloud
- * @date 2013/11/13
+ *  日期格式转换工具类
+ *
  */
 public class DateUtils
 {
 
 	/**
-	 * @description rfc实例：Tue, 08 Oct 2013 18:02:03 +0800��
-	 * 转为yy/mm/day
-	 * @param date
-	 * @return String
+     * @deprecated  将日期数据格式化为mm月dd日XX：XX的格式
+     *
+	 * @param date String类型，日期数据字符串
+	 * @return String类型，mm月
 	 */
 	public static String rfcNormalDate(String date)
 	{

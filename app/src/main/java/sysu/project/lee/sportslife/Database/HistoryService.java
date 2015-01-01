@@ -4,7 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * 定义好增删改查接口
+ * 运动记录数据库增删改查接口
  */
 public interface HistoryService {
 
@@ -19,4 +19,7 @@ public interface HistoryService {
 
     // 使用 List<Map<String, String>> 做一个封装，比如说查询数据库的时候返回的多条记录
     public List<Map<String, String>> listHistoryMaps(String[] selectionArgs);
+
+    public List<Map<String, String>> listHistoryByUserID(String[] userId);
+
 }

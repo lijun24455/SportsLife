@@ -1,17 +1,35 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
+    android:background="#cecece"
     tools:context="sysu.project.lee.sportslife.UI.FindsFragment">
 
     <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <RelativeLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Fragmen_Finds"
-        android:textSize="30dp"
-        android:layout_gravity="center"
-        android:textStyle="bold"/> />
+        android:layout_centerInParent="true">
 
-</LinearLayout>
+        <ImageView
+            android:id="@+id/img_under_coding"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_under_coding"
+            />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="5dp"
+            android:text="正在建设中……"
+            android:textColor="@color/white"
+            android:textSize="30dp"
+            android:layout_gravity="center"
+            android:textStyle="bold"
+            android:layout_below="@+id/img_under_coding"/>
+    </RelativeLayout>
+
+
+
+</RelativeLayout>

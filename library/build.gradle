@@ -13,10 +13,14 @@ dependencies {
 }
 
 android {
+<<<<<<< HEAD
     compileSdkVersion 16
 <<<<<<< HEAD
     buildToolsVersion '21.0.0'
 =======
+=======
+    compileSdkVersion 21
+>>>>>>> c061d7e4a8180a795032f904caa38909f407521c
     buildToolsVersion '21.1.2'
 >>>>>>> origin/master
 

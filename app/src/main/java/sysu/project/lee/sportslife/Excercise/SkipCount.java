@@ -13,6 +13,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.View;
@@ -34,6 +35,10 @@ import sysu.project.lee.sportslife.R;
 import sysu.project.lee.sportslife.Utils.mConvertTool;
 import sysu.project.lee.sportslife.Utils.mHelper;
 
+/**
+ * 跳绳运动记录界面类
+ *
+ */
 @SuppressLint("HandlerLeak")
 public class SkipCount extends Activity implements  AMapLocationListener{
 
@@ -44,24 +49,13 @@ public class SkipCount extends Activity implements  AMapLocationListener{
 	private int time;
 	private int cal;
     private TextView countView;
+    private boolean flag = false;
 
     private String mLocationCity = "未知地点";
 
     private LocationManagerProxy mlocationManagerProxy;
 
 
-	// public static final int LOCATION_TYPE_MAP_FOLLOW = 2;
-	// private TextView nameTextView;
-	// private SeekBar seekBar;
-	// private ListView listView;
-	// private List<Map<String, String>> data;
-	// private int current;
-	// private MediaPlayer player;
-	// private Handler handlerM = new Handler();
-	// private Button ppButton;
-	// private boolean isPause = false;
-	// private boolean isStartTrackingTouch;
-	// private PhoneListener phonelistener;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -83,41 +77,16 @@ public class SkipCount extends Activity implements  AMapLocationListener{
         countView = (TextView) findViewById(R.id.tv_skip_count);
         time = cal = 0;
 
-
-        // nameTextView = (TextView) findViewById(R.id.name);
-        // seekBar = (SeekBar) findViewById(R.id.seekBar);
-        // listView = (ListView) findViewById(R.id.list);
-        // ppButton = (Button) findViewById(R.id.pp);
-        // //创建一个音乐播放器
-        // player = new MediaPlayer();
-        // //显示音乐播放列表
-        // generateListView();
-        // //进度条监听器
-        // seekBar.setOnSeekBarChangeListener(new MySeekBarListener());
-        // //播放器监听器
-        // player.setOnCompletionListener(new MyPlayerListener());
-        // //意图过滤器
-        // IntentFilter filter = new IntentFilter();
-        // //播出电话暂停音乐播放
-        // filter.addAction("android.intent.action.NEW_OUTGOING_CALL");
-        // phonelistener = new PhoneListener();
-        // //创建一个电话服务
-        // getApplicationContext().registerReceiver(phonelistener, filter);
-        // TelephonyManager manager = (TelephonyManager)
-        // getSystemService(TELEPHONY_SERVICE);
-        // //监听电话状态，接电话时停止播放
-        // manager.listen(new MyPhoneStateListener(),
-        // PhoneStateListener.LISTEN_CALL_STATE);
-
-
 		bindStepService();
 
+        flag = true;
 		new Thread(mRunnable).start();
 
 		handler.postDelayed(runnable, 1000);
 
 		button_stop.setOnClickListener(new Button.OnClickListener() {
 			public void onClick(View v) {
+                flag = false;
 				unbindService(mConnection);
 				if (appHelper != null) {
 					if (appHelper.getEtype() == 3) {
@@ -189,15 +158,21 @@ public class SkipCount extends Activity implements  AMapLocationListener{
 		}
 	};
 
+    /**
+     * 绑定计数服务
+     */
 	private void bindStepService() {
 		startService(new Intent(SkipCount.this, StepService.class));
 		bindService(new Intent(SkipCount.this, StepService.class), mConnection,
 				Context.BIND_AUTO_CREATE + Context.BIND_DEBUG_UNBIND);
 	}
 
+    /**
+     * 界面刷新消息发送线程
+     */
 	private Runnable mRunnable = new Runnable() {
 		public void run() {
-			while (true) {
+			while (flag) {
 				try {
 					Thread.sleep(1000);
 					mHandler.sendMessage(mHandler.obtainMessage());
@@ -208,24 +183,36 @@ public class SkipCount extends Activity implements  AMapLocationListener{
 		}
 	};
 
+    /**
+     * 接受刷新线程发来的信息，执行界面刷新任务
+     */
 	private Handler mHandler = new Handler() {
 		@Override
 		public void handleMessage(Message msg) {
 			super.handleMessage(msg);
 			refreshUI();
+
+            Log.i("STEP","---->step still");
+
 		}
 	};
 
+    /**
+     * 重置全局Helper
+     */
     private void reSetHelper() {
         appHelper.setStep(0);
         appHelper.setNum(0);
     }
 
+    /**
+     * 刷新界面，主要刷新计数和热量数据
+     */
 	private void refreshUI() {
-		step = appHelper.getStep();
-        countView.setText(step+"");
-		cal = step / 10;
-		calView.setText("" + cal);
+        step = appHelper.getStep();
+        cal = time / 60 * 8;
+        calView.setText( cal + "" );
+        countView.setText(String.valueOf(step));
 	}
 
 	@Override
@@ -277,190 +264,6 @@ public class SkipCount extends Activity implements  AMapLocationListener{
 		}
 	};
 
-	/*
-	 * 监听电话状态
-	 */
-    // private final class MyPhoneStateListener extends PhoneStateListener {
-    // public void onCallStateChanged(int state, String incomingNumber) {
-    // pause();
-    // }
-    // }
-	/*
-	 * 播放器监听器
-	 */
-    // private final class MyPlayerListener implements OnCompletionListener {
-    // public void onCompletion(MediaPlayer mp) {
-    // next();
-    // }
-    // }
-
-    // 下一首按钮
-    // public void next(View view) {
-    // next();
-    // }
-
-    // 上一首按钮
-    // public void previous(View view) {
-    // previous();
-    // }
-
-    // 播放上一首
-    // private void previous() {
-    // current = current - 1 < 0 ? data.size() - 1 : current - 1;
-    // play();
-    // }
-
-    // 播放下一首
-    // private void next() {
-    // current = (current + 1) % data.size();
-    // play();
-    // }
-
-	/*
-	 * 进度条监听器
-	 */
-    // private final class MySeekBarListener implements OnSeekBarChangeListener
-    // {
-    // //移动触发
-    // public void onProgressChanged(SeekBar seekBar, int progress,
-    // boolean fromUser) {
-    // }
-    // //起始触发
-    // public void onStartTrackingTouch(SeekBar seekBar) {
-    // isStartTrackingTouch = true;
-    // }
-    // //结束触发
-    // public void onStopTrackingTouch(SeekBar seekBar) {
-    // player.seekTo(seekBar.getProgress());
-    // isStartTrackingTouch = false;
-    // }
-    // }
-
-	/*
-	 * 显示音乐播放列表
-	 */
-    // private void generateListView() {
-    // List<File> list = new ArrayList<File>();
-    // //获取sdcard中的所有歌曲
-    // findAll(Environment.getExternalStorageDirectory(), list);
-    // //播放列表进行排序，字符顺序
-    // Collections.sort(list);
-    // data = new ArrayList<Map<String, String>>();
-    // for (File file : list) {
-    // Map<String, String> map = new HashMap<String, String>();
-    // map.put("name", file.getName());
-    // map.put("path", file.getAbsolutePath());
-    // data.add(map);
-    // }
-    // SimpleAdapter adapter = new SimpleAdapter(this, data, R.layout.item,
-    // new String[] { "name" }, new int[] { R.id.mName });
-    // listView.setAdapter(adapter);
-    // listView.setOnItemClickListener(new MyItemListener());
-    // }
-    //
-    //
-    // private final class MyItemListener implements OnItemClickListener {
-    // public void onItemClick(AdapterView<?> parent, View view, int position,
-    // long id) {
-    // current = position;
-    // play();
-    // }
-    // }
-    //
-    // //播放
-    // private void play() {
-    // try {
-    // //重播
-    // player.reset();
-    // //获取歌曲路径
-    // player.setDataSource(data.get(current).get("path"));
-    // //缓冲
-    // player.prepare();
-    // //开始播放
-    // player.start();
-    // //显示歌名
-    // nameTextView.setText(data.get(current).get("name"));
-    // //设置进度条长度
-    // seekBar.setMax(player.getDuration());
-    // ppButton.setBackgroundResource(R.drawable.stopmusic);
-    // //发送一个Runnable, handler收到之后就会执行run()方法
-    // handlerM.post(new Runnable() {
-    // public void run() {
-    // // 更新进度条状态
-    // if (!isStartTrackingTouch)
-    // seekBar.setProgress(player.getCurrentPosition());
-    // // 1秒之后再次发送
-    // handlerM.postDelayed(this, 1000);
-    // }
-    // });
-    // } catch (Exception e) {
-    // e.printStackTrace();
-    // }
-    // }
-    //
-    // /**
-    // * 查找文件路径中所有mp3文件
-    // * @param file 要找的目录
-    // * @param list 用来装文件的List
-    // */
-    // private void findAll(File file, List<File> list) {
-    // File[] subFiles = file.listFiles();
-    // if (subFiles != null)
-    // for (File subFile : subFiles) {
-    // if (subFile.isFile() && subFile.getName().endsWith(".mp3"))
-    // list.add(subFile);
-    // else if (subFile.isDirectory())
-    // findAll(subFile, list);
-    // }
-    // }
-    //
-    // /*
-    // * 暂停/播放按钮
-    // */
-    // public void pp(View view) {
-    // //默认从第一首歌曲开始播放
-    // if (!player.isPlaying() && !isPause) {
-    // play();
-    // return;
-    // }
-    // Button button = (Button) view;
-    // //暂停/播放按钮
-    // if (!isPause) {
-    // pause();
-    // button.setBackgroundResource(R.drawable.playmusic);
-    // } else {
-    // resume();
-    // button.setBackgroundResource(R.drawable.stopmusic);
-    // }
-    // }
-    //
-    // /*
-    // * 开始操作
-    // */
-    // private void resume() {
-    //
-    // if (isPause) {
-    // player.start();
-    // isPause = false;
-    // }
-    // }
-    //
-    // //暂停
-    // private void pause() {
-    // if (player != null && player.isPlaying()) {
-    // player.pause();
-    // isPause = true;
-    // }
-    // }
-    // /*
-    // * 收到广播时暂停
-    // */
-    // private final class PhoneListener extends BroadcastReceiver {
-    // public void onReceive(Context context, Intent intent) {
-    // pause();
-    // }
-    // }
-
 	@Override
 	protected void onNewIntent(Intent intent) {
 		// TODO Auto-generated method stub
@@ -469,6 +272,11 @@ public class SkipCount extends Activity implements  AMapLocationListener{
 	}
 
 
+    /**
+     * 定位变化响应方法
+     *
+     * @param aMapLocation AMapLocation实例
+     */
     @Override
     public void onLocationChanged(AMapLocation aMapLocation) {
 

@@ -12,6 +12,7 @@ import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 
 import org.litepal.crud.DataSupport;
 
@@ -22,6 +23,10 @@ import sysu.project.lee.sportslife.News.Utils.ActionLabelUtils;
 import sysu.project.lee.sportslife.R;
 import sysu.project.lee.sportslife.User.UserEntity;
 
+/**
+ * 我的收藏界面类
+ *
+ */
 public class NewsCollectionActivity extends Activity {
 
     private ImageView btnNaviBack = null;
@@ -32,6 +37,8 @@ public class NewsCollectionActivity extends Activity {
     private BroadcastReceiver mReceiver = null;
 
     private UserEntity mCurrentUser = null;
+
+    private RelativeLayout rlEmptyCollection = null;
 
 
     @Override
@@ -49,9 +56,13 @@ public class NewsCollectionActivity extends Activity {
         initBroadCast();
     }
 
+    /**
+     * 初始化界面控件
+     */
     private void initView() {
         btnNaviBack = (ImageView) findViewById(R.id.navi_back);
         lvCollectionItems = (ListView) findViewById(R.id.lv_news_collection);
+        rlEmptyCollection = (RelativeLayout) findViewById(R.id.rl_no_collection);
 
         lvCollectionItems.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -86,12 +97,17 @@ public class NewsCollectionActivity extends Activity {
 
     }
 
+    /**
+     * 获得数据与界面控件绑定
+     *
+     */
     private void initData() {
         itemsData = new ArrayList<FeedItem>();
         List<FeedItem> feedItemList = mCurrentUser.getFavoriteFeedItem();
         Log.i("NewsDB","*************collection items number:"+feedItemList.size()+"CURRENTuSERid----->:"+mCurrentUser.getId());
         if(feedItemList.size()>0)
         {
+            rlEmptyCollection.setVisibility(View.GONE);
             for(int i = 0 ; i < feedItemList.size(); i++)
             {
                 FeedItem item = feedItemList.get(i);
@@ -112,12 +128,18 @@ public class NewsCollectionActivity extends Activity {
 
                 itemsData.add(item);
             }
+        }else{
+            rlEmptyCollection.setVisibility(View.VISIBLE);
         }
 
         mListAdapter = new ItemListAdapter(this, itemsData, false);
         lvCollectionItems.setAdapter(mListAdapter);
     }
 
+    /**
+     * 初始化广播，接收取消收藏的新闻资讯
+     *
+     */
     private void initBroadCast()
     {
         mReceiver = new BroadcastReceiver(){

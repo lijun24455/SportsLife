@@ -29,10 +29,8 @@ import sysu.project.lee.sportslife.R;
 
 
 /**
- * This class extends Activity to handle a picture preview, process the preview
- * for a red values and determine a heart beat.
+ * 心跳检测界面类，内部实现根据检测到心跳控制HeartbeatView变换
  * 
- * @author Justin Wetherell <phishman3579@gmail.com>
  */
 public class HeartRateMonitor extends Activity {
 
@@ -86,25 +84,6 @@ public class HeartRateMonitor extends Activity {
         }
     };
 
-//    private Thread mThread = new Thread(new Runnable() {
-//        @Override
-//        public void run() {
-//            while(isRunning){
-//                try {
-//                    Log.i("HeartBeat","---Thread name-->"+Thread.currentThread().getName());
-//                    Thread.sleep(20*1000);
-//                    Message msg = new Message();
-//                    msg.what = STOP_MEASURE;
-//                    handler.sendMessage(msg);
-//                    isRunning = false;
-//
-//                } catch (InterruptedException e) {
-//                    e.printStackTrace();
-//                }
-//            }
-//
-//        }
-//    });
 
     private String mHeartRate = null;
 
@@ -258,6 +237,9 @@ public class HeartRateMonitor extends Activity {
 
     }
 
+    /**
+     * 开始检测心跳
+     */
     private void onMeasure() {
 
         btnRestartMeasure.setClickable(false);
@@ -311,6 +293,9 @@ public class HeartRateMonitor extends Activity {
         }
     }
 
+    /**
+     * 停止检测心跳
+     */
     private void stopMeasure() {
         camera.setPreviewCallback(null);
         camera.stopPreview();
@@ -318,6 +303,9 @@ public class HeartRateMonitor extends Activity {
         camera = null;
     }
 
+    /**
+     * 预览帧回调
+     */
     private static PreviewCallback previewCallback = new PreviewCallback() {
 
         /**
@@ -335,7 +323,6 @@ public class HeartRateMonitor extends Activity {
             int height = size.height;
 
             int imgAvg = ImageProcessing.decodeYUV420SPtoRedAvg(data.clone(), height, width);
-            // Log.i(TAG, "imgAvg="+imgAvg);
             if (imgAvg == 0 || imgAvg == 255) {
                 processing.set(false);
                 return;
@@ -356,7 +343,6 @@ public class HeartRateMonitor extends Activity {
                 newType = TYPE.RED;
                 if (newType != currentType) {
                     beats++;
-                    // Log.d(TAG, "BEAT!! beats="+beats);
                 }
             } else if (imgAvg > rollingAverage) {
                 newType = TYPE.GREEN;
@@ -408,6 +394,9 @@ public class HeartRateMonitor extends Activity {
         }
     };
 
+    /**
+     * SurfaceView的毁掉接口实现（程序中隐藏掉了）
+     */
     private static SurfaceHolder.Callback surfaceCallback = new SurfaceHolder.Callback() {
 
         /**
@@ -415,12 +404,6 @@ public class HeartRateMonitor extends Activity {
          */
         @Override
         public void surfaceCreated(SurfaceHolder holder) {
-//            try {
-//                camera.setPreviewDisplay(previewHolder);
-//                camera.setPreviewCallback(previewCallback);
-//            } catch (Throwable t) {
-//                Log.e("PreviewDemo-surfaceCallback", "Exception in setPreviewDisplay()", t);
-//            }
         }
 
         /**
@@ -428,15 +411,6 @@ public class HeartRateMonitor extends Activity {
          */
         @Override
         public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
-//            Camera.Parameters parameters = camera.getParameters();
-//            parameters.setFlashMode(Camera.Parameters.FLASH_MODE_TORCH);
-//            Camera.Size size = getSmallestPreviewSize(width, height, parameters);
-//            if (size != null) {
-//                parameters.setPreviewSize(size.width, size.height);
-//                Log.d(TAG, "Using width=" + size.width + " height=" + size.height);
-//            }
-//            camera.setParameters(parameters);
-//            camera.startPreview();
         }
 
         @Override
@@ -447,6 +421,13 @@ public class HeartRateMonitor extends Activity {
     };
 
 
+    /**
+     * 获得摄像头参数中的最小预览尺寸
+     * @param width     int类型，预设宽度
+     * @param height    int类型，预设高度
+     * @param parameters    Camera.Parameters类型，相机参数
+     * @return Camera.Size类型，最小预览尺寸参数
+     */
     private static Camera.Size getSmallestPreviewSize(int width, int height, Camera.Parameters parameters) {
 
         Camera.Size result = null;
@@ -467,6 +448,9 @@ public class HeartRateMonitor extends Activity {
         return result;
     }
 
+    /**
+     * 返回运动结果展示界面，将心跳数据返回
+     */
     private void backToResultShowPage(){
         Intent intent = new Intent();
 

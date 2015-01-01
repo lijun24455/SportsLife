@@ -13,7 +13,15 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:background="@color/holo_blue_dark">
+        android:background="@color/white">
+        <ImageView
+            android:id="@+id/iv_bg"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="centerCrop"
+            android:src="@drawable/ic_login_back_5"
+            android:alpha="1"
+            />
 
 
     </LinearLayout>
@@ -107,6 +115,7 @@
                     android:gravity="center_vertical">
                     <Button
                         android:id="@+id/btn_test"
+                        android:visibility="gone"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:background="@color/holo_green_dark"
@@ -115,6 +124,7 @@
                     <Button
                         android:layout_marginLeft="10dp"
                         android:id="@+id/btn_clearDB"
+                        android:visibility="gone"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="CLEAR DB"

@@ -8,6 +8,9 @@ import android.util.Log;
 
 import java.util.ArrayList;
 
+/**
+ * 计步器实现类，检测重力感应器变化
+ */
 public class StepDetector implements SensorEventListener {
 	private final static String TAG = "StepDetector";
 	private float mLimit = 10;
@@ -29,6 +32,10 @@ public class StepDetector implements SensorEventListener {
 		mScale[1] = -(h * 0.5f * (1.0f / (SensorManager.MAGNETIC_FIELD_EARTH_MAX)));
 	}
 
+    /**
+     * 设置传感器灵敏度
+     * @param sensitivity   float类型，传感器敏感度数值
+     */
 	public void setSensitivity(float sensitivity) {
 		mLimit = sensitivity; // 1.97 2.96 4.44 6.66 10.00 15.00 22.50 33.75
 								// 50.62
@@ -38,6 +45,11 @@ public class StepDetector implements SensorEventListener {
 		mStepListeners.add(sl);
 	}
 
+    /**
+     * 传感器感应回调方法，内部判断计步
+     *
+     * @param event 传感器事件
+     */
 	@SuppressWarnings("deprecation")
 	public void onSensorChanged(SensorEvent event) {
 		Sensor sensor = event.sensor;
@@ -57,7 +69,6 @@ public class StepDetector implements SensorEventListener {
 					float direction = (v > mLastValues[k] ? 1
 							: (v < mLastValues[k] ? -1 : 0));
 					if (direction == -mLastDirections[k]) {
-						// Direction changed
 						int extType = (direction > 0 ? 0 : 1); // minumum or
 																// maximum?
 						mLastExtremes[extType][k] = mLastValues[k];

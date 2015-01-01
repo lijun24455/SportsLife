@@ -1,6 +1,8 @@
 package sysu.project.lee.sportslife.News.UI;
 
 /**
+ * 新闻资讯实体类
+ *
  * Created by lee on 14年12月1日.
  */
 public class NewsItem {

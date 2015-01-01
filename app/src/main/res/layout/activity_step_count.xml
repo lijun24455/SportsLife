@@ -22,7 +22,6 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
         </com.amap.api.maps.MapView>
-        <include layout="@layout/music_camera_bar"/>
 
 
     </FrameLayout>
@@ -73,9 +72,10 @@
                         android:layout_centerVertical="true"
                         android:layout_marginRight="5dp"/>
                     <TextView
+                        android:id="@+id/tv_distanceLabel"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="公里"
+                        android:text="米"
                         android:layout_toRightOf="@id/distanceCountView"
                         android:layout_centerVertical="true"
                         android:textSize="28sp"
@@ -97,11 +97,13 @@
             android:layout_marginLeft="@dimen/activity_horizontal_margin"
             android:layout_marginRight="@dimen/activity_horizontal_margin"
             android:layout_marginTop="@dimen/activity_vertical_margin"
-            android:background="@color/white">
+            android:background="#cecece">
             <LinearLayout
                 android:layout_width="0dp"
+                android:layout_marginRight="0.5dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
+                android:background="@color/white"
                 android:orientation="vertical">
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -129,7 +131,7 @@
                         android:layout_height="wrap_content"
                         android:text="0"
                         android:layout_centerHorizontal="true"
-                        android:textSize="20sp"
+                        android:textSize="18sp"
                         android:layout_marginTop="5dp"/>
                     <!--<TextView-->
                         <!--android:layout_width="wrap_content"-->
@@ -144,6 +146,9 @@
             <!--速度-->
             <LinearLayout
                 android:layout_width="0dp"
+                android:background="@color/white"
+                android:layout_marginLeft="0.5dp"
+                android:layout_marginRight="0.5dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1">
                 <LinearLayout
@@ -177,7 +182,7 @@
                             android:layout_height="wrap_content"
                             android:text="0"
                             android:layout_centerHorizontal="true"
-                            android:textSize="20sp"
+                            android:textSize="18sp"
                             android:layout_marginTop="5dp"/>
                         <!--<TextView-->
                             <!--android:layout_width="wrap_content"-->
@@ -193,7 +198,10 @@
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight="1">
+                android:layout_weight="1"
+                android:background="@color/white"
+                android:layout_marginLeft="0.5dp"
+                android:layout_marginRight="0.5dp">
                 <LinearLayout
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
@@ -225,7 +233,7 @@
                             android:layout_height="wrap_content"
                             android:text="0"
                             android:layout_centerHorizontal="true"
-                            android:textSize="20sp"
+                            android:textSize="18sp"
                             android:layout_marginTop="5dp"/>
                         <!--<TextView-->
                             <!--android:layout_width="wrap_content"-->
@@ -243,7 +251,9 @@
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight="1">
+                android:layout_weight="1"
+                android:background="@color/white"
+                android:layout_marginLeft="0.5dp">
                 <LinearLayout
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
@@ -274,8 +284,9 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="00''00''00"
+                            android:singleLine="true"
                             android:layout_centerHorizontal="true"
-                            android:textSize="20sp"
+                            android:textSize="18sp"
                             android:layout_marginTop="5dp"/>
                         <!--<TextView-->
                             <!--android:layout_width="wrap_content"-->

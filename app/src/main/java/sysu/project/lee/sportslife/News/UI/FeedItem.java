@@ -9,18 +9,16 @@ import sysu.project.lee.sportslife.User.UserEntity;
 
 
 /**
- * 1.title
- * 2.description
- * 3.link
- * 4.pubdate
- * 
+ * 资讯实体类
+ *
  * */
 
 @SuppressWarnings("serial")
 public class FeedItem extends DataSupport implements Serializable
 {
+    private long Id;
     private UserEntity user;
-
+    private long userentity_id;
     private String title;
     private String content;
     private String link;
@@ -30,7 +28,15 @@ public class FeedItem extends DataSupport implements Serializable
     private boolean readed = false;
     private boolean favorite = false;
     private ArrayList<String> imageUrls = new ArrayList<String>();
-    private int Id;
+
+
+    public long getUserentity_id() {
+        return userentity_id;
+    }
+
+    public void setUserentity_id(long userentity_id) {
+        this.userentity_id = userentity_id;
+    }
 
     public UserEntity getUser() {
         return user;
@@ -90,15 +96,19 @@ public class FeedItem extends DataSupport implements Serializable
 	{
 		this.imageUrls = imageUrls;
 	}
-	public boolean isReaded()
+	public boolean getReaded()
 	{
 		return readed;
 	}
+    public boolean isReaded()
+    {
+        return readed;
+    }
 	public void setReaded(boolean readed)
 	{
 		this.readed = readed;
 	}
-	public boolean isFavorite()
+	public boolean getFavorite()
 	{
 		return favorite;
 	}
@@ -113,8 +123,12 @@ public class FeedItem extends DataSupport implements Serializable
 		this.content = content;
 	}
 
-    public int getId() {
+    public long getId() {
         return Id;
+    }
+    public boolean isFavorite()
+    {
+        return favorite;
     }
 
     @Override
@@ -122,7 +136,8 @@ public class FeedItem extends DataSupport implements Serializable
         return "FeedItem{" +
                 "Id=" + Id +
                 ", title='" + title + '\'' +
-                ", user=" + user +
+                ", link='" + link + '\'' +
+                ", userentity_id=" + userentity_id +
                 ", favorite=" + favorite +
                 '}';
     }

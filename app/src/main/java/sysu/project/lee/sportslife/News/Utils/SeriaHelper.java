@@ -14,16 +14,21 @@ import sysu.project.lee.sportslife.News.UI.ItemListEntity;
 
 
 /**
- * @description 
- * @author zcloud
- * @date 2013/11/15
+ * @description 缓存工具类
+ * @author lee
  */
 public class SeriaHelper
 {
 	private static SeriaHelper helper;
 	
 	private SeriaHelper(){}
-	
+
+    /**
+     * 读缓存
+     *
+     * @param file  缓存文件路径
+     * @return
+     */
 	public Serializable readObject(File file)
 	{
 		if(!file.exists())
@@ -93,11 +98,9 @@ public class SeriaHelper
 	}
 	
 	/**
+     * @deprecated 写入缓存
 	 * @param seria
 	 * @param file
-	 * @return
-	 * true:save successful
-	 * false:save failed
 	 */
 	public void saveObject(Serializable seria, File file)
 	{
@@ -146,7 +149,12 @@ public class SeriaHelper
 			}
 		}
 	}
-	
+
+    /**
+     * @deprecated 单例模式，获得SeriaHelper实例
+     *
+     * @return SeriaHelper类型，返回SeriaHelper实例
+     */
 	public static SeriaHelper newInstance()
 	{
 		if(helper == null)

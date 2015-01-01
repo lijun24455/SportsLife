@@ -17,16 +17,19 @@ import sysu.project.lee.sportslife.Database.HistoryRealize;
 import sysu.project.lee.sportslife.Database.HistoryService;
 import sysu.project.lee.sportslife.HeartBeat.HeartRateMonitor;
 import sysu.project.lee.sportslife.R;
+import sysu.project.lee.sportslife.User.UserEntity;
 import sysu.project.lee.sportslife.Utils.mConvertTool;
 import sysu.project.lee.sportslife.Utils.mHelper;
 
 /**
+ * 步行运动结果数据展示类
  * Created by lee on 14年11月23日.
  */
 public class StepResultShow extends Activity {
 
     private ImageView btnNaviBack;
     private TextView mDistanceResult, mCalResult, mHeartRateResult, mTimeResult, mStepResult;
+    private TextView mDistanceResultLabel;
     private Button btnDeleteRecord, btnSaveRecord;
     private mHelper appSportsLifeHelper;
 
@@ -39,6 +42,8 @@ public class StepResultShow extends Activity {
     private int mTotalCal = 0;
     private int mTotalStepCount = 0;
     private String mHeartRateRecord = null;
+    private UserEntity mCurrentUser = null;
+    private int mCurrentUserId = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,7 +65,8 @@ public class StepResultShow extends Activity {
         mCurrentTypeRecord = appSportsLifeHelper.getEtype();
         mTotalCal = appSportsLifeHelper.getCurrExercise().getTotalCal();
         mTotalStepCount = appSportsLifeHelper.getCurrExercise().getTotalCount();
-
+        mCurrentUser = appSportsLifeHelper.getCurrentUser();
+        mCurrentUserId = mCurrentUser.getId();
 
 
 
@@ -71,6 +77,7 @@ public class StepResultShow extends Activity {
             public void onClick(View v) {
 
                 final Object[] recordItem = {
+                        mCurrentUserId,
                         mCurrentTypeRecord,
                         mTimeRecord,
                         mTotalDistanceRecord,
@@ -149,10 +156,11 @@ public class StepResultShow extends Activity {
     }
 
     /**
+     *获得心跳检测界面返回的心跳数据
      *
      * @param requestCode   请求码，即调用startActivityForResult()传递过去的值
      * @param resultCode    结果码，结果码用于标识返回数据来自哪个新Activity
-     * @param data
+     * @param data      跳转意图，心跳检测界面跳转回来的意图
      */
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -168,6 +176,12 @@ public class StepResultShow extends Activity {
 
     }
 
+    /**
+     * 向运动记录数据库中添加新的条目
+     *
+     * @param dbService     数据库实例
+     * @param recordItem    字符串数组，运动记录参数
+     */
     private void dbInsertItem(HistoryService dbService, Object[] recordItem) {
         if(dbService.Insert(recordItem)){
             appSportsLifeHelper.DisplayToast("记录保存成功!");
@@ -177,10 +191,16 @@ public class StepResultShow extends Activity {
         }
     }
 
+    /**
+     * 初始化界面控件
+     */
     private void backToMainActivity() {
         StepResultShow.this.finish();
     }
 
+    /**
+     * 初始化界面View
+     */
     private void initView() {
         appSportsLifeHelper = (mHelper) getApplicationContext();
         btnNaviBack = (ImageView) findViewById(R.id.navi_back);
@@ -191,11 +211,21 @@ public class StepResultShow extends Activity {
         btnDeleteRecord = (Button) findViewById(R.id.btn_delete_record);
         btnSaveRecord = (Button) findViewById(R.id.btn_save_record);
         mStepResult = (TextView) findViewById(R.id.tv_step_show);
+        mDistanceResultLabel = (TextView) findViewById(R.id.tv_distance_show_label);
 
         String formatedTimeShow = mConvertTool.parseSecondToTimeFormat(appSportsLifeHelper.getCurrExercise().getTotalTime() + "");
 
-        mDistanceResult.setText(appSportsLifeHelper.getCurrExercise().getTotalDistance()+"");
-        mCalResult.setText(appSportsLifeHelper.getCurrExercise().getTotalCal()+"");
+        int distance = appSportsLifeHelper.getCurrExercise().getTotalDistance();
+
+        if(distance<1000){
+            mDistanceResult.setText(distance+"");
+            mDistanceResultLabel.setText("米");
+        }else {
+            mDistanceResult.setText(mConvertTool.parseMeterToFormat(distance)+"");
+            mDistanceResultLabel.setText("公里");
+        }
+
+        mCalResult.setText(appSportsLifeHelper.getCurrExercise().getTotalCal()+"大卡");
         mTimeResult.setText(formatedTimeShow);
         mStepResult.setText(appSportsLifeHelper.getCurrExercise().getTotalCount()+"");
 

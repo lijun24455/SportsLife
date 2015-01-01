@@ -17,6 +17,7 @@ import java.util.Map;
 import sysu.project.lee.sportslife.R;
 
 /**
+ * 运动记录listview的适配器类
  * Created by lee on 14年11月24日.
  */
 public class HistorySimpleAdapter extends BaseAdapter {
@@ -30,6 +31,9 @@ public class HistorySimpleAdapter extends BaseAdapter {
     private final int TYPE_SKIP = 3;
     private final int TYPE_COUNT = 4;
 
+    /**
+     * 封装了跑步的记录中的试图元素
+     */
     private class RunRecordViewHolder{
         TextView dataYear;
         TextView dataMonth;
@@ -41,6 +45,9 @@ public class HistorySimpleAdapter extends BaseAdapter {
         TextView tvTimeCountRecord;
         TextView tvHeartRateRecord;
     }
+    /**
+     * 封装了骑行的记录中的试图元素
+     */
     private class BikeRecordViewHolder{
         TextView dataYear;
         TextView dataMonth;
@@ -52,6 +59,9 @@ public class HistorySimpleAdapter extends BaseAdapter {
         TextView tvTimeCountRecord;
         TextView tvHeartRateRecord;
     }
+    /**
+     * 封装了步行的记录中的试图元素
+     */
     private class StepRecordViewHolder{
         TextView dataYear;
         TextView dataMonth;
@@ -63,6 +73,9 @@ public class HistorySimpleAdapter extends BaseAdapter {
         TextView tvTimeCountRecord;
         TextView tvHeartRateRecord;
     }
+    /**
+     * 封装了跳绳的记录中的试图元素
+     */
     private class SkipRecordViewHolder{
         TextView dataYear;
         TextView dataMonth;
@@ -76,7 +89,7 @@ public class HistorySimpleAdapter extends BaseAdapter {
     }
 
     /**
-     * Constructor
+     * 适配器构造方法
      *
      * @param context  The context where the View associated with this SimpleAdapter is running
      * @param data     A List of Maps. Each entry in the List corresponds to one row in the list. The
@@ -89,6 +102,15 @@ public class HistorySimpleAdapter extends BaseAdapter {
         Log.i("adapter","size of arraylist:--------->"+mArrayList.size());
     }
 
+    /**
+     * 设置该适配器的数据源
+     *
+     * @param data A List of Maps. 数据源
+     */
+    public void setmArrayList(List<? extends Map<String, ?>> data){
+        this.mArrayList = (List<? extends Map<String, String>>) data;
+        notifyDataSetChanged();
+    }
 
     @Override
     public int getCount() {
@@ -114,6 +136,14 @@ public class HistorySimpleAdapter extends BaseAdapter {
         return position;
     }
 
+    /**
+     * 根据不同的运动类型返回相应的视图
+     *
+     * @param position  item的位置
+     * @param convertView   convertView
+     * @param parent    父视图
+     * @return 返回视图View
+     */
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
 
@@ -280,53 +310,29 @@ public class HistorySimpleAdapter extends BaseAdapter {
         }
 
 
-        /*
-
-
-        switch(currentType){
-            case TYPE_RUN:
-                runRecordView = convertView;
-                RunRecordViewHolder runRecordViewHolder = null;
-                if (runRecordView == null){
-                    runRecordView = mLayoutInflater.inflate(R.layout.record_run_listview_item, null);
-                    runRecordViewHolder = new RunRecordViewHolder();
-
-                    runRecordViewHolder.dataYear = (TextView) runRecordView.findViewById(R.id.tv_year_record);
-                    runRecordViewHolder.dataMonth = (TextView) runRecordView.findViewById(R.id.tv_month_record);
-                    runRecordViewHolder.dataDay = (TextView) runRecordView.findViewById(R.id.tv_day_record);
-                    runRecordViewHolder.tvTimeStartRecord = (TextView) runRecordView.findViewById(R.id.tv_clock_record);
-                    runRecordViewHolder.tvLocationRecord = (TextView) runRecordView.findViewById(R.id.tv_location_record);
-                    runRecordViewHolder.tvDistanceRecord = (TextView) runRecordView.findViewById(R.id.tv_distance_record);
-                    runRecordViewHolder.tvCalRecord = (TextView) runRecordView.findViewById(R.id.tv_cal_record);
-                    runRecordViewHolder.tvTimeCountRecord = (TextView) runRecordView.findViewById(R.id.tv_time_count_record);
-
-                    runRecordView.setTag(runRecordView);
-                }else{
-                    runRecordViewHolder = (RunRecordViewHolder) runRecordView.getTag();
-                }
-                convertView = runRecordView;
-                break;
-            case TYPE_BIKE:
-                break;
-            case TYPE_STEP:
-                break;
-            case TYPE_SKIP:
-                break;
-
-        }
-        */
         return convertView;
     }
 
+    /**
+     * 返回运动类型种类个数
+     *
+     * @return 返回运动类型种类个数
+     */
     @Override
     public int getViewTypeCount() {
         return this.TYPE_COUNT;
     }
 
+    /**
+     * 获得相应位置的运动类型
+     * @param position 偏移位置
+     * @return int型，运动类型
+     */
     @Override
     public int getItemViewType(int position) {
         Log.i("adapter","getItemViewType--position--------->"+position);
         Log.i("adapter","getItemViewType--position->type-------->"+mArrayList.get(position).get("type"));
         return Integer.parseInt(mArrayList.get(position).get("type"));
     }
+
 }

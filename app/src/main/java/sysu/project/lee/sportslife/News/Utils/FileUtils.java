@@ -8,11 +8,9 @@ import java.io.InputStream;
 import android.os.Environment;
 
 /**
- * @author: zcloud
- * 
- * 
- * @date: 2013/10/9
- * 
+ * 文件操作工具类
+ * @author lee
+ *
  */
 
 public class FileUtils
@@ -32,10 +30,10 @@ public class FileUtils
 
 	/**
 	 * @description 将二进制流写入文件
-	 * @param in
-	 * @param path
-	 * @param fileName
-	 * @return boolean
+	 * @param in    InputStream类型，输入流
+	 * @param path  String类型，路径
+	 * @param fileName  String类型，文件名
+	 * @return boolean  boolean类型，返回操作结果
 	 */
 	public static boolean saveToFile(InputStream in, String path,
 			String fileName)
@@ -84,10 +82,10 @@ public class FileUtils
 	}
 
 	/**
-	 * 获取目录文件大小
+	 * @deprecated 获取目录文件大小
 	 * 
-	 * @param dir
-	 * @return
+	 * @param dir   文件路径
+	 * @return  long类型，文件大小
 	 */
 	public static long getDirSize(File dir)
 	{
@@ -116,10 +114,10 @@ public class FileUtils
 	}
 
 	/**
-	 * 转换文件大小
+	 * @deprecated 转换文件大小
 	 * 
-	 * @param fileS
-	 * @return B/KB/MB/GB
+	 * @param fileS long类型，文件大小
+	 * @return B/KB/MB/GB   String类型，文件类型
 	 */
 	public static String formatFileSize(long fileS)
 	{
@@ -142,10 +140,10 @@ public class FileUtils
 	}
 
 	/**
-	 * 删除目录(包括：目录里的所有文件)
+	 * @deprecated 删除目录(包括：目录里的所有文件)
 	 * 
-	 * @param dirName
-	 * @return
+	 * @param dirName   String类型，文件路径
+	 * @return  boolean类型，返回操作结果
 	 */
 	public static boolean deleteDirectory(String dirName)
 	{
@@ -184,8 +182,8 @@ public class FileUtils
 
 	/**
 	 * @description 根据文件绝对路径创建文件/布覆盖原文件
-	 * @param path
-	 * @return
+	 * @param name String类型 文件绝对路径
+	 * @return  File类型，返回文件对象
 	 */
 	public static File newAbsoluteFile(String name)
 	{

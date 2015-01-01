@@ -3,6 +3,9 @@ package sysu.project.lee.sportslife.News.Utils;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
+/**
+ * MD5编码算法类
+ */
 public class MD5
 {
 	public static String Md5(String str)

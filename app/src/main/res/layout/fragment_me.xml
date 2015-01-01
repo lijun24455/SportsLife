@@ -14,9 +14,10 @@
         android:background="@color/holo_blue_bright">
         <!--头像-->
         <LinearLayout
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:layout_weight="1"
+            android:layout_marginRight="25dp"
+            android:layout_marginLeft="25dp"
             android:gravity="center">
 
             <de.hdodenhof.circleimageview.CircleImageView
@@ -25,15 +26,15 @@
                 android:layout_height="100dp"
                 app:border_width="2sp"
                 app:border_color="@color/white"
-                android:src="@drawable/ic_launcher"/>
+                android:src="@drawable/ic_default_user_img"
+                android:scaleType="centerCrop"/>
 
 
         </LinearLayout>
 
         <LinearLayout
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_weight="1"
             android:orientation="vertical"
             android:gravity="center|left">
 
@@ -42,6 +43,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="username"
+                android:singleLine="true"
                 android:textSize="30sp"
                 android:textColor="@color/white"/>
 
@@ -69,6 +71,7 @@
                 android:background="@color/white">
                 <RelativeLayout
                     android:clickable="true"
+
                     android:id="@+id/lo_show_history"
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
@@ -81,7 +84,7 @@
                         android:id="@+id/lable_history"
                         android:layout_width="45dp"
                         android:layout_height="45dp"
-                        android:src="@drawable/ic_launcher"/>
+                        android:src="@drawable/ic_exec_history_label_grey"/>
 
                     <TextView
                         android:layout_centerVertical="true"
@@ -112,7 +115,7 @@
                         android:id="@+id/lable_favorite"
                         android:layout_width="45dp"
                         android:layout_height="45dp"
-                        android:src="@drawable/ic_launcher"/>
+                        android:src="@drawable/ic_collection_label_grey"/>
 
                     <TextView
                         android:layout_centerVertical="true"
@@ -126,7 +129,61 @@
 
                 </RelativeLayout>
 
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="20dp"
+                    android:background="@color/bar_bg" />
+                <RelativeLayout
+                    android:id="@+id/lo_setting"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:gravity="center_vertical"
+                    android:background="@color/white">
+
+                    <de.hdodenhof.circleimageview.CircleImageView
+                        android:id="@+id/lable_setting"
+                        android:layout_width="45dp"
+                        android:layout_height="45dp"
+                        android:src="@drawable/ic_settings_grey600_48dp"/>
+
+                    <TextView
+                        android:layout_centerVertical="true"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="20dp"
+                        android:text="设置"
+                        android:textSize="20dp"
+                        android:layout_toRightOf="@+id/lable_setting"
+                        />
+
+                </RelativeLayout>
+
+
             </LinearLayout>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="20dp"
+                android:background="@color/bar_bg" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:gravity="center_vertical"
+                >
+                <Button
+                    android:id="@+id/btn_signout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/stopbuttonshape"
+                    android:text="退出"
+                    android:textColor="@color/white"
+                    android:textSize="24dp" />
+
+            </RelativeLayout>
 
         </LinearLayout>
 

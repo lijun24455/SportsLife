@@ -20,6 +20,8 @@ import android.os.AsyncTask;
 
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.preference.Preference;
 import android.provider.ContactsContract;
 import android.text.TextUtils;
@@ -35,17 +37,20 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import org.litepal.crud.DataSupport;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 <<<<<<< HEAD
 =======
 import sysu.project.lee.sportslife.R;
 import sysu.project.lee.sportslife.User.UserEntity;
+import sysu.project.lee.sportslife.Utils.RegexUtils;
 import sysu.project.lee.sportslife.Utils.ToastUtils;
 >>>>>>> origin/master
 
@@ -71,6 +76,7 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
     private EditText mPasswordView;
     private View mProgressView;
     private View mLoginFormView;
+    private ImageView mBackgroundView;
 
     private Button clearDB = null;
     private Button testSkip = null;
@@ -83,6 +89,16 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
     private final int PASSWORD_ERROR = 0;
     private final int EMAIL_NOT_EXIST = 1;
     private final int LOGIN_SUCCESS =2;
+
+    final private int[] bgSet = {R.drawable.ic_login_back_1,
+            R.drawable.ic_login_back_2,
+            R.drawable.ic_login_back_3,
+            R.drawable.ic_login_back_4,
+            R.drawable.ic_login_back_5,
+            R.drawable.ic_login_back_6,
+            R.drawable.ic_login_back_7};
+    private float imgAlpha = (float) 0.1;
+    private Handler mHandler;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -175,6 +191,44 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
 
     private void initViews() {
         sp = getSharedPreferences("userInfo", Context.MODE_ENABLE_WRITE_AHEAD_LOGGING);
+        mBackgroundView = (ImageView) findViewById(R.id.iv_bg);
+
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                while(true){
+                    try {
+                        if(imgAlpha>0.5){
+                            Thread.sleep(100);
+                        }else{
+                            Thread.sleep(50);
+                        }
+                        updateAlpha();
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+
+            }
+        }).start();
+
+        mHandler = new Handler(){
+            @Override
+            public void handleMessage(Message msg) {
+                super.handleMessage(msg);
+                if (imgAlpha >= 0.9){
+                    imgAlpha = 0;
+                    mBackgroundView.setImageResource(bgSet[((int) (Math.random() * bgSet.length))]);
+
+                }
+
+                mBackgroundView.setAlpha(imgAlpha);
+
+                mBackgroundView.invalidate();
+            }
+        };
+
+
         mLoginFormView = findViewById(R.id.login_form);
         mProgressView = findViewById(R.id.login_progress);
         cbAutoLogin = (CheckBox) findViewById(R.id.cb_auto_login);
@@ -189,11 +243,19 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
             if (sp.getBoolean("AUTO_LOGIN",false)){
                 cbAutoLogin.setChecked(true);
 
-
                 attemptLogin();
             }
 
         }
+    }
+
+    private void updateAlpha() {
+        if(imgAlpha < 0.5){
+            imgAlpha += 0.01;
+        }else{
+            imgAlpha += 0.02;
+        }
+        mHandler.sendMessage(mHandler.obtainMessage());
     }
 
     private void testButtons() {
@@ -277,12 +339,12 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
 
     private boolean isEmailValid(String email) {
         //TODO: Replace this with your own logic
-        return email.contains("@");
+        return email.matches(RegexUtils.EMAIL_REGEX);
     }
 
     private boolean isPasswordValid(String password) {
         //TODO: Replace this with your own logic
-        return password.length() > 4;
+        return password.matches(RegexUtils.PASSWORD_REGEX);
     }
 
     /**
