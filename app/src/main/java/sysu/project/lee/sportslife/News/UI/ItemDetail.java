@@ -2,6 +2,7 @@ package sysu.project.lee.sportslife.News.UI;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.List;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
@@ -11,6 +12,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v4.app.FragmentActivity;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.Window;
@@ -23,14 +25,16 @@ import android.widget.Toast;
 
 import com.umeng.analytics.social.UMSocialService;
 
-import sysu.project.lee.sportslife.News.Database.DbManager;
-import sysu.project.lee.sportslife.News.Database.FavoItemDbHelper;
+import org.litepal.crud.DataSupport;
+
 import sysu.project.lee.sportslife.News.Utils.AppContext;
 import sysu.project.lee.sportslife.News.Utils.HtmlFilter;
 import sysu.project.lee.sportslife.News.Utils.ActionLabelUtils;
 import sysu.project.lee.sportslife.News.Utils.SeriaHelper;
 import sysu.project.lee.sportslife.News.Utils.UIHelper;
 import sysu.project.lee.sportslife.R;
+import sysu.project.lee.sportslife.User.UserEntity;
+import sysu.project.lee.sportslife.Utils.ToastUtils;
 
 @SuppressLint("JavascriptInterface")
 @SuppressWarnings("deprecation")
@@ -56,13 +60,18 @@ public class ItemDetail extends FragmentActivity
 			R.drawable.ic_favorite_outline_white_48dp,
 			R.drawable.ic_favorite_white_48dp
 	};//0为空
-	
+
+    private FeedItem mCurrentItem = null;
+	private UserEntity mCurrentUser = null;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) 
 	{
 		super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
+        mCurrentItem = (FeedItem) getIntent().getSerializableExtra("CLICKED_ITEM");
+        mCurrentUser = mCurrentItem.getUser();
+        Log.i("NewsDB", "-----user----->"+mCurrentUser.toString());
 		initView();
 		loadData();
 //		initComments();
@@ -118,7 +127,8 @@ public class ItemDetail extends FragmentActivity
 //			};
 //		}
 
-        isFavorite = getIntent().getBooleanExtra("is_favorite", false);
+//        isFavorite = getIntent().getBooleanExtra("is_favorite", false);
+        isFavorite = mCurrentItem.isFavorite();
         naviBackBtn = (ImageView) findViewById(R.id.navi_back);
         naviBackBtn.setOnClickListener(new OnClickListener() {
             @Override
@@ -151,13 +161,16 @@ public class ItemDetail extends FragmentActivity
 			@Override
 			public void onClick(View v)
 			{
+                /*
 				DbManager helper = new DbManager(ItemDetail.this, DbManager.DB_NAME, null, 1);
 				final SQLiteDatabase db = helper.getWritableDatabase();
+				*/
 				//已收藏，取消收藏
 				if(isFavorite)
 				{
 					collectBtn.setImageResource(favoIcons[0]);
-					FavoItemDbHelper.removeRecord(db, link);
+//					FavoItemDbHelper.removeRecord(db, link);
+                    DataSupport.delete(FeedItem.class, mCurrentItem.getId());
                     Toast.makeText(ItemDetail.this, "取消了收藏", Toast.LENGTH_SHORT).show();
                     isFavorite = false;
 				}
@@ -166,11 +179,23 @@ public class ItemDetail extends FragmentActivity
 					//加入收藏
 					isFavorite = true;
 					collectBtn.setImageResource(favoIcons[1]);
-					FavoItemDbHelper
-							.insert(db, title, pubdate, itemDetail,
-									link, firstImgUrl, sectionTitle, sectionUrl);
-                    Toast.makeText(ItemDetail.this, "收藏成功!", Toast.LENGTH_SHORT)
-                            .show();
+//					FavoItemDbHelper
+//							.insert(db, title, pubdate, itemDetail,
+//									link, firstImgUrl, sectionTitle, sectionUrl);
+                    mCurrentItem.setUser(mCurrentUser);
+                    if(mCurrentItem.save()){
+                        Toast.makeText(ItemDetail.this, "收藏成功!", Toast.LENGTH_SHORT)
+                                .show();
+
+                        UserEntity userEntity = new UserEntity();
+                        List<FeedItem> list = mCurrentUser.getFeeditemList();
+                        Log.i("UserDB","-----currentuserFeeditems:"+list.size());
+                        list.add(mCurrentItem);
+                        userEntity.setFeeditemList(list);
+                        userEntity.update(mCurrentUser.getId());
+
+                        ToastUtils.show(ItemDetail.this, "文章已经存入帐号");
+                    }
                 }
 				Intent intent = new Intent();
 				intent.putExtra("link", link);
@@ -210,13 +235,22 @@ public class ItemDetail extends FragmentActivity
 		Intent intent = getIntent();
 		sectionTitle = intent.getStringExtra("section_title");
 		sectionUrl = intent.getStringExtra("section_url");
-		firstImgUrl = intent.getStringExtra("first_img_url");
+//		firstImgUrl = intent.getStringExtra("first_img_url");
+        firstImgUrl = mCurrentItem.getFirstImageUrl();
 		
 		StringBuffer sb = new StringBuffer();
+        /*
 		title = intent.getStringExtra("title");
 		pubdate = intent.getStringExtra("pubdate");
-		itemDetail = intent.getStringExtra("item_detail");
+
 		link = intent.getStringExtra("link");
+        */
+        title = mCurrentItem.getTitle();
+        pubdate = mCurrentItem.getPubdate();
+        itemDetail = intent.getStringExtra("item_detail");
+        link = mCurrentItem.getLink();
+
+
 		//过滤style
 		itemDetail = itemDetail.replaceAll(HtmlFilter.regexpForStyle, "");
 		//过滤img宽和高

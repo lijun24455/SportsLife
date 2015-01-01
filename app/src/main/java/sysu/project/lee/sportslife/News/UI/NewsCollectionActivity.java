@@ -5,20 +5,22 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.ListView;
 
-import java.util.ArrayList;
+import org.litepal.crud.DataSupport;
 
-import sysu.project.lee.sportslife.News.Database.DbManager;
+import java.util.ArrayList;
+import java.util.List;
+
 import sysu.project.lee.sportslife.News.Utils.ActionLabelUtils;
 import sysu.project.lee.sportslife.R;
+import sysu.project.lee.sportslife.User.UserEntity;
 
 public class NewsCollectionActivity extends Activity {
 
@@ -29,12 +31,16 @@ public class NewsCollectionActivity extends Activity {
     private String sectionUrl = null;
     private BroadcastReceiver mReceiver = null;
 
+    private UserEntity mCurrentUser = null;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_news_collection);
+
+        mCurrentUser = (UserEntity) getIntent().getSerializableExtra("CURRENT_USER");
 
         initView();
 
@@ -52,19 +58,19 @@ public class NewsCollectionActivity extends Activity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 FeedItem item = itemsData.get(position);
                 Intent intent = new Intent();
-                String title = item.getTitle();
+
                 String content = item.getContent();
-                String pubdate = item.getPubdate();
-                String link = item.getLink();
                 if(content != null && content.length() != 0)
                 {
                     intent.putExtra("item_detail", content);
                 }
-                intent.putExtra("title", title);
-                intent.putExtra("pubdate", pubdate);
-                intent.putExtra("is_favorite", true);
-                intent.putExtra("link", link);
+//                intent.putExtra("title", title);
+//                intent.putExtra("pubdate", pubdate);
+//                intent.putExtra("is_favorite", true);
+//                intent.putExtra("link", link);
+
                 intent.putExtra("section_url", sectionUrl);
+                intent.putExtra("CLICKED_ITEM", item);
 
                 intent.setClass(NewsCollectionActivity.this, ItemDetail.class);
                 NewsCollectionActivity.this.startActivity(intent);
@@ -82,14 +88,14 @@ public class NewsCollectionActivity extends Activity {
 
     private void initData() {
         itemsData = new ArrayList<FeedItem>();
-        DbManager mgr = new DbManager(this, DbManager.DB_NAME, null, 1);
-        SQLiteDatabase db = mgr.getWritableDatabase();
-        Cursor cursor = db.query(DbManager.FAVORITE_ITEM_TABLE_NAME, null, null, null, null, null, null);
-        if(cursor.moveToFirst())
+        List<FeedItem> feedItemList = mCurrentUser.getFavoriteFeedItem();
+        Log.i("NewsDB","*************collection items number:"+feedItemList.size()+"CURRENTuSERid----->:"+mCurrentUser.getId());
+        if(feedItemList.size()>0)
         {
-            for(int i = 0, n = cursor.getCount(); i < n; i++)
+            for(int i = 0 ; i < feedItemList.size(); i++)
             {
-                FeedItem item = new FeedItem();
+                FeedItem item = feedItemList.get(i);
+                /*
                 String title = cursor.getString(cursor.getColumnIndex("title"));
                 String pubdate = cursor.getString(cursor.getColumnIndex("pubdate"));
                 String itemDetail = cursor.getString(cursor.getColumnIndex("item_detail"));
@@ -102,15 +108,14 @@ public class NewsCollectionActivity extends Activity {
                 item.setContent(itemDetail);
                 item.setFavorite(true);
                 item.setLink(link);
+                */
 
                 itemsData.add(item);
-                cursor.moveToNext();
             }
         }
+
         mListAdapter = new ItemListAdapter(this, itemsData, false);
         lvCollectionItems.setAdapter(mListAdapter);
-        cursor.close();
-        db.close();
     }
 
     private void initBroadCast()
@@ -125,6 +130,7 @@ public class NewsCollectionActivity extends Activity {
                     if(item.getLink().equals(link))
                     {
                         itemsData.remove(i);
+                        Log.i("NewsDB","*****delete********collection item number:"+i);
                         mListAdapter.notifyDataSetChanged();
                         return;
                     }

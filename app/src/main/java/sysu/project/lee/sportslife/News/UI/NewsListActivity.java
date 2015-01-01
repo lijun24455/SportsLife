@@ -22,6 +22,7 @@ import sysu.project.lee.sportslife.News.Utils.ActionLabelUtils;
 import sysu.project.lee.sportslife.News.Utils.SectionHelper;
 import sysu.project.lee.sportslife.News.Utils.SeriaHelper;
 import sysu.project.lee.sportslife.R;
+import sysu.project.lee.sportslife.User.UserEntity;
 import sysu.project.lee.sportslife.Utils.ToastUtils;
 
 /**
@@ -38,6 +39,8 @@ public class NewsListActivity extends Activity {
     private String sectionTitle = null;
     private BroadcastReceiver mReceiver = null;
 
+    private UserEntity mCurrentUser = null;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -47,6 +50,7 @@ public class NewsListActivity extends Activity {
         Intent intent = getIntent();
         sectionUrl = intent.getStringExtra("url");
         sectionTitle = "NEONAN";
+        mCurrentUser = (UserEntity) intent.getSerializableExtra("CURRENT_USER");
         initView();
         initData();
         initBroadeCast();
@@ -91,22 +95,25 @@ public class NewsListActivity extends Activity {
 
                     }.start();
                 }
-                String title = item.getTitle();
                 String contentEncoded = item.getContent();
-                String pubdate = item.getPubdate();
-                boolean isFavorite = item.isFavorite();
-                String firstImgUrl = item.getFirstImageUrl();
+
                 if (contentEncoded != null && contentEncoded.length() != 0)
                 {
                     intent.putExtra("item_detail", contentEncoded);
                 }
+
                 intent.putExtra("section_title", sectionTitle);
                 intent.putExtra("section_url", sectionUrl);
+                /*
                 intent.putExtra("title", title);
                 intent.putExtra("pubdate", pubdate);
                 intent.putExtra("link", link);
                 intent.putExtra("is_favorite", isFavorite);
                 intent.putExtra("first_img_url", firstImgUrl);
+                */
+                item.setUser(mCurrentUser);
+                intent.putExtra("CLICKED_ITEM", item);
+
                 intent.setClass(NewsListActivity.this, ItemDetail.class);
                 startActivity(intent);
 

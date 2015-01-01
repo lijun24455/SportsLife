@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="@color/bar_bg"
+    android:background="#cecece"
     tools:context="sysu.project.lee.sportslife.UI.MeFragment">
     <!--个人资料显示区-->
     <LinearLayout

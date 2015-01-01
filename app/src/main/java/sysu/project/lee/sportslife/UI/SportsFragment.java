@@ -86,7 +86,7 @@ public class SportsFragment extends Fragment implements LocationSource, AMapLoca
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        Log.i("fragmentLife","onActivityCreated()");
+        Log.i("fragmentLife", "onActivityCreated()");
         mWeather = (TextView) getView().findViewById(R.id.weatherViewText);
         mAirHumidity = (TextView) getView().findViewById(R.id.airHumidityViewText);
         mapView = (MapView) getView().findViewById(R.id.mapAtStart);

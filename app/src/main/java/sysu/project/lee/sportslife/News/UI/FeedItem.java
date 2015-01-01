@@ -1,7 +1,11 @@
 package sysu.project.lee.sportslife.News.UI;
 
+import org.litepal.crud.DataSupport;
+
 import java.io.Serializable;
 import java.util.ArrayList;
+
+import sysu.project.lee.sportslife.User.UserEntity;
 
 
 /**
@@ -13,24 +17,35 @@ import java.util.ArrayList;
  * */
 
 @SuppressWarnings("serial")
-public class FeedItem implements Serializable
+public class FeedItem extends DataSupport implements Serializable
 {
-	private String title;
-	private String content;
-	private String link;
-	private String pubdate;
-	private String category;
-	private String firstImageUrl;
-	private boolean readed = false;
-	private boolean favorite = false;
-	private ArrayList<String> imageUrls = new ArrayList<String>();
-	
-	
+    private UserEntity user;
+
+    private String title;
+    private String content;
+    private String link;
+    private String pubdate;
+    private String category;
+    private String firstImageUrl;
+    private boolean readed = false;
+    private boolean favorite = false;
+    private ArrayList<String> imageUrls = new ArrayList<String>();
+    private int Id;
+
+    public UserEntity getUser() {
+        return user;
+    }
+
+    public void setUser(UserEntity user) {
+        this.user = user;
+    }
+
+
 	public String getFirstImageUrl()
 	{
 		return firstImageUrl;
 	}
-	public void setFirstImageUrl(String imageUrl)
+    public void setFirstImageUrl(String imageUrl)
 	{
 		this.firstImageUrl = imageUrl;
 	}
@@ -97,5 +112,18 @@ public class FeedItem implements Serializable
 	public void setContent(String content) {
 		this.content = content;
 	}
-	
+
+    public int getId() {
+        return Id;
+    }
+
+    @Override
+    public String toString() {
+        return "FeedItem{" +
+                "Id=" + Id +
+                ", title='" + title + '\'' +
+                ", user=" + user +
+                ", favorite=" + favorite +
+                '}';
+    }
 }
